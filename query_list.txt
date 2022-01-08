@@ -1,0 +1,15 @@
+- Select all products (Select)
+- select products that falls within a price range
+- Create a wishlist (insert into)
+- INSERT INTO wishlist
+- Display a wishlist (select)
+- Remove from wishlist (delete)
+- Query a conversation (select)
+- select messages by user_id & product_id, order by date (select)
+- Create a new product (insert into)
+- Edit a product (Alter)
+- Delete a product
+- Mark an item sold (alter)
+- Mark an item featured (alter)
+- Display seller contact info in product page (select filtered by product_id)
+- Queries fro login and register;
