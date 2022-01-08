@@ -1,0 +1,118 @@
+User stories:
+
+users can see featured items on a main feed
+users can filter items by price,
+users can favourite items to check up on them later
+users can send messages to the user that is listing the item
+Admins can:
+
+post items, which can be seen by others
+remove items from the site
+mark items as SOLD!,
+send a message via app, email, or text back on negotiations in buying the said item
+
+Requirements:
+- column in product table that returns a boolean to determine if item is featured or negotiations
+
+- input fields on products page to filter products by price
+
+user Requirements
+- user registraion
+- login
+- collection of wishlist
+- a messaging feature between users and seller
+
+1. as a user i can see all available products
+2. as a user i can filter products price
+3. as a user i can save products to a wishlist
+4. as a user i can negotiatiate with a buyer through message
+5. a user can post his own products
+6. a user can edit his own products
+7. a user can delete his own products
+8. a user can mark his own items as sold
+9. a user has the option to message through app, email, or text
+
+10. a user can respond to potential buyer messages
+11. a user has the option to get notification about incoming message
+12. a user sees featured items at top of list 
+13. a registered user can buy or post products
+
+
+
+
+
+potential stretch:
+1. a user can no longer message a seller after item is sold
+2. a user can filter items by categories 
+3. a user can sort items by price
+4. a user can sort items by post date
+5. a user can filter items by location
+
+
+
+
+ 
+admin Requirements
+- can post items to be sold for anyone to see
+- can remove their own posted items
+- can mark their own item as sold 
+
+Tables: users, products, transactions, negotiations, wishlist, user reviews, features, 
+
+
+scenarios: 
+  home page - user !loggedin
+    - a nav bar with login, signup, shop 
+    - search input field at top of body 
+    - filter option by price 
+    - featured products on display in body 
+    - terms and conditions in footer
+
+  home page - loggedin
+    - login is replaced by logout in nav bar, sign up is replaced by create listing
+    - message notifications is added to nav
+    - my wishlist and my listings added to nav bar
+    - nav bar displays username 
+    - products display option to add to wishlist 
+    -
+    
+
+  register page 
+    - form with inputs for *email, *name, *password, phone number, *address(*city,  *postal code, province*, street address)
+    - after successful registration user is logged in and redirected to home page
+    - failure to register produces error message on same page
+       conditions for failure:
+          empty or invalid mandatory fields
+          existing email
+
+  login page
+    - login form
+
+  wishlist page
+    - same as homepage with all products replaced by wishlist products
+
+  users own listings
+    - same styling body is filled with own listed items
+    - click particular item links to single product owner page
+  
+  single product page - owner
+    - option to edit items
+    - option to remove items
+    - option to mark items as sold
+
+  create listing page
+    - form asking for title, description, asking price, featured or not, image, 
+
+  single product page - user
+    - single product displayed
+    - contact information is added
+    - option to message
+    - if messages exist between specific user and seller they are displayed on this page
+
+  messages page 
+    - list of active conversations 
+    - on click links to sing conversation page
+
+  single conversations
+    - display single conversation history
+    - display corresponding product
