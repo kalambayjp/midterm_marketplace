@@ -76,7 +76,6 @@ scenarios:
     - products display option to add to wishlist 
     -
     
-
   register page 
     - form with inputs for *email, *name, *password, phone number, *address(*city,  *postal code, province*, street address)
     - after successful registration user is logged in and redirected to home page
@@ -116,3 +115,9 @@ scenarios:
   single conversations
     - display single conversation history
     - display corresponding product
+
+
+
+
+
+    
