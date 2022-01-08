@@ -3,7 +3,7 @@ VALUES ('Cell Phones'),
 ('Laptops'),
 ('Desktops'),
 ('Tablets'),
-(`TVs`),
+('TVs'),
 ('Cameras'),
 ('Components'),
 ('Others');
