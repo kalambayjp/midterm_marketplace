@@ -1,28 +1,17 @@
-CREATE TABLE products (
-  id SERIAL PRIMARY KEY NOT NULL,
-  title VARCHAR(255) NOT NULL,
-  category_id INTEGER NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
-  description TEXT NOT NULL,
-  img_url VARCHAR(255) NOT NULL,
-  price INTEGER NOT NULL,
-  featured BOOLEAN DEFAULT FALSE,
-  sold BOOLEAN DEFAULT FALSE,
-  listed_on TIMESTAMP,
-  owner_id INTEGER REFERENCES NOT NULL users(id) ON DELETE CASCADE
-);
-
-INSERT INTO categories (title)
-VALUES ('Cell Phones'),
-('Laptops'),
-('Desktops'),
-('Tablets'),
-(`TVs`),
-('Cameras'),
-('Components'),
-('Others');
-
 INSERT INTO products (title, category_id, description, img_url, price, featured, sold, listed_on,
 owner_id)
 VALUES
-('iphone 11 pro', 1, 'For sale is a brand new in box iPhone 11 Pro Space Grey 64GB. I upgraded to the latest model after my old iPhone 11 broke, and this is the brand new one Apple sent me as an Apple Care replacement.', 'https://i.pinimg.com/474x/eb/02/50/eb0250cc1ecd0ec085a0e348d19b3378.jpg', 50000, fales, false, '2021-10-29 14:56:59', 2),
-('google pixel 6 pro ', 1, 'Never opened, still sealed Google Pixel 6 Pro looking to sell asap, pickup will be in montreal price is $1200, no trades, cash only.', 'https://i.ebayimg.com/images/g/JkcAAOSwyvJh2eKI/s-l640.webp', 120000, true, false, '2022-01-06 14:56:59', 3),
+('iphone 11 pro', 1, 'For sale is a brand new in box iPhone 11 Pro Space Grey 64GB. I upgraded to the latest model after my old iPhone 11 broke, and this is the brand new one Apple sent me as an Apple Care replacement.', 'https://i.pinimg.com/474x/eb/02/50/eb0250cc1ecd0ec085a0e348d19b3378.jpg', 50000, false, false, '2021-10-29T14:56:59', 2),
+('google pixel 6 pro ', 1, 'Never opened, still sealed Google Pixel 6 Pro looking to sell asap, pickup will be in montreal price is $1200, no trades, cash only.', 'https://i.ebayimg.com/images/g/JkcAAOSwyvJh2eKI/s-l640.webp', 120000, true, false, '2022-01-06T14:56:59', 3),
+('Canon EOS 7D', 6, 'Digital DSLR Camera Canon EOS 7D with EFS 17-55 lenses, polarization filter, and bag 18.0 Megapixel CMOS Sensor and Dual DIGIC 4 Image Processors for high image quality and speed Canon EFS 17-55 ultrasonic optical stabilization lenses Canon (Japan made) polarization filter Canon lens hood sun-shade Carry bag', 'https://i.ebayimg.com/images/g/i5gAAOSw5rZh0hMj/s-l200.jpg', 120000, false, false, '2021-11-29T14:56:59', 7),
+('Sony A7 II - Box, extra battery and charger, and low use', 6, 'Had it for about six months, I am looking to upgrade. 7000 shutter Count Basically a new camera Battery charger, camera strap, battery case, box, and eight batteries are included. Two of the batteries are OEM and 6 are aftermaket The camera is in great condition with a screen protector.', 'https://i.ebayimg.com/images/g/X~EAAOSwPHJh2eNI/s-l640.jpg', 90000, false, false, '2021-10-15T14:56:59', 8),
+('GeForce RTX 3060 ti Brand New With Receipt', 7, 'Nvidia GeForce RTX 3060 ti graphics card brand new in box sealed with receipt. These are very hard to find! Let me know if you are interested in buying a few 3060 Ti GPUs', 'https://i.ebayimg.com/images/g/yFYAAOSw8IFh2edZ/s-l640.jpg', 100000, false, false, '2021-12-09T14:36:59', 2),
+('Intel DZ87KLT-75K', 7, 'Selling this bundle/combo as I have upgraded. Intel Desktop Board DZ87KLT-75K Extreme ATX DDR3 1600 LGA 1150 Motherboard Intel® Core™ i5-4570 Processor w/ Stock Cooler G.SKILL Ripjaws X Series 8GB (2 x 4GB) F3-14900CL9D-8GBXL', 'https://i.ebayimg.com/images/g/Gh0AAOSwDvBhyDLx/s-l640.jpg', 25000, false, false, '2022-01-06T11:56:59', 8),
+('IZTOSS Cordless Drill Set 20V MAX', 8, 'Used a few times , like new condition, everything works perfect. IZTOSS Cordless Drill Set 20V MAX 2 Lithium Batteries 1 charger drill bits', 'https://i.ebayimg.com/images/g/BHsAAOSwAa9h2ema/s-l640.jpg', 25000, false, false, '2021-11-12T17:34:59', 7),
+('Bauer Charger Ice Hockey Skates', 8, 'Bauer Charger Ice Hockey Skates size: 11 1/3" Some rust on the blades that can be removed', 'https://i.ebayimg.com/images/g/REcAAOSwxZ1h2ehL/s-l640.jpg', 2000, true, false, '2022-01-08T14:56:59', 8),
+('ASUS VivoBook', 2, 'AMD Ryzen 7 5000 Series 5700U (1.80 GHz), 8 GB Memory 512 GB PCIe SSD, AMD Radeon Graphics, 14" Touchscreen 1920 x 1080, Used for file storage and Netflix only. Has not been used in months. In great condition, would be great for kids with online schooling etc. Has been completely wiped and factory restored, ready for new owner!', 'https://images.pexels.com/photos/2183773/pexels-photo-2183773.jpeg', 25000, false, false, '2022-01-07T05:39:00', 4),
+('Lenovo E530C Laptop', 2, 'Lenovo Laptop Notebook ThinkPad E530C Core i3 Web Camera 4GB RAM 32GB HDD WiFi DVDRW HDMI 15.6" Windows 10. Condition: NOTHING WRONG WITH IT, used, in very good working condition. 30 days warranty on hardware.', 'https://images.pexels.com/photos/1359327/pexels-photo-1359327.jpeg', 35000, true, false, '2021-12-29T18:00:17', 3),
+('Dell Inspiron 13 5379', 2, 'Processor i5-8250u ( Intel 8th Generation), RAM 8GB, HDD 1TB, Window 10 Home (Comes with update), Some nice features: Touch Screen, Comes with Backlit keyboard, 13.30 inch, 360 degree foldable, 1.62 kg ( 3.65 Lbs). Comes with a Charger', 'https://images.pexels.com/photos/376704/pexels-photo-376704.jpeg', 27000, false, false, '2021-12-29T18:00:17', 7),
+('Apple iMac A1224', 3, 'Apple iMac A1224 All-in one Desktop computer 2009 Core2 Duo DVDRW 4GB RAM 320GB HDD Webcam WiFi 20 inch display. Condition: NOTHING WRONG WITH IT, used, in very good working condition. 30 days warranty on hardware.', 'https://images.pexels.com/photos/1029757/pexels-photo-1029757.jpeg', 59000, true, false, '2021-12-29T18:00:17', 7),
+('HP Desktop computer', 3, '3.1 GHz Intel Core i5 2400, 500GB, 8 GB DDR3 with 22 LCD Monitor. Condition: Used - like new. Items work fine but hardly used.', 'https://images.pexels.com/photos/5552789/pexels-photo-5552789.jpeg', 39000, false, false, '2021-12-21T02:22:47', 4),
+('Dell all-in-one PC', 3, 'Acer C27 all-in-one PC. Its 27" FHD IPS display with 1920x1080 resolution offers stunning visuals with realistic details. Powered by an Intel Core i5-1035 G1 processor and 12GB DDR4 RAM, this all-in-one PC delivers great performance to effectively handle all your daily computing needs.', 'https://images.pexels.com/photos/450035/pexels-photo-450035.jpeg', 99000, true, false, '2022-01-05T07:28:57', 5);
