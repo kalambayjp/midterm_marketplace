@@ -1,28 +1,11 @@
-CREATE TABLE products (
-  id SERIAL PRIMARY KEY NOT NULL,
-  title VARCHAR(255) NOT NULL,
-  category_id INTEGER NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
-  description TEXT NOT NULL,
-  img_url VARCHAR(255) NOT NULL,
-  price INTEGER NOT NULL,
-  featured BOOLEAN DEFAULT FALSE,
-  sold BOOLEAN DEFAULT FALSE,
-  listed_on TIMESTAMP,
-  owner_id INTEGER REFERENCES NOT NULL users(id) ON DELETE CASCADE
-);
-
-INSERT INTO categories (title)
-VALUES ('Cell Phones'),
-('Laptops'),
-('Desktops'),
-('Tablets'),
-(`TVs`),
-('Cameras'),
-('Components'),
-('Others');
-
 INSERT INTO products (title, category_id, description, img_url, price, featured, sold, listed_on,
 owner_id)
 VALUES
-('iphone 11 pro', 1, 'For sale is a brand new in box iPhone 11 Pro Space Grey 64GB. I upgraded to the latest model after my old iPhone 11 broke, and this is the brand new one Apple sent me as an Apple Care replacement.', 'https://i.pinimg.com/474x/eb/02/50/eb0250cc1ecd0ec085a0e348d19b3378.jpg', 50000, fales, false, '2021-10-29 14:56:59', 2),
+('iphone 11 pro', 1, 'For sale is a brand new in box iPhone 11 Pro Space Grey 64GB. I upgraded to the latest model after my old iPhone 11 broke, and this is the brand new one Apple sent me as an Apple Care replacement.', 'https://i.pinimg.com/474x/eb/02/50/eb0250cc1ecd0ec085a0e348d19b3378.jpg', 50000, false, false, '2021-10-29 14:56:59', 2),
 ('google pixel 6 pro ', 1, 'Never opened, still sealed Google Pixel 6 Pro looking to sell asap, pickup will be in montreal price is $1200, no trades, cash only.', 'https://i.ebayimg.com/images/g/JkcAAOSwyvJh2eKI/s-l640.webp', 120000, true, false, '2022-01-06 14:56:59', 3),
+('Canon EOS 7D', 6, 'Digital DSLR Camera Canon EOS 7D with EFS 17-55 lenses, polarization filter, and bag 18.0 Megapixel CMOS Sensor and Dual DIGIC 4 Image Processors for high image quality and speed Canon EFS 17-55 ultrasonic optical stabilization lenses Canon (Japan made) polarization filter Canon lens hood sun-shade Carry bag', 'https://i.ebayimg.com/images/g/i5gAAOSw5rZh0hMj/s-l200.jpg', 120000, false, false, '2021-11-29 14:56:59', 7),
+('Sony A7 II - Box, extra battery and charger, and low use', 6, 'Had it for about six months, I am looking to upgrade. 7000 shutter Count Basically a new camera Battery charger, camera strap, battery case, box, and eight batteries are included. Two of the batteries are OEM and 6 are aftermaket The camera is in great condition with a screen protector.', 'https://i.ebayimg.com/images/g/X~EAAOSwPHJh2eNI/s-l640.jpg', 90000, false, false, '2021-10-15 14:56:59', 8),
+('GeForce RTX 3060 ti Brand New With Receipt', 7, 'Nvidia GeForce RTX 3060 ti graphics card brand new in box sealed with receipt. These are very hard to find! Let me know if you are interested in buying a few 3060 Ti GPUs', 'https://i.ebayimg.com/images/g/yFYAAOSw8IFh2edZ/s-l640.jpg', 100000, false, false, '2021-12-09 14:36:59', 2),
+('Intel DZ87KLT-75K', 7, 'Selling this bundle/combo as I have upgraded. Intel Desktop Board DZ87KLT-75K Extreme ATX DDR3 1600 LGA 1150 Motherboard Intel® Core™ i5-4570 Processor w/ Stock Cooler G.SKILL Ripjaws X Series 8GB (2 x 4GB) F3-14900CL9D-8GBXL', 'https://i.ebayimg.com/images/g/Gh0AAOSwDvBhyDLx/s-l640.jpg', 25000, false, false, '2022-01-06 11:56:59', 8),
+('IZTOSS Cordless Drill Set 20V MAX', 8, 'Used a few times , like new condition, everything works perfect. IZTOSS Cordless Drill Set 20V MAX 2 Lithium Batteries 1 charger drill bits', 'https://i.ebayimg.com/images/g/BHsAAOSwAa9h2ema/s-l640.jpg', 25000, false, false, '2021-11-12 17:34:59', 7),
+('Bauer Charger Ice Hockey Skates', 8, 'Bauer Charger Ice Hockey Skates size: 11 1/3" Some rust on the blades that can be removed', 'https://i.ebayimg.com/images/g/REcAAOSwxZ1h2ehL/s-l640.jpg', 2000, true, false, '2022-01-08 14:56:59', 8);
