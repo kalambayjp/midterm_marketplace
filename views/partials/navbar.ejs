@@ -1,0 +1,30 @@
+<header>
+  <table>
+    <tbody>
+      <tr>
+        <td class="logo">
+          <img src="./assets/logo@1x.png" />
+        </td>
+        <% if (user) { %>
+          <td class="navbar">
+          <td><a href="/shop">Shop</a></td>
+          <td><a href="/mylistings">My Listings</a></td>
+          <td><a href="/newlistings">New Listings</a></td>
+          <td><a href="/logout">Logout</a></td>
+          </td>
+          <% } else { %>
+            <td class="navbar">
+            <td><a href="/shop">Shop</a></td>
+            <td><a href="/login">Login</a></td>
+            <td><a href="/signup">Signup</a></td>
+            </td>
+            <% } %>
+            <td>
+              <form class="serch-bar">
+                <input id="serch-field" type="text" name="serch-field" placeholder="Search" />
+              </form>
+            </td>
+      </tr>
+    </tbody>
+  </table>
+</header>
