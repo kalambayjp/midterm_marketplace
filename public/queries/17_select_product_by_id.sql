@@ -1,3 +1,3 @@
 SELECT *
-FROM porducts
+FROM products
 WHERE products.id = 1;
