@@ -37,6 +37,19 @@
 [] delete /users/:user_id/delete 
 [] delete /messages/:product_id/delete //delete a message
 
+## EJS Templates
+[] index
+[] products
+[] single product
+[] add new product
+[] user profile
+[] message
+[] login
+[] register
+[] Partials:
+  [] navbar
+  [] header
+  [] footer
 
 ## APIs
 [] gmail api
