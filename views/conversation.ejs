@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>Product negotiation</title>
+
+    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/main.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+  </head>
+  <body>
+    <header>
+      <%- include('partials/_navbar') %>
+
+    </header>
+    <main class="container">
+      <section class="new-message">
+        <div id="alert">
+          <!-- Error message goes here! -->
+        </div>
+        <form method="POST" id="message-form">
+          <label for="message-text">Type a message here</label>
+          <textarea name="message" id="message-text"></textarea>
+          <hr>
+          <div>
+            <button type="submit">Send</button>
+          </div>
+        </form>
+      </section>
+      <section class="messages" id="messages-container">
+        <% for(let mess in conversation) { %>
+          <li>
+            <%= conversation[mess].message %>
+          </li>
+        <% } %>
+      </section>
+      <button id="scrollbutton"><i class="fas fa-angle-double-up"></i></button>
+    </main>
+</body>
+
+</html>
