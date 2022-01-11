@@ -37,12 +37,14 @@ app.use(express.static("public"));
 // Note: Feel free to replace the example routes below with your own
 const usersRoutes = require("./routes/users");
 const productsRoutes = require("./routes/products");
+const messagesRoutes = require("./routes/messages");
 const widgetsRoutes = require("./routes/widgets");
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 app.use("/users", usersRoutes(db));
 app.use("/products", productsRoutes(db));
+app.use("/messages", messagesRoutes(db));
 // app.use("/api/widgets", widgetsRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
@@ -51,7 +53,26 @@ app.use("/products", productsRoutes(db));
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
-  res.render("index");
+  db.query(`
+    SELECT *
+    FROM products
+    WHERE sold = false
+    LIMIT 4;`)
+      .then(data => {
+        // console.log(data.rows);
+        const templateVars = {
+          products: data.rows,
+          userID: 1,
+          userName:'Vlad'
+        }
+        // const products = data.rows;
+        res.render("index", templateVars);
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
 });
 
 app.listen(PORT, () => {

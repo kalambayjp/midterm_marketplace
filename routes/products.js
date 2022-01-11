@@ -16,10 +16,11 @@ module.exports = (db) => {
     db.query(`
     SELECT *
     FROM products
-    WHERE sold = false;`)
+    WHERE sold = false
+    LIMIT $1;`, [8])
       .then(data => {
         const products = data.rows;
-        res.render('***', products);
+        res.render('products', products);
       })
       .catch(err => {
           res.render('***', err);
@@ -45,12 +46,15 @@ module.exports = (db) => {
   // VIEW SINGLE PRODUCT
   router.get("/product/:id", (req, res) => {
     db.query(`
-    SELECT *
+    SELECT *, users.name
     FROM products
-    WHERE products.id = $1;`,[req.params.product_id])
+    JOIN users ON products.owner_id = users.id
+    WHERE products.id = $1;`,[req.params.id])
       .then(data => {
-        const products = data.rows[0];
-        res.render('***', products);
+        const templateVars = {
+          product: data.rows[0]
+        }
+        res.render("single_product", templateVars);
       })
       .catch(err => {
         res.render('***', err);
@@ -187,4 +191,3 @@ module.exports = (db) => {
 
   return router;
 };
-
