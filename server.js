@@ -62,7 +62,7 @@ app.get("/", (req, res) => {
         // console.log(data.rows);
         const templateVars = {
           products: data.rows,
-          userID: 1,
+          user_id: 1,
           userName:'Vlad'
         }
         // const products = data.rows;
