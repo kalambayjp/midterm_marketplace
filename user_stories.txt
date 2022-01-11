@@ -34,7 +34,7 @@ user Requirements
 
 10. a user can respond to potential buyer messages
 11. a user has the option to get notification about incoming message
-12. a user sees featured items at top of list 
+12. a user sees featured items at top of list
 13. a registered user can buy or post products
 
 
@@ -43,7 +43,7 @@ user Requirements
 
 potential stretch:
 1. a user can no longer message a seller after item is sold
-2. a user can filter items by categories 
+2. a user can filter items by categories
 3. a user can sort items by price
 4. a user can sort items by post date
 5. a user can filter items by location
@@ -51,32 +51,32 @@ potential stretch:
 
 
 
- 
+
 admin Requirements
 - can post items to be sold for anyone to see
 - can remove their own posted items
-- can mark their own item as sold 
+- can mark their own item as sold
 
-Tables: users, products, transactions, negotiations, wishlist, user reviews, features, 
+Tables: users, products, transactions, negotiations, wishlist, user reviews, features,
 
 
-scenarios: 
+scenarios:
   home page - user !loggedin
-    - a nav bar with login, signup, shop 
-    - search input field at top of body 
-    - filter option by price 
-    - featured products on display in body 
+    - a nav bar with login, signup, shop
+    - search input field at top of body
+    - filter option by price
+    - featured products on display in body
     - terms and conditions in footer
 
   home page - loggedin
     - login is replaced by logout in nav bar, sign up is replaced by create listing
     - message notifications is added to nav
     - my wishlist and my listings added to nav bar
-    - nav bar displays username 
-    - products display option to add to wishlist 
+    - nav bar displays username
+    - products display option to add to wishlist
     -
-    
-  register page 
+
+  register page
     - form with inputs for *email, *name, *password, phone number, *address(*city,  *postal code, province*, street address)
     - after successful registration user is logged in and redirected to home page
     - failure to register produces error message on same page
@@ -93,14 +93,14 @@ scenarios:
   users own listings
     - same styling body is filled with own listed items
     - click particular item links to single product owner page
-  
+
   single product page - owner
     - option to edit items
     - option to remove items
     - option to mark items as sold
 
   create listing page
-    - form asking for title, description, asking price, featured or not, image, 
+    - form asking for title, description, asking price, featured or not, image,
 
   single product page - user
     - single product displayed
@@ -108,8 +108,8 @@ scenarios:
     - option to message
     - if messages exist between specific user and seller they are displayed on this page
 
-  messages page 
-    - list of active conversations 
+  messages page
+    - list of active conversations
     - on click links to sing conversation page
 
   single conversations
@@ -120,4 +120,3 @@ scenarios:
 
 
 
-    

@@ -27,7 +27,7 @@ module.exports = (db) => {
 
   // All user's listings
 
-  router.get("/:user_id", (req, res) => {
+  router.get("/users/:user_id", (req, res) => {
     db.query(`SELECT *
     FROM products
     JOIN users ON products.owner_id = users.id
@@ -64,7 +64,7 @@ module.exports = (db) => {
 
   // Product by id
 
-  router.get("/:id", (req, res) => {
+  router.get("/products/:id", (req, res) => {
     db.query(`SELECT *
     FROM products
     WHERE products.id = $1;`,[req.params.id])
