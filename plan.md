@@ -22,8 +22,9 @@
 
 ## users
 [x] get /users
-[] get /users/user/:user_id    //individual user profile
-[] post /users/new      //adding new user
+[x] get /users/user/:user_id    //individual user profile
+[x] get /users/new  //Register form
+[X] post /users/new      //adding new user
 
 ## messages
 [] get /messages //display list of all messages
@@ -38,16 +39,16 @@
 [] delete /messages/:product_id/delete //delete a message
 
 ## EJS Templates
-[] index
+[..] index
 [] products
 [] single product
 [] add new product
 [] user profile
 [] message
 [] login
-[] register
+[..] register
 [] Partials:
-  [] navbar
+  [..] navbar
   [] header
   [] footer
 
