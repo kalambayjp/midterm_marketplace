@@ -53,7 +53,26 @@ app.use("/messages", messagesRoutes(db));
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
-  res.render("index");
+  db.query(`
+    SELECT *
+    FROM products
+    WHERE sold = false
+    LIMIT 4;`)
+      .then(data => {
+        // console.log(data.rows);
+        const templateVars = {
+          products: data.rows,
+          user_id: 1,
+          userName:'Vlad'
+        }
+        // const products = data.rows;
+        res.render("index", templateVars);
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
 });
 
 app.listen(PORT, () => {

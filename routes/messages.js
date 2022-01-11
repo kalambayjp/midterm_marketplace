@@ -1,4 +1,5 @@
 const express = require('express');
+const users = require('./users');
 const router  = express.Router();
 
 module.exports = (db) => {
@@ -18,7 +19,7 @@ module.exports = (db) => {
   });
 
   router.get("/:user_id/:product_id", (req, res) => {
-    db.query(`SELECT sender_id, receiver_id, message
+    db.query(`SELECT sender_id, receiver_id, users.name, products.img_url, message
     FROM messages
     JOIN users ON messages.sender_id = users.id
     JOIN products ON messages.product_id = products.id
@@ -32,9 +33,14 @@ module.exports = (db) => {
         {
           receiver = data.rows[0].sender_id;
         }
-        const conversation = data.rows;
+        const templateVars = {
+          conversation: data.rows,
+          user_id: req.params.user_id,
+          userName:  data.rows[req.params.user_id].name
+        }
+        // console.log(templateVars);
         // res.json({ conversation });
-        res.render("conversation", {conversation});
+        res.render("conversation", templateVars);
       })
       .catch(err => {
         res

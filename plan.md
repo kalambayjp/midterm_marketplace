@@ -27,9 +27,9 @@
 [X] post /users/new      //adding new user
 
 ## messages
-[] get /messages //display list of all messages
-[] get /messages/:product_id //display messages related to a product
-[] post /messages/:product_id //send messages about a product
+[x] get /messages //display list of all messages
+[x] get /messages/:product_id //display messages related to a product
+[x] post /messages/:product_id //send messages about a product
 
 
 ## stretch routes
@@ -39,18 +39,20 @@
 [] delete /messages/:product_id/delete //delete a message
 
 ## EJS Templates
-[..] index
-[] products
-[] single product
+[x] index
+[x] products
+[x] single product
 [] add new product
 [] user profile
+[] user registration
 [] message
+[] conversation
 [] login
 [..] register
 [] Partials:
   [..] navbar
-  [] header
-  [] footer
+  [x] header
+  [x] footer
 
 ## APIs
 [] gmail api
