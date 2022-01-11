@@ -152,7 +152,7 @@ module.exports = (db) => {
     RETURNING *;`, inputVars)
       .then(data => {
         console.log(data.rows);
-        res.redirect('/'); // HARDCODED USER ID !!!!
+        res.redirect('../products/user/1'); // HARDCODED USER ID !!!!
         // const products = data.rows;
         // res.json({ products });
       })
