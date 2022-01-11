@@ -14,7 +14,7 @@ module.exports = (db) => {
   // VIEW ALL PRODUCTS
   router.get("/", (req, res) => {
     db.query(`
-    SELECT * 
+    SELECT *
     FROM products
     WHERE sold = false;`)
       .then(data => {
@@ -32,7 +32,7 @@ module.exports = (db) => {
   router.post("/products/search_by_price", (req, res) => {
     const inputVars = [req.params.price_min, req.params.price_max];
     db.query(`
-    SELECT * 
+    SELECT *
     FROM products
     WHERE sold = false AND price >= $1 AND price <= $2;`, inputVars)
       .then(data => {
@@ -45,7 +45,7 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
-    
+
   // VIEW SINGLE PRODUCT
   router.get("/product/:id", (req, res) => {
     db.query(`
@@ -136,16 +136,25 @@ module.exports = (db) => {
       });
   });
 
-  // [] post /products/new //listing new product
   // POST NEW PRODUCT FOR SALE
-  router.post("/products/new", (req, res) => {
-    const inputVars = [ req.params.title, req.params.category_id, req.params.description, req.params.img_url, req.params.price, req.params.user_id];
+  // GET new product form
+  router.get("/new", (req, res) => {
+    res.render("new_listing");
+  });
+
+  // [] post /products/new //listing new product
+  router.post("/new", (req, res) => {
+    const inputVars = [ req.body.title, /*req.params.category_id*/8, req.body.description, /*req.params.img_url*/ 'url', req.body.price, /*req.params.user_id*/1];
+    console.log(inputVars);
     db.query(`
     INSERT INTO products (title, category_id, description, img_url, price, owner_id)
-    VALUES ($1, $2, $3, $4, $5, $6)`, inputVars)
+    VALUES ($1, $2, $3, $4, $5, $6)
+    RETURNING *;`, inputVars)
       .then(data => {
-        const products = data.rows;
-        res.json({ products });
+        console.log(data.rows);
+        res.redirect('/'); // HARDCODED USER ID !!!!
+        // const products = data.rows;
+        // res.json({ products });
       })
       .catch(err => {
         res
@@ -159,7 +168,7 @@ module.exports = (db) => {
   router.get("/products/product/:id/edit", (req, res) => {
     const inputVars = [req.params.product_id];
     db.query(`
-    SELECT * FROM products 
+    SELECT * FROM products
     WHERE products.id = $1`, inputVars)
       .then(data => {
         const products = data.rows[0];
