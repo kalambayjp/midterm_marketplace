@@ -128,7 +128,7 @@ module.exports = (db) => {
   router.get("/new", (req, res) => {
     res.render("new_listing");
   });
-  
+
   // POST NEW PRODUCT FOR SALE
   router.post("/new", (req, res) => {
     const inputVars = [ req.body.title, req.body.category_id, req.body.description, req.body.img_url, req.body.price, req.params.user_id];
