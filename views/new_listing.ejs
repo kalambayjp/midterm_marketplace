@@ -15,63 +15,64 @@
 
     <header>
       <%- include('./partials/_navbar') %>
-  </header>
-  <main class="container-create-new">
-    <div class="new-listing-title">
-      <h3>Create a listing</h3>
-    </div>
-    <table class="new-product-form">
-      <tbody>
-        <form class="form-inline" action="/products/new" method="POST">
-          <tr class="input-field">
-            <td><label for="title">Product Title *:</label></td>
-            <td><input class="form-control" type="text" name="title"></td>
-          </tr>
-          <tr class="input-field">
-            <td><label for="category">Category *:</label></td>
-            <td><select type="text" name="category" id="product-category">
-              <option value="" disabled selected hidden>Choose a category</option>
-              <option value="cellphones">Cellphones</option>
-              <option value="laptops">Laptops</option>
-              <option value="desktops">Desktops</option>
-              <option value="tablets">Tablets</option>
-              <option value="tvs">TVs</option>
-              <option value="cameras">Cameras</option>
-              <option value="components">Components</option>
-              <option value="others">Others</option>
-            </select></td>
-          </tr>
-          <tr class="input-field">
-            <td><label for="description">Description *:</label></td>
-            <td><textarea class="form-control" name="description"></textarea></td>
-          </tr>
-          <tr class="input-field">
-            <td><label for="img_url">Image URL *:</label></td>
-            <td><input class="form-control" type="text" name="img_url"></td>
-          </tr>
-          <tr class="input-field">
-            <td><label for="price">Price (in cents) *:</label></td>
-            <td><input class="form-control" type="number" name="price"></td>
-          </tr>
-          <tr class="input-field">
-            <td><label for="featured">Featured:</label></td>
-            <td><select name="featured" id="featured-boolean">
-              <option value="false">false</option>
-              <option value="true">true</option>
-            </select></td>
-          </tr>
-          <tr class="single-row-item">
-            <td><button type="submit" class="btn btn-primary">Create Listing</button></td>
-          </tr>
-        </form>
-      </tbody>
-    </table>
-  </main>
-  <!-- Start of Footer -->
-  <footer class="footer">
-    <%- include('./partials/_footer'); %>
-  </footer>
-  <!-- End of Footer -->
-</div>
+    </header>
+    <main class="container-create-new">
+      <div class="new-listing-title">
+        <h3>Create a listing</h3>
+      </div>
+      <table class="new-product-form">
+        <tbody>
+          <form class="form-inline" action="/products/new" method="POST">
+            <tr class="input-field">
+              <td><label for="title">Product Title *:</label></td>
+              <td><input class="form-control" type="text" name="title"></td>
+            </tr>
+            <tr class="input-field">
+              <td><label for="category">Category *:</label></td>
+              <td><select type="text" name="category" id="product-category">
+                  <option value="" disabled selected hidden>Choose a category</option>
+                  <option value="Cellphones">Cellphones</option>
+                  <option value="Laptops">Laptops</option>
+                  <option value="Desktops">Desktops</option>
+                  <option value="Tablets">Tablets</option>
+                  <option value="TVs">TVs</option>
+                  <option value="Cameras">Cameras</option>
+                  <option value="Components">Components</option>
+                  <option value="Others">Others</option>
+                </select></td>
+            </tr>
+            <tr class="input-field">
+              <td><label for="description">Description *:</label></td>
+              <td><textarea class="form-control" name="description"></textarea></td>
+            </tr>
+            <tr class="input-field">
+              <td><label for="img_url">Image URL *:</label></td>
+              <td><input class="form-control" type="text" name="img_url"></td>
+            </tr>
+            <tr class="input-field">
+              <td><label for="price">Price *:</label></td>
+              <td><input class="form-control" type="number" name="price"></td>
+            </tr>
+            <tr class="input-field">
+              <td><label for="featured">Featured:</label></td>
+              <td><select name="featured" id="featured-boolean">
+                  <option value="false">false</option>
+                  <option value="true">true</option>
+                </select></td>
+            </tr>
+            <tr class="single-row-item">
+              <td><button type="submit" class="btn btn-primary">Create Listing</button></td>
+            </tr>
+          </form>
+        </tbody>
+      </table>
+    </main>
+    <!-- Start of Footer -->
+    <footer class="footer">
+      <%- include('./partials/_footer'); %>
+    </footer>
+    <!-- End of Footer -->
+  </div>
 </body>
+
 </html>
