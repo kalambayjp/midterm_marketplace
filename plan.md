@@ -39,16 +39,16 @@
 [] delete /messages/:product_id/delete //delete a message
 
 ## EJS Templates
-[x] index
-[x] products
+[-] index // Don't need 2 templates
+[x] listings or homepage
 [x] single product
-[] add new product
+[] add new product 
 [] user profile
-[] user registration
-[] message
-[] conversation
-[] login
-[..] register
+[] user registration 
+[-] message // goes to single product page
+[] conversations 
+[-] login // goes to listings
+[-] register // dublicate
 [] Partials:
   [..] navbar
   [x] header
