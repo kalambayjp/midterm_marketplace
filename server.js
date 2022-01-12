@@ -5,8 +5,14 @@ require("dotenv").config();
 const PORT = process.env.PORT || 8080;
 const sassMiddleware = require("./lib/sass-middleware");
 const express = require("express");
+const cookieSession = require('cookie-session');
+
 const app = express();
 const morgan = require("morgan");
+app.use(cookieSession({
+  name: 'session',
+  keys: ['marketplace','midterm']
+}));
 
 // PG database client/connection setup
 const { Pool } = require("pg");
@@ -53,6 +59,10 @@ app.use("/messages", messagesRoutes(db));
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
+
+  const userID = req.session.userId;
+  const userName = req.session.userName;
+
   db.query(`
     SELECT *
     FROM products
@@ -62,8 +72,8 @@ app.get("/", (req, res) => {
         // console.log(data.rows);
         const templateVars = {
           products: data.rows,
-          user_id: 1,
-          userName:'Vlad'
+          user_id: userID,
+          userName: userName
         }
         // const products = data.rows;
         res.render("index", templateVars);
@@ -76,9 +86,9 @@ app.get("/", (req, res) => {
 });
 
 
-app.get("/test", (req, res) => {
-  res.render("test");
-});
+// app.get("/test", (req, res) => {
+//   res.render("test");
+// });
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
