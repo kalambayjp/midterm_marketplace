@@ -24,8 +24,7 @@ module.exports = (db) => {
         const templateVars = {
           products: data.rows
         }
-        // const products = data.rows;
-        res.render("index", templateVars);
+        res.render('products', templateVars);
       })
       .catch(err => {
         res
@@ -35,21 +34,73 @@ module.exports = (db) => {
   });
 
   // VIEW PRODUCTS FILTERED BY PRICE
-  router.post("/products/search_by_price", (req, res) => {
-    const inputVars = [req.params.price_min, req.params.price_max];
-    db.query(`
+  router.post("/", (req, res) => {
+    let queryString = `
     SELECT *
     FROM products
-    WHERE sold = false AND price >= $1 AND price <= $2;`, inputVars)
+    WHERE sold = false
+    `;
+    let queryParams = [];
+  
+    if (req.body.minimum_price) {
+      queryParams.push(req.body.minimum_price * 100);
+      queryString += `\nAND price >= $${queryParams.length}`;
+      
+      if (req.body.maximum_price) {
+        queryParams.push(req.body.maximum_price * 100);
+        queryString += `\nAND price <= $${queryParams.length}\n LIMIT 8;`;
+  
+        return db.query(queryString, queryParams)
+        .then(data => {
+        const templateVars = {
+          products: data.rows
+        }
+        res.render('products', templateVars);
+        })
+        .catch(err => {
+          console.log(err);
+        });    
+      }
+  
+      queryString += `\nLIMIT 8;`;
+      return db.query(queryString, queryParams)
       .then(data => {
-        const products = data.rows;
-        res.json({ products });
+      const templateVars = {
+        products: data.rows
+        }
+        res.render('products', templateVars);
       })
       .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
+        console.log(err);
       });
+    } else if (req.body.maximum_price) {
+      queryParams.push(req.body.maximum_price * 100);
+      queryString += `\nAND price <= $${queryParams.length}\nLIMIT 8;`;
+  
+      return db.query(queryString, queryParams)
+      .then(data => {
+      const templateVars = {
+        products: data.rows
+        }
+      res.render('products', templateVars);
+      })
+      .catch(err => {
+        console.log(err);
+      });    
+    };
+  
+    queryString += `\nLIMIT 8;`;
+    return db.query(queryString)
+    .then(data => {
+      const templateVars = {
+      products: data.rows
+      }
+
+      res.render('products', templateVars);
+    })
+    .catch(err => {
+      console.log(err);
+    });
   });
 
   // VIEW SINGLE PRODUCT
@@ -225,6 +276,80 @@ module.exports = (db) => {
           .status(500)
           .json({ error: err.message });
       });
+  });
+
+  // FILTERED PRODUCTS
+  router.post("/", (req, res) => {
+    let queryString = `
+    SELECT *
+    FROM products
+    WHERE sold = false
+    `;
+    let queryParams = [];
+  
+    if (req.body.minimum_price) {
+      queryParams.push(req.body.minimum_price * 100);
+      queryString += `\nAND price >= $${queryParams.length}`;
+      
+      if (req.body.maximum_price) {
+        queryParams.push(req.body.maximum_price * 100);
+        queryString += `\nAND price <= $${queryParams.length}\n LIMIT 8;`;
+  
+        return db.query(queryString, queryParams)
+        .then(data => {
+        const templateVars = {
+          products: data.rows
+        }
+        res.render('products', templateVars);
+        })
+        .catch(err => {
+          // res.render('/r);
+          alert(err);
+        });    
+      }
+  
+      queryString += `\nLIMIT 8;`;
+      return db.query(queryString, queryParams)
+      .then(data => {
+      const templateVars = {
+        products: data.rows
+        }
+        res.render('products', templateVars);
+      })
+      .catch(err => {
+        // res.render('/r);
+        alert(err);
+      });
+    } else if (req.body.maximum_price) {
+      queryParams.push(req.body.maximum_price * 100);
+      queryString += `\nAND price <= $${queryParams.length}\nLIMIT 8;`;
+  
+      return db.query(queryString, queryParams)
+      .then(data => {
+      const templateVars = {
+        products: data.rows
+        }
+      res.render('products', templateVars);
+      })
+      .catch(err => {
+        // res.render('/r);
+        alert(err);
+      });    
+    };
+  
+    queryString += `\nLIMIT 8;`;
+    return db.query(queryString)
+    .then(data => {
+      const templateVars = {
+      products: data.rows
+      }
+
+      res.render('products', templateVars);
+    })
+    .catch(err => {
+      // res.render('/r);
+      console.log(err);
+    });
   });
 
   return router;
