@@ -15,27 +15,13 @@
   <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   <!-- End of CSS links -->
-<!-- Links for carousel -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-<style>
-  /* Make the image fully responsive */
-  .carousel-inner img {
-    width: 100%;
-    height: 100%;
-  }
-  </style>
-<!-- end of link for carousel -->
 
 </head>
 <!-- Start of body -->
 <body>
   <!-- Start of Header -->
   <header>
-    <!-- NAVBAR GOES HERE -->
-    <!-- NAVBAR GOES HERE -->
+    <%- include('./partials/_navbar'); %>
   </header>
   <div class="single-product">
     <div class="product-image-single">
@@ -49,7 +35,7 @@
         </h3>
         <span class="product-buttons">
           <button class="add-to-wishlist">Add to wishlist</button>
-          <button class="contact seller">Contact seller</i></button>
+          <a href="/messages/<%= user_id %>/<%= product.id %>"><button class="contact seller">Contact seller</button></a>
         </span>
       </span>
       <p class="product-desc-single">

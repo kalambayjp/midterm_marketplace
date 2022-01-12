@@ -19,7 +19,7 @@ module.exports = (db) => {
   });
 
   router.get("/:user_id/:product_id", (req, res) => {
-    db.query(`SELECT sender_id, receiver_id, users.name, products.img_url, message
+    db.query(`SELECT products.id, sender_id, receiver_id, users.name, products.img_url, message
     FROM messages
     JOIN users ON messages.sender_id = users.id
     JOIN products ON messages.product_id = products.id
@@ -36,9 +36,10 @@ module.exports = (db) => {
         const templateVars = {
           conversation: data.rows,
           user_id: req.params.user_id,
-          userName:  data.rows[req.params.user_id].name
+          userName:  data.rows[req.params.user_id].name,
+          product_id: data.rows[0].id
         }
-        // console.log(templateVars);
+        console.log(templateVars);
         // res.json({ conversation });
         res.render("conversation", templateVars);
       })
