@@ -4,32 +4,74 @@
 <head>
   <title>New listing</title>
 
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/main.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+</head>
 
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/main.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
-  </head>
-  <body>
+<body>
+  <div class="whole-body">
+
     <header>
-    <%- include('./partials/_navbar') %>
+      <%- include('./partials/_navbar') %>
   </header>
-  <main style="margin: 1em;">
-    <h3>Create a listing</h3>
-    <form class="form-inline" action="/products/new" method="POST">
-      <div class="form-group mb-2">
-        <label for="title">Product title:</label>
-        <input class="form-control" type="text" name="title" style="width: 300px; margin: 1em">
-        <label for="price">Price:</label>
-        <input class="form-control" type="number" name="price" style="width: 300px; margin: 1em">
-
-        <label for="description">Description:</label>
-        <input class="form-control" type="textarea" name="description" style="width: 300px; margin: 1em">
-        <button type="submit" class="btn btn-primary">Post</button>
-      </div>
-    </form>
+  <main class="container-create-new">
+    <div class="new-listing-title">
+      <h3>Create a listing</h3>
+    </div>
+    <table class="new-product-form">
+      <tbody>
+        <form class="form-inline" action="/products/new" method="POST">
+          <tr class="input-field">
+            <td><label for="title">Product Title *:</label></td>
+            <td><input class="form-control" type="text" name="title"></td>
+          </tr>
+          <tr class="input-field">
+            <td><label for="category">Category *:</label></td>
+            <td><select name="product-category" id="product-category">
+              <option value="" disabled selected hidden>Choose a category</option>
+              <option value="cellphones">Cellphones</option>
+              <option value="laptops">Laptops</option>
+              <option value="desktops">Desktops</option>
+              <option value="tablets">Tablets</option>
+              <option value="tvs">TVs</option>
+              <option value="cameras">Cameras</option>
+              <option value="components">Components</option>
+              <option value="others">Others</option>
+            </select></td>
+          </tr>
+          <tr class="input-field">
+            <td><label for="description">Description *:</label></td>
+            <td><textarea class="form-control" name="description"></textarea></td>
+          </tr>
+          <tr class="input-field">
+            <td><label for="img_url">Image URL *:</label></td>
+            <td><input class="form-control" type="text" name="img_url"></td>
+          </tr>
+          <tr class="input-field">
+            <td><label for="price">Price (in cents) *:</label></td>
+            <td><input class="form-control" type="number" name="price"></td>
+          </tr>
+          <tr class="input-field">
+            <td><label for="featured">Featured:</label></td>
+            <td><select name="featured" id="featured-boolean">
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select></td>
+          </tr>
+          <tr class="single-row-item">
+            <td><button type="submit" class="btn btn-primary">Create Listing</button></td>
+          </tr>
+        </form>
+      </tbody>
+    </table>
   </main>
-
+  <!-- Start of Footer -->
+  <footer class="footer">
+    <%- include('./partials/_footer'); %>
+  </footer>
+  <!-- End of Footer -->
+</div>
 </body>
-
 </html>
