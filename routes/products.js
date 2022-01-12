@@ -77,7 +77,9 @@ module.exports = (db) => {
     WHERE users.id = $1;`, [req.params.user_id])
       .then(data => {
         const products = data.rows;
-        res.render('***', products);
+        res.json({products});
+
+        // res.render('***', products);
       })
       .catch(err => {
         res.render('***', err);
@@ -94,7 +96,8 @@ module.exports = (db) => {
     WHERE users.id = $1;`, [req.params.user_id])
       .then(data => {
         const products = data.rows;
-        res.render('***', products);
+        res.json({products});
+        // res.render('***', products);
       })
       .catch(err => {
         res.render('***', err);
@@ -142,12 +145,15 @@ module.exports = (db) => {
 
   // POST NEW PRODUCT FOR SALE
   router.post("/new", (req, res) => {
-    const inputVars = [ req.body.title, req.body.category_id, req.body.description, req.body.img_url, req.body.price, req.params.user_id];
+    const inputVars = [ req.body.title, /*req.body.category_id*/7, req.body.description, /*req.body.img_url*/'bla', req.body.price, /*req.params.user_id*/1];
     db.query(`
     INSERT INTO products (title, category_id, description, img_url, price, owner_id)
-    VALUES ($1, $2, $3, $4, $5, $6);`, inputVars)
+    VALUES ($1, $2, $3, $4, $5, $6)
+    RETURNING *
+    ;`, inputVars)
       .then(data => {
-        res.redirect('***');
+        console.log(data);
+        res.redirect('/');
       })
       .catch(err => {
         alert(err);

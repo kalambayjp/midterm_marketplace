@@ -23,7 +23,7 @@ module.exports = (db) => {
     FROM messages
     JOIN users ON messages.sender_id = users.id
     JOIN products ON messages.product_id = products.id
-    WHERE sender_id = $1 OR receiver_id = $1 AND products.id = $2
+    WHERE (sender_id = $1 OR receiver_id = $1) AND products.id = $2
     ORDER BY time DESC
     ;`,[req.params.user_id, req.params.product_id])
       .then(data => {
@@ -71,6 +71,22 @@ module.exports = (db) => {
       });
   });
 
+  router.get("/:user_id", (req, res) => {
+    db.query(`SELECT products.title, COUNT(messages.message)
+    FROM messages
+    JOIN products ON messages.product_id = products.id
+    WHERE messages.sender_id = $1 OR messages.receiver_id = $1
+    GROUP BY products.id;`, [req.params.user_id])
+      .then(data => {
+        const users = data.rows;
+        res.json({ users });
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
 
 
   return router;
@@ -78,3 +94,12 @@ module.exports = (db) => {
 
 
 // const postTime = Date.now();
+
+
+
+// SELECT sender_id, receiver_id, message, messages.product_id
+//     FROM messages
+//     JOIN users ON messages.sender_id = users.id
+//     JOIN products ON messages.product_id = products.id
+//     WHERE messages.product_id = 3 AND (sender_id = 1 OR receiver_id = 1)
+//     ORDER BY time DESC;
