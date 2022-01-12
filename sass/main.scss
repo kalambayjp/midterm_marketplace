@@ -16,6 +16,7 @@ header {
 }
 /*** START OF NAVBAR CSS ******/
 
+
 .container-fluid {
   display: flex;
   justify-content: space-between;
@@ -302,6 +303,7 @@ header {
       height: 200px!important;
       object-fit: cover;
       border-radius: .5em;
+
     }
     #messages-container {
       width: 100%;
