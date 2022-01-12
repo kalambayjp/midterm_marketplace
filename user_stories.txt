@@ -1,15 +1,20 @@
 User stories:
 
-users can see featured items on a main feed
-users can filter items by price,
-users can favourite items to check up on them later
-users can send messages to the user that is listing the item
+[x] users can see featured items on a main feed
+[x] users can filter items by price,
+[..] users can favourite items to check up on them later
+        => Toggle feature and linking to backend
+[..] users can send messages to the user that is listing the item
+        => integrating the interface with single product page, timestamp
 Admins can:
 
-post items, which can be seen by others
-remove items from the site
-mark items as SOLD!,
-send a message via app, email, or text back on negotiations in buying the said item
+[..] post items, which can be seen by others
+        => dashboard for admin
+[..] remove items from the site
+[..] mark items as SOLD!,
+[..] send a message via app, email, or text back on negotiations in buying the said item
+      => timestamp
+
 
 Requirements:
 - column in product table that returns a boolean to determine if item is featured or negotiations
@@ -22,20 +27,20 @@ user Requirements
 - collection of wishlist
 - a messaging feature between users and seller
 
-1. as a user i can see all available products
-2. as a user i can filter products price
-3. as a user i can save products to a wishlist
-4. as a user i can negotiatiate with a buyer through message
-5. a user can post his own products
-6. a user can edit his own products
-7. a user can delete his own products
-8. a user can mark his own items as sold
-9. a user has the option to message through app, email, or text
+[x]1. as a user i can see all available products
+[x]2. as a user i can filter products price
+[..]3. as a user i can save products to a wishlist
+[..]4. as a user i can negotiatiate with a buyer through message
+[x]5. a user can post his own products
+[..]6. a user can edit his own products
+[..]7. a user can delete his own products
+[..]8. a user can mark his own items as sold
+[..]9. a user has the option to message through app, email, or text
 
-10. a user can respond to potential buyer messages
+[..]10. a user can respond to potential buyer messages
 11. a user has the option to get notification about incoming message
-12. a user sees featured items at top of list
-13. a registered user can buy or post products
+[x]12. a user sees featured items at top of list
+[x]13. a registered user can buy or post products
 
 
 
