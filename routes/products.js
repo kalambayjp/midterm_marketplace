@@ -19,8 +19,12 @@ module.exports = (db) => {
     WHERE sold = false
     LIMIT $1;`, [8])
       .then(data => {
-        const products = data.rows;
-        res.render('products', products);
+        const templateVars = {
+          products: data.rows,
+          user_id: 1,
+          userName: 'Adam'
+        }
+        res.render('products', templateVars);
       })
       .catch(err => {
           res.render('***', err);
@@ -52,8 +56,11 @@ module.exports = (db) => {
     WHERE products.id = $1;`,[req.params.id])
       .then(data => {
         const templateVars = {
-          product: data.rows[0]
+          product: data.rows[0],
+          user_id: 1,
+          userName: 'Adam'
         }
+        console.log(templateVars);
         res.render("single_product", templateVars);
       })
       .catch(err => {
@@ -126,7 +133,11 @@ module.exports = (db) => {
 
   // GET new product form
   router.get("/new", (req, res) => {
-    res.render("new_listing");
+    const templateVars = {
+      user_id: 1,
+      userName: 'Adam'
+    }
+    res.render("new_listing", templateVars);
   });
 
   // POST NEW PRODUCT FOR SALE

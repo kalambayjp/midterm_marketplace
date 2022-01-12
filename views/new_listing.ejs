@@ -1,34 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <title>New listing</title>
+<head>
+  <title>New listing</title>
 
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/main.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
-  </head>
-  <body>
-    <header>
-      <%- include('./partials/_header') %>
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/main.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+</head>
 
-    </header>
-      <main style="margin: 1em;">
-        <h3>Create a listing</h3>
-        <form class="form-inline" action="/products/new" method="POST">
-          <div class="form-group mb-2">
-            <label for="title">Product title:</label>
-            <input class="form-control" type="text" name="title" style="width: 300px; margin: 1em">
-            <label for="price">Price:</label>
-            <input class="form-control" type="number" name="price" style="width: 300px; margin: 1em">
+<body>
+  <header>
+    <%- include('./partials/_navbar') %>
+  </header>
+  <main style="margin: 1em;">
+    <h3>Create a listing</h3>
+    <form class="form-inline" action="/products/new" method="POST">
+      <div class="form-group mb-2">
+        <label for="title">Product title:</label>
+        <input class="form-control" type="text" name="title" style="width: 300px; margin: 1em">
+        <label for="price">Price:</label>
+        <input class="form-control" type="number" name="price" style="width: 300px; margin: 1em">
 
-            <label for="description">Description:</label>
-            <input class="form-control" type="textarea" name="description" style="width: 300px; margin: 1em">
-            <button type="submit" class="btn btn-primary">Post</button>
-          </div>
-        </form>
-      </main>
+        <label for="description">Description:</label>
+        <input class="form-control" type="textarea" name="description" style="width: 300px; margin: 1em">
+        <button type="submit" class="btn btn-primary">Post</button>
+      </div>
+    </form>
+  </main>
+
 </body>
 
 </html>
