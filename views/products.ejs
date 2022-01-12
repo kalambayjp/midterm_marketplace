@@ -9,12 +9,16 @@
 
   <!-- CSS links  -->
   <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
   <link rel="stylesheet" href="/styles/main.css" type="text/css" />
-  <link rel="stylesheet" href="/styles/layout.css" type="text/css" /> -->
+  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
   <!-- End of CSS links -->
+
+  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+  <script type="text/javascript" src="/scripts/app.js"></script>
+  <script type="text/javascript" src="/scripts/users.js"></script>
 
 </head>
 <!-- Start of body -->
@@ -22,20 +26,20 @@
 <body>
   <!-- Start of Header -->
   <header>
-
-    <%- include('./partials/_navbar'); %>
-
+    <%- include('./partials/_navbar') %>
+    <div class="tagline"><text>BUY, SELL, WIN.</text></div>
   </header>
-  <form method="post" action="/products">
-    <input label="min" type="number" name="minimum_price">
-    <input label="max" type="number" name="maximum_price">
-    <input type="submit" value="submit">
-  </form>
+  <div class="filter-by-price">
+    <form method="post" action="/products">
+      <input label="min" type="number" name="minimum_price">
+      <input label="max" type="number" name="maximum_price">
+      <button type="submit" value="Filter">Filter</button>
+    </form>
+  </div>
   <div class="featured-section">
-    <a href="/products/featured">
-      <h3 class="categories-title">Products</h3>
+    <a href="/products">
+      <h3 class="categories-title">Featured products</h3>
     </a>
-
     <table id="featured">
       <tbody>
         <tr class="product-row">
