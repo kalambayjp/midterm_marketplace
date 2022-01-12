@@ -9,7 +9,6 @@ const renderProducts = function(e) {
     renderList($products);
   //  renderUsers(data.users);
   });
-
 };
 
 router.get("/", (req, res) => {
