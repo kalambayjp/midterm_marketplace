@@ -9,11 +9,11 @@
 
   <!-- CSS links  -->
   <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
   <link rel="stylesheet" href="/styles/main.css" type="text/css" />
-  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/layout.css" type="text/css" /> -->
   <!-- End of CSS links -->
 
 </head>
@@ -22,19 +22,27 @@
 <body>
   <!-- Start of Header -->
   <header>
+
     <%- include('./partials/_navbar'); %>
+
   </header>
+  <form method="post" action="/products">
+    <input label="min" type="number" name="minimum_price">
+    <input label="max" type="number" name="maximum_price">
+    <input type="submit" value="submit">
+  </form>
   <div class="featured-section">
     <a href="/products/featured">
       <h3 class="categories-title">Products</h3>
     </a>
+
     <table id="featured">
       <tbody>
         <tr class="product-row">
           <% for (let product of products) { %>
             <td class="product-block">
               <span class="product-thumbnail">
-                <img src="<%= product.img_url %>" alt="<%= product.title %>" />
+                <img src="<%= product.img_url %>" alt="<%= product.title %>" style="width: 200px; height: 200px"/>
               </span>
               <span class="product-details">
                 <h3 class="product-title">
