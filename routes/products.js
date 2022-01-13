@@ -8,7 +8,6 @@
 const express = require('express');
 const { on } = require('nodemon');
 const router  = express.Router();
-const { getCategoryID } = require('../public/scripts/selectCategory')
 
 module.exports = (db) => {
 
@@ -17,12 +16,15 @@ module.exports = (db) => {
     db.query(`
     SELECT *
     FROM products
+    JOIN users ON products.owner_id = users.id
     WHERE sold = false
     LIMIT 4;`)
       .then(data => {
         console.log(data.rows);
         const templateVars = {
-          products: data.rows
+          products: data.rows,
+          user_id: req.session.userId,
+          userName: data.rows.name
         }
         res.render('products', templateVars);
       })
@@ -41,15 +43,15 @@ module.exports = (db) => {
     WHERE sold = false
     `;
     let queryParams = [];
-  
+
     if (req.body.minimum_price) {
       queryParams.push(req.body.minimum_price * 100);
       queryString += `\nAND price >= $${queryParams.length}`;
-      
+
       if (req.body.maximum_price) {
         queryParams.push(req.body.maximum_price * 100);
         queryString += `\nAND price <= $${queryParams.length}\n LIMIT 8;`;
-  
+
         return db.query(queryString, queryParams)
         .then(data => {
         const templateVars = {
@@ -59,9 +61,9 @@ module.exports = (db) => {
         })
         .catch(err => {
           console.log(err);
-        });    
+        });
       }
-  
+
       queryString += `\nLIMIT 8;`;
       return db.query(queryString, queryParams)
       .then(data => {
@@ -76,7 +78,7 @@ module.exports = (db) => {
     } else if (req.body.maximum_price) {
       queryParams.push(req.body.maximum_price * 100);
       queryString += `\nAND price <= $${queryParams.length}\nLIMIT 8;`;
-  
+
       return db.query(queryString, queryParams)
       .then(data => {
       const templateVars = {
@@ -86,9 +88,9 @@ module.exports = (db) => {
       })
       .catch(err => {
         console.log(err);
-      });    
+      });
     };
-  
+
     queryString += `\nLIMIT 8;`;
     return db.query(queryString)
     .then(data => {
@@ -123,7 +125,7 @@ module.exports = (db) => {
   // VIEW ALL PRODUCTS OF A SINGLE USER
   router.get("/user/:user_id", (req, res) => {
     db.query(`
-    SELECT products.id, products.title, products.category_id, products.listed_on
+    SELECT products.*, users.id
     FROM products
     JOIN users ON products.owner_id = users.id
     WHERE users.id = $1;`, [req.params.user_id])
@@ -196,25 +198,48 @@ module.exports = (db) => {
   // POST NEW PRODUCT FOR SALE
   // GET new product form
   router.get("/new", (req, res) => {
-    const templateVars = {
-      user_id: 1,
-      userName: 'Adam'
-    }
-    res.render("new_listing", templateVars);
+      const templateVars = {
+        user_id: req.session.userId,
+        userName: req.session.userName
+      }
+      res.render("new_listing", templateVars);
   });
 
-  // [] post /products/new //listing new product
+  // [] post /products/new //LISTING NEW PRODUCTS
   router.post("/new", (req, res) => {
 
-    const getTime = new Date(Date.now());
+    const getCategoryID = (category) => {
 
-    const inputVars = [ req.body.title, getCategoryID(req.body.category), req.body.description, req.body.img_url, req.body.price, req.body.featured, /*req.params.user_id*/1, getTime];
+      switch (category) {
+        case 'Cellphones':
+          return 1;
+        case 'Laptops':
+          return 2;
+        case 'Desktops':
+          return 3;
+        case 'Tablets':
+          return 4;
+        case 'TVs':
+          return 5;
+        case 'Cameras':
+          return 6;
+        case 'Components':
+          return 7;
+        default:
+          return 8;
+      };
+    };
+
+    const getTime = new Date(Date.now());
+    const category_id = getCategoryID(req.body.category);
+
+    const inputVars = [ req.body.title, category_id, req.body.description, req.body.img_url, (req.body.price * 100), req.body.featured, req.session.userId, getTime];
     db.query(`
     INSERT INTO products (title, category_id, description, img_url, price, featured, owner_id, listed_on)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     RETURNING *;`, inputVars)
       .then(data => {
-        res.redirect('../products/user/1'); // HARDCODED USER ID !!!!
+        res.redirect(`../products/user/${req.session.userId}`);
       })
       .catch(err => {
         res
@@ -286,15 +311,15 @@ module.exports = (db) => {
     WHERE sold = false
     `;
     let queryParams = [];
-  
+
     if (req.body.minimum_price) {
       queryParams.push(req.body.minimum_price * 100);
       queryString += `\nAND price >= $${queryParams.length}`;
-      
+
       if (req.body.maximum_price) {
         queryParams.push(req.body.maximum_price * 100);
         queryString += `\nAND price <= $${queryParams.length}\n LIMIT 8;`;
-  
+
         return db.query(queryString, queryParams)
         .then(data => {
         const templateVars = {
@@ -305,9 +330,9 @@ module.exports = (db) => {
         .catch(err => {
           // res.render('/r);
           alert(err);
-        });    
+        });
       }
-  
+
       queryString += `\nLIMIT 8;`;
       return db.query(queryString, queryParams)
       .then(data => {
@@ -323,7 +348,7 @@ module.exports = (db) => {
     } else if (req.body.maximum_price) {
       queryParams.push(req.body.maximum_price * 100);
       queryString += `\nAND price <= $${queryParams.length}\nLIMIT 8;`;
-  
+
       return db.query(queryString, queryParams)
       .then(data => {
       const templateVars = {
@@ -334,9 +359,9 @@ module.exports = (db) => {
       .catch(err => {
         // res.render('/r);
         alert(err);
-      });    
+      });
     };
-  
+
     queryString += `\nLIMIT 8;`;
     return db.query(queryString)
     .then(data => {
