@@ -18,13 +18,14 @@ module.exports = (db) => {
     SELECT *
     FROM products
     WHERE sold = false
-    LIMIT 4;`)
+    LIMIT 12;`)
       .then(data => {
         console.log(data.rows);
         const templateVars = {
           products: data.rows
         }
-        res.render('products', templateVars);
+        // res.render('products', templateVars);
+        res.send(templateVars);
       })
       .catch(err => {
         res
@@ -41,15 +42,15 @@ module.exports = (db) => {
     WHERE sold = false
     `;
     let queryParams = [];
-  
+
     if (req.body.minimum_price) {
       queryParams.push(req.body.minimum_price * 100);
       queryString += `\nAND price >= $${queryParams.length}`;
-      
+
       if (req.body.maximum_price) {
         queryParams.push(req.body.maximum_price * 100);
         queryString += `\nAND price <= $${queryParams.length}\n LIMIT 8;`;
-  
+
         return db.query(queryString, queryParams)
         .then(data => {
         const templateVars = {
@@ -59,9 +60,9 @@ module.exports = (db) => {
         })
         .catch(err => {
           console.log(err);
-        });    
+        });
       }
-  
+
       queryString += `\nLIMIT 8;`;
       return db.query(queryString, queryParams)
       .then(data => {
@@ -76,7 +77,7 @@ module.exports = (db) => {
     } else if (req.body.maximum_price) {
       queryParams.push(req.body.maximum_price * 100);
       queryString += `\nAND price <= $${queryParams.length}\nLIMIT 8;`;
-  
+
       return db.query(queryString, queryParams)
       .then(data => {
       const templateVars = {
@@ -86,9 +87,9 @@ module.exports = (db) => {
       })
       .catch(err => {
         console.log(err);
-      });    
+      });
     };
-  
+
     queryString += `\nLIMIT 8;`;
     return db.query(queryString)
     .then(data => {
@@ -286,15 +287,15 @@ module.exports = (db) => {
     WHERE sold = false
     `;
     let queryParams = [];
-  
+
     if (req.body.minimum_price) {
       queryParams.push(req.body.minimum_price * 100);
       queryString += `\nAND price >= $${queryParams.length}`;
-      
+
       if (req.body.maximum_price) {
         queryParams.push(req.body.maximum_price * 100);
         queryString += `\nAND price <= $${queryParams.length}\n LIMIT 8;`;
-  
+
         return db.query(queryString, queryParams)
         .then(data => {
         const templateVars = {
@@ -305,9 +306,9 @@ module.exports = (db) => {
         .catch(err => {
           // res.render('/r);
           alert(err);
-        });    
+        });
       }
-  
+
       queryString += `\nLIMIT 8;`;
       return db.query(queryString, queryParams)
       .then(data => {
@@ -323,7 +324,7 @@ module.exports = (db) => {
     } else if (req.body.maximum_price) {
       queryParams.push(req.body.maximum_price * 100);
       queryString += `\nAND price <= $${queryParams.length}\nLIMIT 8;`;
-  
+
       return db.query(queryString, queryParams)
       .then(data => {
       const templateVars = {
@@ -334,9 +335,9 @@ module.exports = (db) => {
       .catch(err => {
         // res.render('/r);
         alert(err);
-      });    
+      });
     };
-  
+
     queryString += `\nLIMIT 8;`;
     return db.query(queryString)
     .then(data => {

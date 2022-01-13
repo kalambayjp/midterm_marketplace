@@ -77,7 +77,7 @@ app.get("/", (req, res) => {
           userName: userName
         }
         // const products = data.rows;
-        res.render("index", templateVars);
+        res.render("test", templateVars);
       })
       .catch(err => {
         res
