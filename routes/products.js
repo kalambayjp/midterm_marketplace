@@ -24,7 +24,7 @@ module.exports = (db) => {
     `;
     let queryParams = [];
 
-    
+        
     if (req.query.minimum_price) {                             
       queryParams.push(req.query.minimum_price);
       queryString += `\nAND price >= $${queryParams.length}`;

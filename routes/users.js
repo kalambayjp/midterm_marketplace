@@ -94,8 +94,6 @@ module.exports = (db) => {
   });
 
 
-
-
   router.post("/new", (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
@@ -119,6 +117,14 @@ module.exports = (db) => {
       });
   });
 
+  /*
+  // ADMIN
+  */
+
+  router.get("/admin", (req, res) => {
+
+    res.render("admin");
+  });
 
 
   return router;
