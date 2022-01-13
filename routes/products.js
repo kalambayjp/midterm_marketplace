@@ -8,34 +8,15 @@
 const express = require('express');
 const { on } = require('nodemon');
 const router  = express.Router();
-const { getCategoryID } = require('../public/scripts/selectCategory')
 
 module.exports = (db) => {
 
   // VIEW ALL PRODUCTS
   router.get("/", (req, res) => {
-    db.query(`
-    SELECT *
-    FROM products
-    WHERE sold = false
-    LIMIT 12;`)
-      .then(data => {
-        console.log(data.rows);
-        const templateVars = {
-          products: data.rows
-        }
-        // res.render('products', templateVars);
-        res.send(templateVars);
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
-  });
 
-  // VIEW PRODUCTS FILTERED BY PRICE
-  router.post("/", (req, res) => {
+    
+   
+
     let queryString = `
     SELECT *
     FROM products
@@ -43,13 +24,15 @@ module.exports = (db) => {
     `;
     let queryParams = [];
 
-    if (req.body.minimum_price) {
-      queryParams.push(req.body.minimum_price * 100);
+        
+    if (req.query.minimum_price) {                             
+      queryParams.push(req.query.minimum_price);
       queryString += `\nAND price >= $${queryParams.length}`;
-
-      if (req.body.maximum_price) {
-        queryParams.push(req.body.maximum_price * 100);
-        queryString += `\nAND price <= $${queryParams.length}\n LIMIT 8;`;
+      
+      if (req.query.maximum_price) {                                // IF MIN PRICE & MAX PRICE
+        queryParams.push(req.query.maximum_price);
+        queryString += `\nAND price <= $${queryParams.length}\nLIMIT 8;`;
+  
 
         return db.query(queryString, queryParams)
         .then(data => {
@@ -63,45 +46,72 @@ module.exports = (db) => {
         });
       }
 
-      queryString += `\nLIMIT 8;`;
+
+      queryString += `\nLIMIT 8;`;                                // ONLY MIN PRICE
+
       return db.query(queryString, queryParams)
       .then(data => {
-      const templateVars = {
-        products: data.rows
+        const templateVars = {
+          user_id: req.session.userId,
+          userName: req.session.userName,
+          products: data.rows
         }
         res.render('products', templateVars);
       })
       .catch(err => {
         console.log(err);
       });
-    } else if (req.body.maximum_price) {
-      queryParams.push(req.body.maximum_price * 100);
+    } else if (req.query.maximum_price) {                             // ONLY MAX PRICE
+      queryParams.push(req.query.maximum_price);
       queryString += `\nAND price <= $${queryParams.length}\nLIMIT 8;`;
 
       return db.query(queryString, queryParams)
       .then(data => {
-      const templateVars = {
-        products: data.rows
+        const templateVars = {
+          user_id: req.session.userId,
+          userName: req.session.userName,
+          products: data.rows
         }
-      res.render('products', templateVars);
+        res.render('products', templateVars);
       })
       .catch(err => {
         console.log(err);
       });
-    };
 
-    queryString += `\nLIMIT 8;`;
-    return db.query(queryString)
-    .then(data => {
-      const templateVars = {
-      products: data.rows
+    } else {                                                     // NO PRICE FILTERS
+      return db.query(queryString, queryParams)
+      .then(data => {
+        const templateVars = {
+          user_id: req.session.userId,
+          userName: req.session.userName,
+          products: data.rows
+        }
+        res.render('products', templateVars);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
+    
+  });
+
+  // VIEW PRODUCTS FILTERED BY PRICE
+  router.post("/", (req, res) => { 
+    if (req.body.minimum_price) {
+
+      let minPrice = parseInt(req.body.minimum_price * 100);
+      
+      if (req.body.maximum_price) {
+        let maxPrice = parseInt(req.body.maximum_price * 100);
+        res.redirect(`/products?minimum_price=${minPrice}&maximum_price=${maxPrice}`);
       }
-
-      res.render('products', templateVars);
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  
+      res.redirect(`/products?minimum_price=${minPrice}`);
+    
+    } else if (req.body.maximum_price) {
+      let maxPrice = parseInt(req.body.maximum_price * 100);
+      res.redirect(`/products?maximum_price=${maxPrice}`);
+    };
   });
 
   // VIEW SINGLE PRODUCT
@@ -124,7 +134,7 @@ module.exports = (db) => {
   // VIEW ALL PRODUCTS OF A SINGLE USER
   router.get("/user/:user_id", (req, res) => {
     db.query(`
-    SELECT products.id, products.title, products.category_id, products.listed_on
+    SELECT products.*, users.id
     FROM products
     JOIN users ON products.owner_id = users.id
     WHERE users.id = $1;`, [req.params.user_id])
@@ -146,10 +156,14 @@ module.exports = (db) => {
     FROM products
     JOIN wishlists ON wishlists.product_id = products.id
     JOIN users ON wishlists.user_id = users.id
-    WHERE users.id = $1;`, [req.params.user_id])
+    WHERE users.id = $1;`, [req.session.userId])                    
       .then(data => {
-        const products = data.rows;
-        res.json({ products });
+        const templateVars = {
+          user_id: req.session.userId,
+          userName: req.session.userName,
+          products: data.rows
+        }
+        res.render("products", templateVars)
       })
       .catch(err => {
         res
@@ -157,17 +171,19 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
-
-  // [] post /products/whishlist/:user_id/add // add a product to wishlist
+  
   // ADD PRODUCT TO WISHLIST
-  router.post("/products/wishlist/:user_id/add", (req, res) => {
-    const inputVars = [req.params.user_id, req.params.product_id]
-    db.query(`
+  router.post("/wishlist/:product_id/add", (req, res) => {
+    const inputVars = [req.session.userId, req.params.product_id];
+    
+    
+    return db.query(`
     INSERT INTO wishlists (user_id, product_id)
-    VALUES ($1, $2)`, inputVars)
+    VALUES ($1, $2)`, inputVars)              
       .then(data => {
-        const products = data.rows;
-        res.json({ products });
+        
+        // res.redirect('/');
+        res.redirect(`/products/wishlist/${req.session.userId}`) 
       })
       .catch(err => {
         res
@@ -176,10 +192,11 @@ module.exports = (db) => {
       });
   });
 
-  // [] delete /products/whishlist/:user_id/delete // delete a product from wishlist
+  
   // DELETE PRODUCT FROM WISHLIST
-  router.post("/products/wishlist/:user_id/delete", (req, res) => {
+  router.post("/products/wishlist/:product_id/delete", (req, res) => {
     const inputVars = [req.params.user_id, req.params.product_id]
+    console.log('inputVars -->',inputVars);
     db.query(`
     DELETE FROM wishlists
     WHERE user_id = $1 AND product_id = $2`, inputVars)
@@ -197,25 +214,48 @@ module.exports = (db) => {
   // POST NEW PRODUCT FOR SALE
   // GET new product form
   router.get("/new", (req, res) => {
-    const templateVars = {
-      user_id: 1,
-      userName: 'Adam'
-    }
-    res.render("new_listing", templateVars);
+      const templateVars = {
+        user_id: req.session.userId,
+        userName: req.session.userName
+      }
+      res.render("new_listing", templateVars);
   });
 
-  // [] post /products/new //listing new product
+  // [] post /products/new //LISTING NEW PRODUCTS
   router.post("/new", (req, res) => {
 
-    const getTime = new Date(Date.now());
+    const getCategoryID = (category) => {
 
-    const inputVars = [ req.body.title, getCategoryID(req.body.category), req.body.description, req.body.img_url, req.body.price, req.body.featured, /*req.params.user_id*/1, getTime];
+      switch (category) {
+        case 'Cellphones':
+          return 1;
+        case 'Laptops':
+          return 2;
+        case 'Desktops':
+          return 3;
+        case 'Tablets':
+          return 4;
+        case 'TVs':
+          return 5;
+        case 'Cameras':
+          return 6;
+        case 'Components':
+          return 7;
+        default:
+          return 8;
+      };
+    };
+
+    const getTime = new Date(Date.now());
+    const category_id = getCategoryID(req.body.category);
+
+    const inputVars = [ req.body.title, category_id, req.body.description, req.body.img_url, (req.body.price * 100), req.body.featured, req.session.userId, getTime];
     db.query(`
     INSERT INTO products (title, category_id, description, img_url, price, featured, owner_id, listed_on)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     RETURNING *;`, inputVars)
       .then(data => {
-        res.redirect('../products/user/1'); // HARDCODED USER ID !!!!
+        res.redirect(`../products/user/${req.session.userId}`);
       })
       .catch(err => {
         res
@@ -279,79 +319,6 @@ module.exports = (db) => {
       });
   });
 
-  // FILTERED PRODUCTS
-  router.post("/", (req, res) => {
-    let queryString = `
-    SELECT *
-    FROM products
-    WHERE sold = false
-    `;
-    let queryParams = [];
-
-    if (req.body.minimum_price) {
-      queryParams.push(req.body.minimum_price * 100);
-      queryString += `\nAND price >= $${queryParams.length}`;
-
-      if (req.body.maximum_price) {
-        queryParams.push(req.body.maximum_price * 100);
-        queryString += `\nAND price <= $${queryParams.length}\n LIMIT 8;`;
-
-        return db.query(queryString, queryParams)
-        .then(data => {
-        const templateVars = {
-          products: data.rows
-        }
-        res.render('products', templateVars);
-        })
-        .catch(err => {
-          // res.render('/r);
-          alert(err);
-        });
-      }
-
-      queryString += `\nLIMIT 8;`;
-      return db.query(queryString, queryParams)
-      .then(data => {
-      const templateVars = {
-        products: data.rows
-        }
-        res.render('products', templateVars);
-      })
-      .catch(err => {
-        // res.render('/r);
-        alert(err);
-      });
-    } else if (req.body.maximum_price) {
-      queryParams.push(req.body.maximum_price * 100);
-      queryString += `\nAND price <= $${queryParams.length}\nLIMIT 8;`;
-
-      return db.query(queryString, queryParams)
-      .then(data => {
-      const templateVars = {
-        products: data.rows
-        }
-      res.render('products', templateVars);
-      })
-      .catch(err => {
-        // res.render('/r);
-        alert(err);
-      });
-    };
-
-    queryString += `\nLIMIT 8;`;
-    return db.query(queryString)
-    .then(data => {
-      const templateVars = {
-      products: data.rows
-      }
-
-      res.render('products', templateVars);
-    })
-    .catch(err => {
-      // res.render('/r);
-      console.log(err);
-    });
-  });
 
   return router;
 };
