@@ -42,6 +42,7 @@ module.exports = (db) => {
         console.log(templateVars);
         // res.json({ conversation });
         res.render("conversation", templateVars);
+
       })
       .catch(err => {
         res
@@ -50,10 +51,11 @@ module.exports = (db) => {
       });
   });
 
-  router.post("/:user_id/:product_id", (req, res) => {
+  router.post("/product/:product_id", (req, res) => {
     const message = req.body.message;
     const receiver_id = receiver;
-    const messageValues = [req.params.user_id, receiver_id, req.params.product_id, message];
+    // const messageValues = [req.params.user_id, receiver_id, req.params.product_id, message];
+    const messageValues = [1, 7, 15, 'test'];
     console.log('POST a message:');
     console.log(messageValues);
 

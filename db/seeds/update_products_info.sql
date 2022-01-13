@@ -1,0 +1,10 @@
+UPDATE products SET img_url = 'https://images.pexels.com/photos/1334597/pexels-photo-1334597.jpeg' WHERE id = 23;
+UPDATE products SET img_url = 'https://images.pexels.com/photos/6218/desk-laptop-notebook-table.jpg' WHERE id = 24;
+UPDATE products SET img_url = 'https://images.pexels.com/photos/6351/smartphone-desk-laptop-technology.jpg' WHERE id = 25;
+UPDATE products SET img_url = 'https://images.pexels.com/photos/6298412/pexels-photo-6298412.jpeg' WHERE id = 26;
+UPDATE products SET img_url = 'https://images.pexels.com/photos/8296983/pexels-photo-8296983.jpeg' WHERE id = 27;
+UPDATE products SET img_url = 'https://images.pexels.com/photos/7974/pexels-photo.jpg' WHERE id = 29;
+UPDATE products SET img_url = 'https://images.pexels.com/photos/459653/pexels-photo-459653.jpeg' WHERE id = 30;
+UPDATE products SET img_url = 'https://images.pexels.com/photos/218863/pexels-photo-218863.jpeg' WHERE id = 31;
+UPDATE products SET img_url = 'https://images.pexels.com/photos/109371/pexels-photo-109371.jpeg' WHERE id = 32;
+UPDATE products SET img_url = 'https://images.pexels.com/photos/47261/pexels-photo-47261.jpeg' WHERE id = 33;

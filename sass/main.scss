@@ -115,8 +115,37 @@ button {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  input {
+  .form-control {
     width: 15vw;
+    margin: 0 1em;
+  }
+}
+.logged-out-nav {
+  width: 60vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+#login-form {
+  margin: 1em 1em 0 1em;
+  input {
+    margin: 0 .5em;
+    height: 1em;
+    width: 12em;
+    border: none;
+    border-radius: 0;
+  }
+  button {
+    background-color: #fff;
+    color: $primary-color;
+  }
+}
+.form-group {
+  .mb-2 {
+    width: 40em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 //Header

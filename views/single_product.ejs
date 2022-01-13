@@ -9,15 +9,22 @@
 
   <!-- CSS links  -->
   <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
   <link rel="stylesheet" href="/styles/main.css" type="text/css" />
   <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   <!-- End of CSS links -->
+  <!-- SCRIPTS FOR MESSANGER -->
+  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+  <script type="text/javascript" src="/scripts/app.js"></script>
+  <script type="text/javascript" src="../routes/messages.js"></script>
+  <!-- END OF SCRIPTS FOR MESSANGER -->
 
 </head>
 <!-- Start of body -->
+
 <body>
   <!-- Start of Header -->
   <header>
@@ -28,14 +35,16 @@
       <img src="<%= product.img_url %>" alt="<%= product.title %>" />
     </div>
     <div class="product-details-single">
-      <h2 class="product-title-single"><%= product.title %></h2>
+      <h2 class="product-title-single">
+        <%= product.title %>
+      </h2>
       <span class="single-product-price">
         <h3 class="product-price-single">
           $<%= ((product.price) / 100).toFixed(2) %>
         </h3>
         <span class="product-buttons">
           <button class="add-to-wishlist">Add to wishlist</button>
-          <a href="/messages/<%= user_id %>/<%= product.id %>"><button class="contact seller">Contact seller</button></a>
+          <button id="message-seller" class="contact seller">Contact seller</button>
         </span>
       </span>
       <p class="product-desc-single">
@@ -46,23 +55,52 @@
         <hr>
         <span class="seller-name">
           <i class="fas fa-user"></i>
-          <h5><%= product.name %> </h5>
+          <h5>
+            <%= product.name %>
+          </h5>
         </span>
         <span class="phone_number">
           <i class="fas fa-phone-square-alt"></i>
-          <h5><%= product.phone_number %></h5>
+          <h5>
+            <%= product.phone_number %>
+          </h5>
         </span>
         <span class="seller-email">
           <i class="fas fa-envelope-square"></i>
-          <h5><%= product.email %></h5>
+          <h5>
+            <%= product.email %>
+          </h5>
         </span>
         <span class="seller-location">
           <i class="fas fa-map-marker-alt"></i>
-          <h5><%= product.city %> , <%= product.province %></h5>
+          <h5>
+            <%= product.city %> , <%= product.province %>
+          </h5>
         </span>
       </div>
     </div>
-
+  </div>
+  <div id="message-box">
+    <main class="container">
+      <div class="message-body">
+        <section class="new-message">
+          <form method="POST" id="message-form" action="/product/<%= product.id %>">
+            <div class="message-type">
+              <textarea name="message" id="message-text" placeholder="Type a message here"></textarea>
+              <button type="submit">Send</button>
+            </div>
+            <hr>
+          </form>
+        </section>
+        <div class="image-conversation">
+          <div class="product-image"><img src="<%= product.img_url %>" /></div>
+          <section class="messages" id="messages-container">
+            <!-- MESSAGE GOES HERE -->
+          </section>
+        </div>
+        <hr>
+      </div>
+    </main>
   </div>
   <!-- Start of Footer -->
   <footer class="footer">
@@ -71,4 +109,5 @@
   <!-- End of Footer -->
 </body>
 <!-- End of body -->
+
 </html>
