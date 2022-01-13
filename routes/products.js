@@ -14,41 +14,22 @@ module.exports = (db) => {
 
   // VIEW ALL PRODUCTS
   router.get("/", (req, res) => {
-    db.query(`
-    SELECT *
-    FROM products
-    WHERE sold = false
-    LIMIT 4;`)
-      .then(data => {
-        console.log(data.rows);
-        const templateVars = {
-          products: data.rows
-        }
-        res.render('products', templateVars);
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
-  });
-
-  // VIEW PRODUCTS FILTERED BY PRICE
-  router.post("/", (req, res) => {
+    console.log(req.query);
+   
     let queryString = `
     SELECT *
     FROM products
     WHERE sold = false
     `;
     let queryParams = [];
-  
-    if (req.body.minimum_price) {
-      queryParams.push(req.body.minimum_price * 100);
+    
+    if (req.query.minimum_price) {                             
+      queryParams.push(req.query.minimum_price);
       queryString += `\nAND price >= $${queryParams.length}`;
       
-      if (req.body.maximum_price) {
-        queryParams.push(req.body.maximum_price * 100);
-        queryString += `\nAND price <= $${queryParams.length}\n LIMIT 8;`;
+      if (req.query.maximum_price) {                                // IF MIN PRICE & MAX PRICE
+        queryParams.push(req.query.maximum_price);
+        queryString += `\nAND price <= $${queryParams.length}\nLIMIT 8;`;
   
         return db.query(queryString, queryParams)
         .then(data => {
@@ -59,48 +40,69 @@ module.exports = (db) => {
         })
         .catch(err => {
           console.log(err);
-        });    
+        });
       }
-  
-      queryString += `\nLIMIT 8;`;
+
+      queryString += `\nLIMIT 8;`;                                // ONLY MIN PRICE
+      console.log('qstring', queryString);
+      console.log('qparams', queryParams);
       return db.query(queryString, queryParams)
       .then(data => {
-      const templateVars = {
-        products: data.rows
+        const templateVars = {
+          products: data.rows
         }
         res.render('products', templateVars);
       })
       .catch(err => {
         console.log(err);
       });
-    } else if (req.body.maximum_price) {
-      queryParams.push(req.body.maximum_price * 100);
+    } else if (req.query.maximum_price) {                             // ONLY MAX PRICE
+      queryParams.push(req.query.maximum_price);
       queryString += `\nAND price <= $${queryParams.length}\nLIMIT 8;`;
-  
+
       return db.query(queryString, queryParams)
       .then(data => {
-      const templateVars = {
-        products: data.rows
+        const templateVars = {
+          products: data.rows
         }
-      res.render('products', templateVars);
+        res.render('products', templateVars);
       })
       .catch(err => {
         console.log(err);
-      });    
-    };
-  
-    queryString += `\nLIMIT 8;`;
-    return db.query(queryString)
-    .then(data => {
-      const templateVars = {
-      products: data.rows
-      }
+      });
+    } else {                                                     // NO PRICE FILTERS
+      return db.query(queryString, queryParams)
+      .then(data => {
+        const templateVars = {
+          products: data.rows
+        }
+        res.render('products', templateVars);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
 
-      res.render('products', templateVars);
-    })
-    .catch(err => {
-      console.log(err);
-    });
+    
+  });
+
+  // VIEW PRODUCTS FILTERED BY PRICE
+  router.post("/", (req, res) => { 
+    if (req.body.minimum_price) {
+
+      let minPrice = parseInt(req.body.minimum_price * 100);
+      
+      if (req.body.maximum_price) {
+        let maxPrice = parseInt(req.body.maximum_price * 100);
+        res.redirect(`/products?minimum_price=${minPrice}&maximum_price=${maxPrice}`);
+      }
+  
+      res.redirect(`/products?minimum_price=${minPrice}`);
+    
+    } else if (req.body.maximum_price) {
+      let maxPrice = parseInt(req.body.maximum_price * 100);
+      res.redirect(`/products?maximum_price=${maxPrice}`);
+    };
   });
 
   // VIEW SINGLE PRODUCT
@@ -145,10 +147,12 @@ module.exports = (db) => {
     FROM products
     JOIN wishlists ON wishlists.product_id = products.id
     JOIN users ON wishlists.user_id = users.id
-    WHERE users.id = $1;`, [req.params.user_id])
+    WHERE users.id = $1;`, [1])                    // HARD CODED USER ID
       .then(data => {
-        const products = data.rows;
-        res.json({ products });
+        const templateVars = {
+          products: data.rows
+        }
+        res.render("products", templateVars)
       })
       .catch(err => {
         res
@@ -157,16 +161,17 @@ module.exports = (db) => {
       });
   });
 
-  // [] post /products/whishlist/:user_id/add // add a product to wishlist
+  
   // ADD PRODUCT TO WISHLIST
-  router.post("/products/wishlist/:user_id/add", (req, res) => {
-    const inputVars = [req.params.user_id, req.params.product_id]
-    db.query(`
+  router.post("/whishlist/:product_id/add", (req, res) => {
+    const inputVars = [req.params.product_id] // will add req.session.user_id
+
+    console.log('req.params -->', req.params);
+    return db.query(`
     INSERT INTO wishlists (user_id, product_id)
-    VALUES ($1, $2)`, inputVars)
+    VALUES (1, $1)`, inputVars)               // HARD CODED USER ID
       .then(data => {
-        const products = data.rows;
-        res.json({ products });
+        res.redirect(`/products/wishlist/1` ) 
       })
       .catch(err => {
         res
@@ -278,79 +283,6 @@ module.exports = (db) => {
       });
   });
 
-  // FILTERED PRODUCTS
-  router.post("/", (req, res) => {
-    let queryString = `
-    SELECT *
-    FROM products
-    WHERE sold = false
-    `;
-    let queryParams = [];
   
-    if (req.body.minimum_price) {
-      queryParams.push(req.body.minimum_price * 100);
-      queryString += `\nAND price >= $${queryParams.length}`;
-      
-      if (req.body.maximum_price) {
-        queryParams.push(req.body.maximum_price * 100);
-        queryString += `\nAND price <= $${queryParams.length}\n LIMIT 8;`;
-  
-        return db.query(queryString, queryParams)
-        .then(data => {
-        const templateVars = {
-          products: data.rows
-        }
-        res.render('products', templateVars);
-        })
-        .catch(err => {
-          // res.render('/r);
-          alert(err);
-        });    
-      }
-  
-      queryString += `\nLIMIT 8;`;
-      return db.query(queryString, queryParams)
-      .then(data => {
-      const templateVars = {
-        products: data.rows
-        }
-        res.render('products', templateVars);
-      })
-      .catch(err => {
-        // res.render('/r);
-        alert(err);
-      });
-    } else if (req.body.maximum_price) {
-      queryParams.push(req.body.maximum_price * 100);
-      queryString += `\nAND price <= $${queryParams.length}\nLIMIT 8;`;
-  
-      return db.query(queryString, queryParams)
-      .then(data => {
-      const templateVars = {
-        products: data.rows
-        }
-      res.render('products', templateVars);
-      })
-      .catch(err => {
-        // res.render('/r);
-        alert(err);
-      });    
-    };
-  
-    queryString += `\nLIMIT 8;`;
-    return db.query(queryString)
-    .then(data => {
-      const templateVars = {
-      products: data.rows
-      }
-
-      res.render('products', templateVars);
-    })
-    .catch(err => {
-      // res.render('/r);
-      console.log(err);
-    });
-  });
-
   return router;
 };
