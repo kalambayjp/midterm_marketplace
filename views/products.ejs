@@ -26,8 +26,10 @@
 <body>
   <!-- Start of Header -->
   <header>
+
     <%- include('./partials/_navbar') %>
       <div class="tagline"><text>BUY, SELL, WIN.</text></div>
+
   </header>
   <div class="filter-by-price">
     <form method="post" action="/products">
@@ -59,7 +61,10 @@
                 <span class="product-buttons">
                   <a href="/products/product/<%= product.id %>"><button class="view-details">View product
                       details</button></a>
-                  <button class="add-to-wishlist">Add to wishlist</button>
+                  <form method="post" action="products/whishlist/<%= product.id %>/add">
+                    <button class="add-to-wishlist">Add to wishlist</button>
+                  </form>
+
                   <button class="contact seller">Contact seller</button>
                 </span>
               </span>
@@ -71,7 +76,7 @@
   </div>
   <!-- Start of Footer -->
   <footer class="footer">
-    <%- include('./partials/_footer'); %>
+    <!-- <%- include('./partials/_footer'); %> -->
   </footer>
   <!-- End of Footer -->
 </body>
