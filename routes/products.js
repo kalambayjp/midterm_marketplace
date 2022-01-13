@@ -37,6 +37,8 @@ module.exports = (db) => {
         return db.query(queryString, queryParams)
         .then(data => {
         const templateVars = {
+          user_id: req.session.userId,
+          userName: req.session.userName,
           products: data.rows
         }
         res.render('products', templateVars);
@@ -45,7 +47,6 @@ module.exports = (db) => {
           console.log(err);
         });
       }
-
 
       queryString += `\nLIMIT 8;`;                                // ONLY MIN PRICE
 
@@ -183,13 +184,14 @@ module.exports = (db) => {
       .then(data => {
         
         // res.redirect('/');
-        res.redirect(`/products/wishlist/${req.session.userId}`) 
+        // res.redirect(`/products/wishlist/${req.session.userId}`) 
       })
       .catch(err => {
         res
           .status(500)
           .json({ error: err.message });
       });
+    
   });
 
   
