@@ -1,11 +1,21 @@
 const getCategoryID = (category) => {
-  category = req.body.category;
   switch (category) {
-    case 'cellphones':
+    case 'Cellphones':
       return 1;
-    break;
-    default:
+    case 'Laptops':
       return 2;
+    case 'Desktops':
+      return 3;
+    case 'Tablets':
+      return 4;
+    case 'TVs':
+      return 1;
+    case 'Cameras':
+      return 1;
+    case 'Components':
+      return 1;
+    default:
+      return 8;
   }
 }
 

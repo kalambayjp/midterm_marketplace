@@ -8,20 +8,22 @@
 const express = require('express');
 const { on } = require('nodemon');
 const router  = express.Router();
-const { getCategoryID } = require('../public/scripts/selectCategory')
 
 module.exports = (db) => {
 
   // VIEW ALL PRODUCTS
   router.get("/", (req, res) => {
-    console.log(req.query);
+
+    
    
+
     let queryString = `
     SELECT *
     FROM products
     WHERE sold = false
     `;
     let queryParams = [];
+
     
     if (req.query.minimum_price) {                             
       queryParams.push(req.query.minimum_price);
@@ -31,6 +33,7 @@ module.exports = (db) => {
         queryParams.push(req.query.maximum_price);
         queryString += `\nAND price <= $${queryParams.length}\nLIMIT 8;`;
   
+
         return db.query(queryString, queryParams)
         .then(data => {
         const templateVars = {
@@ -43,12 +46,14 @@ module.exports = (db) => {
         });
       }
 
+
       queryString += `\nLIMIT 8;`;                                // ONLY MIN PRICE
-      console.log('qstring', queryString);
-      console.log('qparams', queryParams);
+
       return db.query(queryString, queryParams)
       .then(data => {
         const templateVars = {
+          user_id: req.session.userId,
+          userName: req.session.userName,
           products: data.rows
         }
         res.render('products', templateVars);
@@ -63,6 +68,8 @@ module.exports = (db) => {
       return db.query(queryString, queryParams)
       .then(data => {
         const templateVars = {
+          user_id: req.session.userId,
+          userName: req.session.userName,
           products: data.rows
         }
         res.render('products', templateVars);
@@ -70,10 +77,13 @@ module.exports = (db) => {
       .catch(err => {
         console.log(err);
       });
+
     } else {                                                     // NO PRICE FILTERS
       return db.query(queryString, queryParams)
       .then(data => {
         const templateVars = {
+          user_id: req.session.userId,
+          userName: req.session.userName,
           products: data.rows
         }
         res.render('products', templateVars);
@@ -82,7 +92,6 @@ module.exports = (db) => {
         console.log(err);
       });
     }
-
     
   });
 
@@ -125,7 +134,7 @@ module.exports = (db) => {
   // VIEW ALL PRODUCTS OF A SINGLE USER
   router.get("/user/:user_id", (req, res) => {
     db.query(`
-    SELECT products.id, products.title, products.category_id, products.listed_on
+    SELECT products.*, users.id
     FROM products
     JOIN users ON products.owner_id = users.id
     WHERE users.id = $1;`, [req.params.user_id])
@@ -147,9 +156,11 @@ module.exports = (db) => {
     FROM products
     JOIN wishlists ON wishlists.product_id = products.id
     JOIN users ON wishlists.user_id = users.id
-    WHERE users.id = $1;`, [1])                    // HARD CODED USER ID
+    WHERE users.id = $1;`, [req.session.userId])                    // HARD CODED USER ID
       .then(data => {
         const templateVars = {
+          user_id: req.session.userId,
+          userName: req.session.userName,
           products: data.rows
         }
         res.render("products", templateVars)
@@ -164,14 +175,14 @@ module.exports = (db) => {
   
   // ADD PRODUCT TO WISHLIST
   router.post("/whishlist/:product_id/add", (req, res) => {
-    const inputVars = [req.params.product_id] // will add req.session.user_id
+    const inputVars = [req.session.userId, req.params.product_id]
 
     console.log('req.params -->', req.params);
     return db.query(`
     INSERT INTO wishlists (user_id, product_id)
-    VALUES (1, $1)`, inputVars)               // HARD CODED USER ID
+    VALUES ($1, $2)`, inputVars)              
       .then(data => {
-        res.redirect(`/products/wishlist/1` ) 
+        res.redirect(`/products/wishlist/${req.session.userId}` ) 
       })
       .catch(err => {
         res
@@ -201,25 +212,48 @@ module.exports = (db) => {
   // POST NEW PRODUCT FOR SALE
   // GET new product form
   router.get("/new", (req, res) => {
-    const templateVars = {
-      user_id: 1,
-      userName: 'Adam'
-    }
-    res.render("new_listing", templateVars);
+      const templateVars = {
+        user_id: req.session.userId,
+        userName: req.session.userName
+      }
+      res.render("new_listing", templateVars);
   });
 
-  // [] post /products/new //listing new product
+  // [] post /products/new //LISTING NEW PRODUCTS
   router.post("/new", (req, res) => {
 
-    const getTime = new Date(Date.now());
+    const getCategoryID = (category) => {
 
-    const inputVars = [ req.body.title, getCategoryID(req.body.category), req.body.description, req.body.img_url, req.body.price, req.body.featured, /*req.params.user_id*/1, getTime];
+      switch (category) {
+        case 'Cellphones':
+          return 1;
+        case 'Laptops':
+          return 2;
+        case 'Desktops':
+          return 3;
+        case 'Tablets':
+          return 4;
+        case 'TVs':
+          return 5;
+        case 'Cameras':
+          return 6;
+        case 'Components':
+          return 7;
+        default:
+          return 8;
+      };
+    };
+
+    const getTime = new Date(Date.now());
+    const category_id = getCategoryID(req.body.category);
+
+    const inputVars = [ req.body.title, category_id, req.body.description, req.body.img_url, (req.body.price * 100), req.body.featured, req.session.userId, getTime];
     db.query(`
     INSERT INTO products (title, category_id, description, img_url, price, featured, owner_id, listed_on)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     RETURNING *;`, inputVars)
       .then(data => {
-        res.redirect('../products/user/1'); // HARDCODED USER ID !!!!
+        res.redirect(`../products/user/${req.session.userId}`);
       })
       .catch(err => {
         res
@@ -283,6 +317,6 @@ module.exports = (db) => {
       });
   });
 
-  
+
   return router;
 };

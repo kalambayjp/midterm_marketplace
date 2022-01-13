@@ -27,6 +27,12 @@ hr {
   flex-direction: column;
   align-items: flex-end;
 }
+button {
+  background-color: $primary-color;
+  color: #fff;
+  border: none;
+  margin: 0.15em 0.15em;
+}
 /*** START OF NAVBAR CSS ******/
 
 .custom {
@@ -113,6 +119,25 @@ hr {
     width: 15vw;
   }
 }
+//Header
+.tagline {
+  margin-top: 7em;
+  text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 48px;
+    font-weight: 400;
+    color: $primary-color;
+  }
+}
+
+
+//Price filter form
+.filter-by-price {
+  width: 90%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2em;
+}
 
 /**** FEATURED PRODUCTS CSS ****/
 
@@ -122,8 +147,7 @@ hr {
   justify-content: flex-start;
   align-items: flex-start;
   width: 90vw;
-
-  margin-top: 10em;
+  margin-top: 2em;
 }
 .featured-section .categories-title {
   padding: 0.25em;
@@ -375,7 +399,7 @@ hr {
 /**** CREATE NEW LISTING ****/
 .container-create-new {
   width: 60vw;
-  margin-top: 3em;
+  margin: 5em 0;
   padding: 1em;
   background-color: rgb(226, 226, 226);
   border-radius: 0.5em;

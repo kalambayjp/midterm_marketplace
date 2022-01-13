@@ -1,7 +1,7 @@
 <nav class="navbar fixed-top custom">
   <div class="container-fluid">
     <div class="navbar-brand" id="navbarNav">
-      <a class="navbar-logo" href="/">
+      <a class="navbar-logo" href="/products">
         <!-- <img src="./assets/logo@1x.png" alt="TECHMARKET" /> -->
         <h1 class="site-name">TECHMARKET</h1>
       </a>
@@ -15,7 +15,7 @@
               <a class="nav-link" aria-current="page" href="/products">Shop</a>
             </li>
             <li class="nav-item">
-              <a id="myListings" class="nav-link" href="/user/<%= user_id %>">My listings</a>
+              <a id="myListings" class="nav-link" href="/users/user/<%= user_id %>">My listings</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/products/new">New listing</a>
@@ -29,7 +29,7 @@
           </ul>
           <form class="d-flex" method="GET" action="/search">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">></button>
+            <button type="submit">></button>
           </form>
         </div>
       </section>
@@ -50,14 +50,15 @@
               </div>
             </form>
           </li>
+          <br>
           <li class="nav-item">
             <a class="nav-link" href="/users/new">Signup</a>
           </li>
         </ul>
-        <form class="d-flex" method="GET" action="/search">
+        <!-- <form class="d-flex" method="GET" action="/search">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success" type="submit">></button>
-        </form>
+        </form> -->
         <% }; %>
   </div>
   </div>
