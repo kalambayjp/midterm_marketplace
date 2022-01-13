@@ -16,17 +16,18 @@ const replaceAddToWishlist = function(e) {
   const product_id = $productId.slice(4)
   
   
-  
+  if ($(".login-as")) {
     $.post(`/products/wishlist/${product_id}/add`);
     console.log("Clicked!");
     
     const $removeWishlistForm = $(`<form class="remove-wishlist-form" method="post" action="products/wishlist/<%= product.id %>/delete"><button class="remove-from-wishlist">Remove from wishlist</button></form>`);
 
-    
     $(`#${$productId}`).children('form:first').remove()
     $(`#${$productId}`).append($removeWishlistForm)
- 
-    
+  } else {
+    console.log('please login/register')
+  }
+
 };
 
 const renderWishList = function(e) {
