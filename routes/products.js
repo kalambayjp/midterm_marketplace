@@ -156,7 +156,7 @@ module.exports = (db) => {
     FROM products
     JOIN wishlists ON wishlists.product_id = products.id
     JOIN users ON wishlists.user_id = users.id
-    WHERE users.id = $1;`, [req.session.userId])                    // HARD CODED USER ID
+    WHERE users.id = $1;`, [req.session.userId])                    
       .then(data => {
         const templateVars = {
           user_id: req.session.userId,
@@ -171,18 +171,19 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
-
   
   // ADD PRODUCT TO WISHLIST
-  router.post("/whishlist/:product_id/add", (req, res) => {
-    const inputVars = [req.session.userId, req.params.product_id]
-
-    console.log('req.params -->', req.params);
+  router.post("/wishlist/:product_id/add", (req, res) => {
+    const inputVars = [req.session.userId, req.params.product_id];
+    
+    
     return db.query(`
     INSERT INTO wishlists (user_id, product_id)
     VALUES ($1, $2)`, inputVars)              
       .then(data => {
-        res.redirect(`/products/wishlist/${req.session.userId}` ) 
+        
+        // res.redirect('/');
+        res.redirect(`/products/wishlist/${req.session.userId}`) 
       })
       .catch(err => {
         res
@@ -191,10 +192,11 @@ module.exports = (db) => {
       });
   });
 
-  // [] delete /products/whishlist/:user_id/delete // delete a product from wishlist
+  
   // DELETE PRODUCT FROM WISHLIST
-  router.post("/products/wishlist/:user_id/delete", (req, res) => {
+  router.post("/products/wishlist/:product_id/delete", (req, res) => {
     const inputVars = [req.params.user_id, req.params.product_id]
+    console.log('inputVars -->',inputVars);
     db.query(`
     DELETE FROM wishlists
     WHERE user_id = $1 AND product_id = $2`, inputVars)
