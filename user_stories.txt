@@ -2,13 +2,13 @@ User stories:
 
 [x] users can see featured items on a main feed
 [x] users can filter items by price,
-[..] users can favourite items to check up on them later
+[x] users can favourite items to check up on them later
         => Toggle feature and linking to backend
 [..] users can send messages to the user that is listing the item
         => integrating the interface with single product page, timestamp
 Admins can:
 
-[..] post items, which can be seen by others
+[x] post items, which can be seen by others
         => dashboard for admin
 [..] remove items from the site
 [..] mark items as SOLD!,
@@ -120,6 +120,27 @@ scenarios:
   single conversations
     - display single conversation history
     - display corresponding product
+
+
+
+incomplete tasks:
+  jp: 
+    add to wishlist button
+    extract userId from cookie in jquery file
+    fix remove from wishlist action
+    mark product as sold
+    my wishlist link is not accessible from products page
+
+  ratul:
+    extract data from form in post request in jquery
+    change all products query to account for featued products
+    add a all products heading
+  
+  vlad:
+    add admin coloum
+    edit product and delete product 
+    alter queries on route to add admin account
+
 
 
 
