@@ -24,7 +24,7 @@
               <a id="wishlist" class="nav-link" href="/products/wishlist/<%= user_id %>">My wishlist</a>
             </li>
             <li class="nav-item">
-              <a id="logout" class="nav-link" href="/logout">Logout</a>
+              <a id="logout" class="nav-link" href="/users/logout">Logout</a>
             </li>
           </ul>
           <form class="d-flex" method="GET" action="/search">
@@ -40,7 +40,7 @@
           </li>
           <li class="nav-item">
             <!-- <a class="nav-link" href="/login">Login</a> -->
-            <form id="login-form" class="form-inline" action="/login" method="POST">
+            <form id="login-form" class="form-inline" action="/users/login" method="POST">
               <div class="form-group mb-2">
                 <label for="email">Enter e-mail:</label>
                 <input class="form-control" type="email" name="email" style="width: 300px; margin: 1em">
