@@ -4,24 +4,33 @@ $(() => {
   console.log('Ready');
   $("#wishlist").on("click", renderWishList);
   $("#myListings").on("click", renderMyProducts);
-  $("#message-seller").on("click", renderMessages);
-  // $("#message-form").submit((e) => {
-  //   e.preventDefault();
-  //   const serializedText = $("#message-form").serialize();
 
-
-  //   $.post('/products/product/3', (data) => {
-  //     console.log(serializedText);
-  //     console.log(data);
-  //     console.log(this);
-  //     bringMessages();
-  //   });
-  // });
-
+  $(".add-wishlist-form").on("click", replaceAddToWishlist) 
 
 });
 
-const renderWishList = function (e) {
+const replaceAddToWishlist = function(e) {
+  e.preventDefault();
+  const $productId = $(this).closest('span').attr('id')
+  const product_id = $productId.slice(4)
+  
+  
+  if ($(".login-as")) {
+    $.post(`/products/wishlist/${product_id}/add`);
+    console.log("Clicked!");
+    
+    const $removeWishlistForm = $(`<form class="remove-wishlist-form" method="post" action="products/wishlist/<%= product.id %>/delete"><button class="remove-from-wishlist">Remove from wishlist</button></form>`);
+
+    $(`#${$productId}`).children('form:first').remove()
+    $(`#${$productId}`).append($removeWishlistForm)
+  } else {
+    console.log('please login/register')
+  }
+
+};
+
+const renderWishList = function(e) {
+
   e.preventDefault();
   console.log("Clicked!");
 

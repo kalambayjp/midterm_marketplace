@@ -63,7 +63,7 @@ module.exports = (db) => {
         req.session.userId = user.id;
         req.session.userName = user.name;
 
-        res.redirect('/');
+        res.redirect('/products');
 
       })
       .catch(err => {
@@ -79,9 +79,9 @@ module.exports = (db) => {
 
 
   // Logout
-  router.post("/logout", (req, res) => {
+  router.get("/logout", (req, res) => {
     req.session = null;
-    res.redirect('/');
+    res.redirect('/products');
   });
 
 
@@ -92,8 +92,6 @@ module.exports = (db) => {
   router.get("/new", (req, res) => {
     res.render("user_reg");
   });
-
-
 
 
   router.post("/new", (req, res) => {
@@ -119,6 +117,14 @@ module.exports = (db) => {
       });
   });
 
+  /*
+  // ADMIN
+  */
+
+  router.get("/admin", (req, res) => {
+
+    res.render("admin");
+  });
 
 
   return router;

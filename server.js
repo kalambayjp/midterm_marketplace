@@ -68,7 +68,7 @@ app.get("/", (req, res) => {
     SELECT *
     FROM products
     WHERE sold = false
-    LIMIT 4;`)
+    ;`)
       .then(data => {
         // console.log(data.rows);
         const templateVars = {
@@ -77,7 +77,7 @@ app.get("/", (req, res) => {
           userName: userName
         }
         // const products = data.rows;
-        res.render("index", templateVars);
+        res.render("products", templateVars);
       })
       .catch(err => {
         res

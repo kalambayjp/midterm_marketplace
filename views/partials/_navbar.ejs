@@ -22,10 +22,10 @@
               <a class="nav-link" href="/products/new">New listing</a>
             </li>
             <li class="nav-item">
-              <a id="wishlist" class="nav-link" href="/wishlist/<%= user_id %>">My wishlist</a>
+              <a id="wishlist" class="nav-link" href="/products/wishlist/<%= user_id %>">My wishlist</a>
             </li>
             <li class="nav-item">
-              <a id="logout" class="nav-link" href="/logout">Logout</a>
+              <a id="logout" class="nav-link" href="/users/logout">Logout</a>
             </li>
           </ul>
           <!-- <form class="d-flex" method="GET" action="/search">
@@ -35,9 +35,11 @@
         </div>
       </section>
       <% } else { %>
+
         <section class="logged-out-nav">
           <div class="login-div">
-            <form id="login-form" class="form-inline" action="/login" method="POST">
+            <form id="login-form" class="form-inline" action="/users/login" method="POST">
+
               <div class="form-group mb-2">
                 <input class="form-control" type="email" name="email" placeholder="Email">
                 <input class="form-control" type="password" name="password" placeholder="Password">
