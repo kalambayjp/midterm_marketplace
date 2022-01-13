@@ -14,8 +14,8 @@ module.exports = (db) => {
   // VIEW ALL PRODUCTS
   router.get("/", (req, res) => {
 
-    
-   
+
+
 
     let queryString = `
     SELECT *
@@ -24,15 +24,17 @@ module.exports = (db) => {
     `;
     let queryParams = [];
 
+
         
     if (req.query.minimum_price) {                             
+
       queryParams.push(req.query.minimum_price);
       queryString += `\nAND price >= $${queryParams.length}`;
-      
+
       if (req.query.maximum_price) {                                // IF MIN PRICE & MAX PRICE
         queryParams.push(req.query.maximum_price);
         queryString += `\nAND price <= $${queryParams.length}\nLIMIT 8;`;
-  
+
 
         return db.query(queryString, queryParams)
         .then(data => {
@@ -93,22 +95,22 @@ module.exports = (db) => {
         console.log(err);
       });
     }
-    
+
   });
 
   // VIEW PRODUCTS FILTERED BY PRICE
-  router.post("/", (req, res) => { 
+  router.post("/", (req, res) => {
     if (req.body.minimum_price) {
 
       let minPrice = parseInt(req.body.minimum_price * 100);
-      
+
       if (req.body.maximum_price) {
         let maxPrice = parseInt(req.body.maximum_price * 100);
         res.redirect(`/products?minimum_price=${minPrice}&maximum_price=${maxPrice}`);
       }
-  
+
       res.redirect(`/products?minimum_price=${minPrice}`);
-    
+
     } else if (req.body.maximum_price) {
       let maxPrice = parseInt(req.body.maximum_price * 100);
       res.redirect(`/products?maximum_price=${maxPrice}`);
@@ -118,12 +120,17 @@ module.exports = (db) => {
   // VIEW SINGLE PRODUCT
   router.get("/product/:id", (req, res) => {
     db.query(`
-    SELECT *
-    FROM products
+    SELECT products.*, users.* FROM products
+    JOIN users ON products.owner_id = users.id
     WHERE products.id = $1;`,[req.params.id])
       .then(data => {
-        const products = data.rows[0];
-        res.json({ products });
+        console.log(data.rows[0]);
+        const templateVars = {
+          user_id: req.session.userId,
+          userName: req.session.userName,
+          product: data.rows[0]
+        }
+        res.render("single_product", templateVars);
       })
       .catch(err => {
         res
@@ -172,7 +179,9 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
+
   
+
   // ADD PRODUCT TO WISHLIST
   router.post("/wishlist/:product_id/add", (req, res) => {
     const inputVars = [req.session.userId, req.params.product_id];
@@ -180,9 +189,8 @@ module.exports = (db) => {
     
     return db.query(`
     INSERT INTO wishlists (user_id, product_id)
-    VALUES ($1, $2)`, inputVars)              
-      .then(data => {
-        
+    VALUES ($1, $2)`, inputVars)
+      .then(data => {    
         // res.redirect('/');
         // res.redirect(`/products/wishlist/${req.session.userId}`) 
       })
