@@ -122,8 +122,12 @@ module.exports = (db) => {
   */
 
   router.get("/admin", (req, res) => {
+    const templateVars = {
+      user_id: req.session.userId,
+      userName: req.session.userName,
+    }
 
-    res.render("admin");
+    res.render("admin", templateVars);
   });
 
 

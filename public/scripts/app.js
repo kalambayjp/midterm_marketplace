@@ -2,10 +2,12 @@
 $(() => {
 
   console.log('Ready');
+  const $pageHeader = $('#page-header');
+
   $("#wishlist").on("click", renderWishList);
   $("#myListings").on("click", renderMyProducts);
-  $(".add-wishlist-form").on("click", replaceAddToWishlist) 
-  // $(".add-wishlist-form").on("click", replaceAddToWishlist) 
+  $(".add-wishlist-form").on("click", replaceAddToWishlist)
+  // $(".add-wishlist-form").on("click", replaceAddToWishlist)
 
 
 });
@@ -14,16 +16,16 @@ const replaceAddToWishlist = function(e) {
   e.preventDefault();
   const $productId = $(this).closest('span').attr('id')
   const product_id = $productId.slice(4)
-  
+
   $.post(`/products/wishlist/${product_id}/add`);
   console.log("Clicked!");
   console.log();
   const $removeWishlistForm = $(`<form class="remove-wishlist-form" method="post" action="products/wishlist/<%= product.id %>/delete"><button class="remove-from-wishlist">Remove from wishlist</button></form>`);
 
-  
+
   $(`#${$productId}`).children('form:first').remove()
   $(`#${$productId}`).append($removeWishlistForm)
-    
+
 };
 
 const renderWishList = function(e) {
