@@ -27,7 +27,7 @@
   <!-- Start of Header -->
   <header>
     <%- include('./partials/_navbar') %>
-    <div class="tagline"><text>BUY, SELL, WIN.</text></div>
+      <div class="tagline"><text>BUY, SELL, WIN.</text></div>
   </header>
   <div class="filter-by-price">
     <form method="post" action="/products">
@@ -46,7 +46,7 @@
           <% for (let product of products) { %>
             <td class="product-block">
               <span class="product-thumbnail">
-                <img src="<%= product.img_url %>" alt="<%= product.title %>" style="width: 200px; height: 200px"/>
+                <img src="<%= product.img_url %>" alt="<%= product.title %>" style="width: 200px; height: 200px" />
               </span>
               <span class="product-details">
                 <h3 class="product-title">
