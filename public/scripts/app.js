@@ -1,11 +1,14 @@
 // Client facing scripts here
 $(() => {
   $('#message-box').hide();
+  $(".message-box").hide();
   console.log('Ready');
   $("#wishlist").on("click", renderWishList);
   $("#myListings").on("click", renderMyProducts);
-
-  $(".add-wishlist-form").on("click", replaceAddToWishlist) 
+  // $('#message-seller').on('click', renderMessages);
+  $(".add-wishlist-form").on("click", replaceAddToWishlist);
+  $("#message-form").on("submit", sendMessage);
+  // $("#see-all-messages").on("click", showMessageList);
 
 });
 
@@ -13,12 +16,12 @@ const replaceAddToWishlist = function(e) {
   e.preventDefault();
   const $productId = $(this).closest('span').attr('id')
   const product_id = $productId.slice(4)
-  
-  
+
+
   if ($(".login-as")) {
     $.post(`/products/wishlist/${product_id}/add`);
     console.log("Clicked!");
-    
+
     const $removeWishlistForm = $(`<form class="remove-wishlist-form" method="post" action="products/wishlist/<%= product.id %>/delete"><button class="remove-from-wishlist">Remove from wishlist</button></form>`);
 
     $(`#${$productId}`).children('form:first').remove()
@@ -94,17 +97,17 @@ const renderList = function (products) {
 
 // RENDER MESSAGES IN SINGLE PRODUCT PAGE
 
-const renderMessages = (e) => {
-  e.preventDefault();
-  console.log("Clicked!");
-  console.log($(this));
-  $('#message-box').show();
-  $.get(`/messages/1/15`) //HARDCODED
-    .then(message => {
-      bringMessages(message.conversation);
-    })
-    .catch(err => err);
-};
+// const renderMessages = (e) => {
+//   e.preventDefault();
+//   console.log("Clicked!");
+//   console.log($(this));
+//   $('#message-box').show();
+//   $.get(`/messages/1/15`) //HARDCODED
+//     .then(message => {
+//       bringMessages(message.conversation);
+//     })
+//     .catch(err => err);
+// };
 
 const bringMessages = function (conversation) {
   const $container = $("#messages-container");
@@ -118,4 +121,25 @@ const bringMessages = function (conversation) {
   }
 };
 
+const sendMessage = (e) => {
+  e.preventDefault();
+  console.log('Hello message');
+  // console.log(data.body)
+  const message = "$(this).serialized()";
+  $.post(`/messages/1/2`, message) //HARDCODED
+  // .then((data) => {
+  //   console.log(data);
+  // })
 
+}
+
+// const showMessageList = (e) => {
+//   e.preventDefault();
+//   console.log('Clicked');
+//   $.get(`/messages/7/1/15`)
+//   .then(data => {
+//     console.log(data);
+//     const $listContainer = $(".message-box");
+//     $listContainer.toggle();
+//   })
+// }

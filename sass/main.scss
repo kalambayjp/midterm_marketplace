@@ -43,7 +43,6 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   flex-wrap: nowrap !important;
   width: 100vw;
   padding: 0 6em;
@@ -97,7 +96,7 @@ button {
 .nav-item {
   font-size: 18px;
   font-weight: 700;
-  margin: 0 2em;
+  margin-left: 2em;
   list-style-type: none;
 }
 

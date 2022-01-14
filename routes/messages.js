@@ -1,6 +1,7 @@
 const express = require('express');
+const { networkInterfaces } = require('os');
 const users = require('./users');
-const router  = express.Router();
+const router = express.Router();
 
 module.exports = (db) => {
 
@@ -18,29 +19,31 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/:user_id/:product_id", (req, res) => {
-    db.query(`SELECT products.id, sender_id, receiver_id, users.name, products.img_url, message
+  router.get("/:user_id/:receiver_id/:product_id", (req, res) => {
+
+    db.query(`SELECT messages.*, users.name, users.id as sender_id, products.img_url, products.title, products.id as product_id
     FROM messages
-    JOIN users ON messages.sender_id = users.id
+    JOIN users ON sender_id = users.id
     JOIN products ON messages.product_id = products.id
-    WHERE (sender_id = $1 OR receiver_id = $1) AND products.id = $2
     ORDER BY time DESC
-    ;`,[req.params.user_id, req.params.product_id])
+    ;`)
       .then(data => {
+
         if (data.rows[0].sender_id === req.params.user_id) {
           receiver = data.rows[0].receiver_id;
-        } else
-        {
+        } else {
           receiver = data.rows[0].sender_id;
         }
+
+        console.log('inputs >> ', [req.session.userId, req.params.receiver_id, req.params.product_id])
+
         const templateVars = {
           conversation: data.rows,
-          user_id: req.params.user_id,
-          userName:  data.rows[req.params.user_id].name,
-          product_id: data.rows[0].id
+          user_id: req.session.userId,
+          userName: data.rows[0].name,
+          product_id: data.rows[0].id,
+          receiver_id: data.rows[0].receiver_id
         }
-        console.log(templateVars);
-        // res.json({ conversation });
         res.render("conversation", templateVars);
 
       })
@@ -51,20 +54,22 @@ module.exports = (db) => {
       });
   });
 
-  router.post("/product/:product_id", (req, res) => {
+  router.post("/:user_id/:receiver_id/:product_id", (req, res) => {
     const message = req.body.message;
-    const receiver_id = receiver;
-    // const messageValues = [req.params.user_id, receiver_id, req.params.product_id, message];
-    const messageValues = [1, 7, 15, 'test'];
+    const messageTime = new Date(Date.now());
+    // const receiver_id = data.rows[0].receiver_id;
+    const messageValues = [req.session.userId, req.params.receiver_id, req.params.product_id, message, messageTime];
+
     console.log('POST a message:');
     console.log(messageValues);
+    console.log('req: ', req);
 
-    db.query(`INSERT INTO messages (sender_id, receiver_id, product_id, message)
-    VALUES ($1, $2, $3, $4)
+    db.query(`INSERT INTO messages (sender_id, receiver_id, product_id, message, time)
+    VALUES ($1, $2, $3, $4, $5)
     RETURNING *;
     `, messageValues)
       .then(data => {
-        res.redirect(`../${req.params.user_id}/${req.params.product_id}`);
+        res.redirect(`../1/${req.params.product_id}`);
       })
       .catch(err => {
         res
@@ -105,3 +110,5 @@ module.exports = (db) => {
 //     JOIN products ON messages.product_id = products.id
 //     WHERE messages.product_id = 3 AND (sender_id = 1 OR receiver_id = 1)
 //     ORDER BY time DESC;
+
+
