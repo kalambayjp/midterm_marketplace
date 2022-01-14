@@ -1,2 +1,2 @@
-INSERT INTO wishlists (user_id, product_id)
+INSERT INTO wishlist_items (user_id, product_id)
 VALUES ($1, $2);
