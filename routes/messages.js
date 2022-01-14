@@ -29,20 +29,22 @@ module.exports = (db) => {
     ;`)
       .then(data => {
 
-        if (data.rows[0].sender_id === req.params.user_id) {
-          receiver = data.rows[0].receiver_id;
+        if (!data.rows[0].receiver_id) {
+          receiver_id = data.rows[0].owner_id;
+        } else if (data.rows[0].sender_id === req.params.user_id) {
+          receiver_id = data.rows[0].receiver_id;
         } else {
-          receiver = data.rows[0].sender_id;
+          receiver_id = data.rows[0].sender_id;
         }
 
-        console.log('inputs >> ', [req.session.userId, req.params.receiver_id, req.params.product_id])
+        console.log('inputs >> ', [req.session.userId, receiver_id, req.params.product_id])
 
         const templateVars = {
           conversation: data.rows,
           user_id: req.session.userId,
           userName: data.rows[0].name,
           product_id: data.rows[0].id,
-          receiver_id: data.rows[0].receiver_id
+          receiver_id: receiver_id
         }
         res.render("conversation", templateVars);
 

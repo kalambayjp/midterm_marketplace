@@ -29,22 +29,23 @@
         </form>
       </section>
       <div class="image-conversation">
-      <div class="img-title">
-      <div class="product-image"><img src="<%= conversation[0].img_url %>" /></div>
-      <h3>
-        <%= conversation[0].title %>
-      </h3>
-    </div>
-    <section class="messages" id="messages-container">
-      <% for(let mess in conversation) { %>
-        <li class="sender">
-          <%= conversation[mess].message %>
-        </li>
-        <p>Sent by <%= conversation[mess].name %> @ <%= conversation[mess].time %> </p>
-        <% } %>
-    </section>
-    </div>
-    <hr>
+        <div class="img-title">
+          <div class="product-image"><img src="<%= conversation[0].img_url %>" /></div>
+          <h3>
+            <%= conversation[0].title %>
+          </h3>
+        </div>
+        <section class="messages" id="messages-container">
+          <% for(let mess in conversation) { %>
+                <li class="sender">
+                  <%= conversation[mess].message %>
+                </li>
+                <p>Sent by <%= conversation[mess].name %> @ <%= conversation[mess].time %>
+                </p>
+              <% } %>
+        </section>
+      </div>
+      <hr>
     </div>
   </main>
   <footer class="footer">
