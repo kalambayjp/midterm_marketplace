@@ -191,9 +191,9 @@ module.exports = (db) => {
           const templateVars = {
           user_id: req.session.userId,
           userName: req.session.userName,
-
           products: allproducts
           }
+          console.log(templateVars)
           res.render('products', templateVars);
         })
       })

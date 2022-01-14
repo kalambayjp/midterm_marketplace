@@ -36,7 +36,6 @@
       <button type="submit" value="Filter">Filter</button>
     </form>
   </div>
-  <%- include('./partials/_featured') %>
   <div class="featured-section">
     <a href="/products">
       <h3 class="categories-title">All Listings</h3>
@@ -47,7 +46,7 @@
           <% for (let product of products) { %>
             <td class="product-block" >
               <span class="product-thumbnail">
-                <a href="/products/product/<%= product.id %>"><img src="<%= product.img_url %>" alt="<%= product.title %>" style="width: 200px; height: 200px" /></a>
+                <img src="<%= product.img_url %>" alt="<%= product.title %>" style="width: 200px; height: 200px" />
               </span>
               <span class="product-details">
                 <h3 class="product-title">
@@ -66,7 +65,7 @@
                   <a href="/products/product/<%= product.id %>"><button class="view-details">View product
                       details</button></a>
                   <% if (product.wishlist === true) { %>
-                    <form class="remove-wishlist-form" >
+                    <form class="remove-wishlist-form" method="POST" action="/products/wishlist/<%= product.id %>/delete">
                       <button class="remove-from-wishlist">Remove from wishlist</button>
                     </form>
                   <% } else if (product.owner_id === user_id) { %>
