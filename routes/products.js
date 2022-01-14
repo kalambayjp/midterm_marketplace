@@ -25,8 +25,8 @@ module.exports = (db) => {
     let queryParams = [];
 
 
-        
-    if (req.query.minimum_price) {                             
+
+    if (req.query.minimum_price) {
 
       queryParams.push(req.query.minimum_price);
       queryString += `\nAND price >= $${queryParams.length}`;
@@ -120,16 +120,19 @@ module.exports = (db) => {
   // VIEW SINGLE PRODUCT
   router.get("/product/:id", (req, res) => {
     db.query(`
-    SELECT products.*, users.* FROM products
+    SELECT products.id as product_id, products.title, products.description, products.img_url, products.price, products.owner_id, users.*, messages.* FROM products
     JOIN users ON products.owner_id = users.id
-    WHERE products.id = $1;`,[req.params.id])
+    JOIN messages ON messages.product_id = products.id
+    WHERE products.id = $1
+    ;`,[req.params.id])
       .then(data => {
-        console.log(data.rows[0]);
+        console.log(data.rows);
         const templateVars = {
           user_id: req.session.userId,
           userName: req.session.userName,
           product: data.rows[0]
         }
+
         res.render("single_product", templateVars);
       })
       .catch(err => {
@@ -164,7 +167,7 @@ module.exports = (db) => {
     FROM products
     JOIN wishlists ON wishlists.product_id = products.id
     JOIN users ON wishlists.user_id = users.id
-    WHERE users.id = $1;`, [req.session.userId])                    
+    WHERE users.id = $1;`, [req.session.userId])
       .then(data => {
         const templateVars = {
           user_id: req.session.userId,
@@ -180,29 +183,29 @@ module.exports = (db) => {
       });
   });
 
-  
+
 
   // ADD PRODUCT TO WISHLIST
   router.post("/wishlist/:product_id/add", (req, res) => {
     const inputVars = [req.session.userId, req.params.product_id];
-    
-    
+
+
     return db.query(`
     INSERT INTO wishlists (user_id, product_id)
     VALUES ($1, $2)`, inputVars)
-      .then(data => {    
+      .then(data => {
         // res.redirect('/');
-        // res.redirect(`/products/wishlist/${req.session.userId}`) 
+        // res.redirect(`/products/wishlist/${req.session.userId}`)
       })
       .catch(err => {
         res
           .status(500)
           .json({ error: err.message });
       });
-    
+
   });
 
-  
+
   // DELETE PRODUCT FROM WISHLIST
   router.post("/products/wishlist/:product_id/delete", (req, res) => {
     const inputVars = [req.params.user_id, req.params.product_id]
