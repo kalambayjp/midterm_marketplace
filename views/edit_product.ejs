@@ -18,18 +18,18 @@
     </header>
     <main class="container-create-new">
       <div class="new-listing-title">
-        <h3>Create a listing</h3>
+        <h3>Edit a listing by <%= userName %></h3>
       </div>
       <table class="new-product-form">
         <tbody>
-          <form class="form-inline" action="/products/new" method="POST">
+          <form class="form-inline" action="/products/product/<%= product.id %>/edit" method="POST">
             <tr class="input-field">
               <td><label for="title">Product Title *:</label></td>
-              <td><input class="form-control" type="text" name="title"></td>
+              <td><input class="form-control" type="text" name="title" value="<%= product.title %>"></td>
             </tr>
             <tr class="input-field">
               <td><label for="category">Category *:</label></td>
-              <td><select type="text" name="category" id="product-category">
+              <td><select type="text" name="category" id="product-category" >
                   <option value="" disabled selected hidden>Choose a category</option>
                   <option value="Cell Phones">Cell Phones</option>
                   <option value="Laptops">Laptops</option>
@@ -39,29 +39,46 @@
                   <option value="Cameras">Cameras</option>
                   <option value="Components">Components</option>
                   <option value="Others">Others</option>
+                  <option selected="selected">
+                    <%= product.category %>
+                  </option>
+
                 </select></td>
             </tr>
             <tr class="input-field">
               <td><label for="description">Description *:</label></td>
-              <td><textarea class="form-control" name="description"></textarea></td>
+              <td><textarea class="form-control" name="description" ><%= product.description %></textarea></td>
             </tr>
             <tr class="input-field">
               <td><label for="img_url">Image URL *:</label></td>
-              <td><input class="form-control" type="text" name="img_url"></td>
+              <td><input class="form-control" type="text" name="img_url" value="<%= product.img_url %>"></td>
             </tr>
             <tr class="input-field">
               <td><label for="price">Price *:</label></td>
-              <td><input class="form-control" type="number" name="price"></td>
+              <td><input class="form-control" type="number" name="price" value="<%= product.price/100 %>"></td>
             </tr>
             <tr class="input-field">
               <td><label for="featured">Featured:</label></td>
               <td><select name="featured" id="featured-boolean">
                   <option value="false">false</option>
                   <option value="true">true</option>
+                  <option selected="selected">
+                    <%= product.featured %>
+                  </option>
+                </select></td>
+            </tr>
+            <tr class="input-field">
+              <td><label for="sold">Sold:</label></td>
+              <td><select name="sold" id="sold-boolean">
+                  <option value="false">false</option>
+                  <option value="true">true</option>
+                  <option selected="selected">
+                    <%= product.sold %>
+                  </option>
                 </select></td>
             </tr>
             <tr class="single-row-item">
-              <td><button type="submit" class="btn btn-primary">Create Listing</button></td>
+              <td><button type="submit" class="btn btn-primary">Edit Listing</button></td>
             </tr>
           </form>
         </tbody>

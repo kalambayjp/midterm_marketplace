@@ -20,7 +20,7 @@
         <div id="alert">
           <!-- Error message goes here! -->
         </div>
-        <form method="POST" id="message-form">
+        <form method="POST" id="message-form" action="/messages/<%=user_id %>/<%=receiver_id%>/<%=product_id%>">
           <div class="message-type">
             <textarea name="message" id="message-text" placeholder="Type a message here"></textarea>
             <button type="submit">Send</button>
@@ -29,21 +29,27 @@
         </form>
       </section>
       <div class="image-conversation">
-        <div class="product-image"><img src="<%= conversation[0].img_url %>" /></div>
-        <section class="messages" id="messages-container">
-          <% for(let mess in conversation) { %>
-            <li class="sender">
-              <%= conversation[mess].message %>
-            </li>
-            <p>Sent by <%= conversation[mess].name %> @ Timestap </p>
-            <% } %>
-        </section>
-      </div>
-      <hr>
+      <div class="img-title">
+      <div class="product-image"><img src="<%= conversation[0].img_url %>" /></div>
+      <h3>
+        <%= conversation[0].title %>
+      </h3>
+    </div>
+    <section class="messages" id="messages-container">
+      <% for(let mess in conversation) { %>
+        <li class="sender">
+          <%= conversation[mess].message %>
+        </li>
+        <p>Sent by <%= conversation[mess].name %> @ <%= conversation[mess].time %> </p>
+        <% } %>
+    </section>
+    </div>
+    <hr>
     </div>
   </main>
   <footer class="footer">
     <%- include('./partials/_footer'); %>
   </footer>
 </body>
+
 </html>

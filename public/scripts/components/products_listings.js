@@ -10,7 +10,7 @@ $(() => {
 
   const renderAllProducts = function() {
 
-  $.get("/products/")
+  $.get("/admin/products/")
     .then(data => {
      console.log(data.products);
      $products = data.products;

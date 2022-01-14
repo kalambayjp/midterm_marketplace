@@ -117,14 +117,27 @@ module.exports = (db) => {
       });
   });
 
-  /*
-  // ADMIN
-  */
+//   /*
+//   // ADMIN
+//   */
 
-  router.get("/admin", (req, res) => {
+//   router.get("/admin", (req, res) => {
 
-    res.render("admin");
-  });
+//     const checkAdmin = req.session.userName
+
+//     const templateVars = {
+//       user_id: req.session.userId,
+//       userName: req.session.userName,
+//     }
+//     if (checkAdmin === 'admin') {
+
+//       res.render("admin", templateVars);
+
+//     } else {
+//       res.redirect("/products");
+//     }
+
+//   });
 
 
   return router;
