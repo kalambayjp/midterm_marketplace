@@ -3,12 +3,12 @@ $(() => {
   $('#message-box').hide();
   $(".message-box").hide();
   console.log('Ready');
+  const $pageHeader = $('#page-header');
+
   $("#wishlist").on("click", renderWishList);
   $("#myListings").on("click", renderMyProducts);
-  // $('#message-seller').on('click', renderMessages);
   $(".add-wishlist-form").on("click", replaceAddToWishlist);
   $("#message-form").on("submit", sendMessage);
-  // $("#see-all-messages").on("click", showMessageList);
 
 });
 

@@ -6,6 +6,7 @@ $(() => {
   $("#click").on("click", renderSignUpForm);
   $("#vl-products").on("click", renderProducts)
   $("#vl-wishlist").on("click", wishList)
+  // $("#vl-delete").on("click", deleteProduct)
 
 });
 
@@ -41,3 +42,11 @@ const wishList = function() {
   views_manager.show('wishlist');
   }
 
+// const deleteProduct = function(e) {
+//   e.preventDefault();
+//   const $productId = $(this).closest('span').attr('id')
+//   const product_id = $productId,slice(8);
+//   console.log('product_id to delete', product_id);
+//   console.log($(this));
+//   $.post(`/products/product/${product_id}/delete`)
+// }
