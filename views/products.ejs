@@ -66,7 +66,7 @@
                   <a href="/products/product/<%= product.id %>"><button class="view-details">View product
                       details</button></a>
                   <% if (product.wishlist === true) { %>
-                    <form class="remove-wishlist-form" method="POST" action="/products/wishlist/<%= product.id %>/delete">
+                    <form class="remove-wishlist-form" >
                       <button class="remove-from-wishlist">Remove from wishlist</button>
                     </form>
                   <% } else if (product.owner_id === user_id) { %>

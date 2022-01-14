@@ -5,7 +5,7 @@ $(() => {
   // $("#myListings").on("click", renderMyProducts);
   
   $(".add-wishlist-form").on("click", replaceAddToWishlist) 
-
+  $(".remove-wishlist-form").on("click", replaceRemoveWishlist)
   const $pageHeader = $('#page-header');
 
   $("#message-form").on("submit", sendMessage);
@@ -16,13 +16,30 @@ const replaceAddToWishlist = function(e) {
   const $productId = $(this).closest('span').attr('id')
   const product_id = $productId.slice(4)
 
-  const $removeWishlistForm = $(`<form class="remove-wishlist-form" method="post" action="products/wishlist/${product_id}/delete"><button class="remove-from-wishlist">Remove from wishlist</button></form>`);
+  const $removeWishlistForm = $(`<form class="remove-wishlist-form"><button class="remove-from-wishlist">Remove from wishlist</button></form>`);
 
-    $.post(`/products/wishlist/${product_id}/add`);
-    console.log("Clicked!");
+  $.post(`/products/wishlist/${product_id}/add`);
+  
+  console.log('after post');
+  $(`#${$productId}`).children('form:first').remove()
+  $(`#${$productId}`).append($removeWishlistForm)
+  location.reload()
+};
 
-    $(`#${$productId}`).children('form:first').remove()
-    $(`#${$productId}`).append($removeWishlistForm)
+const replaceRemoveWishlist = function(e) {
+  e.preventDefault();
+  const $productId = $(this).closest('span').attr('id')
+  const product_id = $productId.slice(4)
+
+  const $addWishlistForm = $(`<form class="add-wishlist-form"><button class="add-to-wishlist">Add to wishlist</button>
+  </form>`);
+
+  $.post(`/products/wishlist/${product_id}/delete`);
+  
+  console.log('after post');
+  $(`#${$productId}`).children('form:first').remove()
+  $(`#${$productId}`).append($addWishlistForm)
+  location.reload()
 };
 
 const renderWishList = function(e) {
