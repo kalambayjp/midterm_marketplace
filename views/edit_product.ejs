@@ -22,7 +22,7 @@
       </div>
       <table class="new-product-form">
         <tbody>
-          <form class="form-inline" action="/products/new" method="POST">
+          <form class="form-inline" action="/products/product/<%= product.id %>/edit" method="POST">
             <tr class="input-field">
               <td><label for="title">Product Title *:</label></td>
               <td><input class="form-control" type="text" name="title" value="<%= product.title %>"></td>
@@ -31,7 +31,7 @@
               <td><label for="category">Category *:</label></td>
               <td><select type="text" name="category" id="product-category" >
                   <option value="" disabled selected hidden>Choose a category</option>
-                  <option value="Cellphones">Cellphones</option>
+                  <option value="Cell Phones">Cell Phones</option>
                   <option value="Laptops">Laptops</option>
                   <option value="Desktops">Desktops</option>
                   <option value="Tablets">Tablets</option>
@@ -40,7 +40,7 @@
                   <option value="Components">Components</option>
                   <option value="Others">Others</option>
                   <option selected="selected">
-                    "<%= product.category %>"
+                    <%= product.category %>
                   </option>
 
                 </select></td>
@@ -63,17 +63,17 @@
                   <option value="false">false</option>
                   <option value="true">true</option>
                   <option selected="selected">
-                    <%= product.sold %>
+                    <%= product.featured %>
                   </option>
                 </select></td>
             </tr>
             <tr class="input-field">
               <td><label for="sold">Sold:</label></td>
-              <td><select name="featured" id="featured-boolean">
+              <td><select name="sold" id="sold-boolean">
                   <option value="false">false</option>
                   <option value="true">true</option>
                   <option selected="selected">
-                    <%= product.featured %>
+                    <%= product.sold %>
                   </option>
                 </select></td>
             </tr>

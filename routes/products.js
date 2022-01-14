@@ -239,7 +239,7 @@ module.exports = (db) => {
     const getCategoryID = (category) => {
 
       switch (category) {
-        case 'Cellphones':
+        case 'Cell Phones':
           return 1;
         case 'Laptops':
           return 2;
@@ -306,14 +306,46 @@ module.exports = (db) => {
   // [] post /products/product/:id/edit //edit a product submit
   // SUBMIT EDIT FORM TO EDIT PRODUCT PAGE
   router.post("/product/:id/edit", (req, res) => {
-    const inputVars = [req.params.title, req.params.category_id, req.params.description, req.params.img_url, req.params.price, req.params.featured, req.params.sold, req.params.id ,req.params.user_id];
+
+    const productId = req.params.id;
+
+    const getCategoryID = (category) => {
+
+      switch (category) {
+        case 'Cell Phones':
+          return 1;
+        case 'Laptops':
+          return 2;
+        case 'Desktops':
+          return 3;
+        case 'Tablets':
+          return 4;
+        case 'TVs':
+          return 5;
+        case 'Cameras':
+          return 6;
+        case 'Components':
+          return 7;
+        default:
+          return 8;
+      };
+    };
+
+    // const getTime = new Date(Date.now());
+    const category_id = getCategoryID(req.body.category);
+
+
+    const inputVars = [req.body.title, category_id, req.body.description, req.body.img_url, (req.body.price * 100), req.body.featured, req.body.sold, productId];
+    console.log(inputVars);
+    console.log('false and true',req.body.featured,req.body.sold);
+
     db.query(`
     UPDATE products
-    SET title=$1, category_id=$2, description=$3, img_url=$4, price=$5, featured=$6, sold=$7,
-    WHERE products.id = $8 and owner_id = $9;)`, inputVars)
+    SET title=$1, category_id=$2, description=$3, img_url=$4, price=$5, featured=$6, sold=$7
+    WHERE products.id = $8;`, inputVars)
       .then(data => {
         const products = data.rows;
-        res.json({ products });
+        res.redirect(`/products/product/${productId}`);
       })
       .catch(err => {
         res
