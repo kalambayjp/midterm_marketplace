@@ -43,10 +43,13 @@
         <h3 class="product-price-single">
           $<%= ((product.price) / 100).toFixed(2) %>
         </h3>
+
         <span class="product-buttons" id="adm-pdt_<%=product.id%>">
+          
+          
+          <% if (userName === "admin") { %>
           <button class="add-to-wishlist">Add to wishlist</button>
           <button id="message-seller" class="contact seller">Contact seller</button>
-          <% if (userName === "admin") { %>
             <form class="edit-product-form" method="get" action="/products/product/<%= product.product_id %>/edit">
               <button class="edit-button" id="vl-edit">Edit</button>
             </form>
@@ -54,8 +57,17 @@
             <form class="delete-product-form" method="post" action="/products/product/<%= product.product_id %>/delete">
               <button class="delete-button" id="vl-delete">Delete</button>
             </form>
-          <% } %>
+          <% } else if(user_id !== product.owner_id) { %>
+      
+          <button class="add-to-wishlist">Add to wishlist</button>
+          <a href="/messages/<%=user_id %>/<%=product.owner_id %>/<%=product.product_id %>"><button id="message-seller" class="contact seller">Contact seller</button></a>
+
         </span>
+        <% } else { %>
+          <span class="see-messages">
+            <a href="/messages/<%=product.owner_id %>/<%= product.sender_id %>/<%= product.product_id %>"><button id="see-all-messages" class="link-to-messages">Messages</button></a>
+          </span>
+        <% } %>
       </span>
       <p class="product-desc-single">
         <%= product.description %>
@@ -90,26 +102,10 @@
       </div>
     </div>
   </div>
-  <div id="message-box">
-    <main class="container">
-      <div class="message-body">
-        <section class="new-message">
-          <form method="POST" id="message-form" action="/product/<%= product.id %>">
-            <div class="message-type">
-              <textarea name="message" id="message-text" placeholder="Type a message here"></textarea>
-              <button type="submit">Send</button>
-            </div>
-            <hr>
-          </form>
-        </section>
-        <div class="image-conversation">
-          <div class="product-image"><img src="<%= product.img_url %>" /></div>
-          <section class="messages" id="messages-container">
-            <!-- MESSAGE GOES HERE -->
-          </section>
-        </div>
-        <hr>
-      </div>
+  <div class="message-box">
+    <main id="message-container" class="container">
+      <!-- MESAGE LIST GOES HERE -->
+
     </main>
   </div>
   <!-- Start of Footer -->

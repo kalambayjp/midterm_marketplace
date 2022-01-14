@@ -1,13 +1,14 @@
 // Client facing scripts here
 $(() => {
   $('#message-box').hide();
+  $(".message-box").hide();
   console.log('Ready');
   const $pageHeader = $('#page-header');
 
   $("#wishlist").on("click", renderWishList);
   $("#myListings").on("click", renderMyProducts);
-
-  $(".add-wishlist-form").on("click", replaceAddToWishlist)
+  $(".add-wishlist-form").on("click", replaceAddToWishlist);
+  $("#message-form").on("submit", sendMessage);
 
 });
 
@@ -96,17 +97,17 @@ const renderList = function (products) {
 
 // RENDER MESSAGES IN SINGLE PRODUCT PAGE
 
-const renderMessages = (e) => {
-  e.preventDefault();
-  console.log("Clicked!");
-  console.log($(this));
-  $('#message-box').show();
-  $.get(`/messages/1/15`) //HARDCODED
-    .then(message => {
-      bringMessages(message.conversation);
-    })
-    .catch(err => err);
-};
+// const renderMessages = (e) => {
+//   e.preventDefault();
+//   console.log("Clicked!");
+//   console.log($(this));
+//   $('#message-box').show();
+//   $.get(`/messages/1/15`) //HARDCODED
+//     .then(message => {
+//       bringMessages(message.conversation);
+//     })
+//     .catch(err => err);
+// };
 
 const bringMessages = function (conversation) {
   const $container = $("#messages-container");
@@ -120,4 +121,25 @@ const bringMessages = function (conversation) {
   }
 };
 
+const sendMessage = (e) => {
+  e.preventDefault();
+  console.log('Hello message');
+  // console.log(data.body)
+  const message = "$(this).serialized()";
+  $.post(`/messages/1/2`, message) //HARDCODED
+  // .then((data) => {
+  //   console.log(data);
+  // })
 
+}
+
+// const showMessageList = (e) => {
+//   e.preventDefault();
+//   console.log('Clicked');
+//   $.get(`/messages/7/1/15`)
+//   .then(data => {
+//     console.log(data);
+//     const $listContainer = $(".message-box");
+//     $listContainer.toggle();
+//   })
+// }

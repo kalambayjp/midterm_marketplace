@@ -121,16 +121,21 @@ module.exports = (db) => {
   // VIEW SINGLE PRODUCT
   router.get("/product/:id", (req, res) => {
     db.query(`
-    SELECT products.*, users.*, products.id as product_id FROM products
+
+    SELECT products.id as product_id, products.title, products.description, products.img_url, products.price, products.owner_id, users.*, messages.* FROM products
+
     JOIN users ON products.owner_id = users.id
-    WHERE products.id = $1;`,[req.params.id])
+    JOIN messages ON messages.product_id = products.id
+    WHERE products.id = $1
+    ;`,[req.params.id])
       .then(data => {
-        console.log(data.rows[0]);
+        console.log(data.rows);
         const templateVars = {
           user_id: req.session.userId,
           userName: req.session.userName,
           product: data.rows[0]
         }
+
         res.render("single_product", templateVars);
         // res.send(templateVars);
       })
