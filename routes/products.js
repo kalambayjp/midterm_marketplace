@@ -226,14 +226,12 @@ module.exports = (db) => {
   router.get("/product/:id", (req, res) => {
     db.query(`
 
-    SELECT products.id as product_id, products.title, products.description, products.img_url, products.price, products.owner_id, users.*, messages.* FROM products
-
+    SELECT products.id as product_id, products.title, products.description, products.img_url, products.price, products.owner_id, users.* FROM products
     JOIN users ON products.owner_id = users.id
-    JOIN messages ON messages.product_id = products.id
     WHERE products.id = $1
     ;`,[req.params.id])
       .then(data => {
-
+        console.log(data.rows)
         const templateVars = {
           user_id: req.session.userId,
           userName: req.session.userName,
@@ -328,7 +326,7 @@ module.exports = (db) => {
     WHERE user_id = $1 AND product_id = $2;`, inputVars)
       .then(data => {
       
-        res.redirect(`/products/wishlist/${req.session.userId}`)
+        // res.redirect(`/products/wishlist/${req.session.userId}`)
       })
       .catch(err => {
         console.log('error -->', err);

@@ -48,20 +48,24 @@
           
           
           <% if (userName === "admin") { %>
-          <button class="add-to-wishlist">Add to wishlist</button>
-          <button id="message-seller" class="contact seller">Contact seller</button>
+            <button id="message-seller" class="contact seller">Contact seller</button>
             <form class="edit-product-form" method="get" action="/products/product/<%= product.product_id %>/edit">
               <button class="edit-button" id="vl-edit">Edit</button>
             </form>
-
+            
             <form class="delete-product-form" method="post" action="/products/product/<%= product.product_id %>/delete">
               <button class="delete-button" id="vl-delete">Delete</button>
             </form>
-          <% } else if(user_id !== product.owner_id) { %>
-      
-          <button class="add-to-wishlist">Add to wishlist</button>
-          <a href="/messages/<%=user_id %>/<%=product.owner_id %>/<%=product.product_id %>"><button id="message-seller" class="contact seller">Contact seller</button></a>
-
+            <!-- <form class="add-wishlist-form">
+              <button class="add-to-wishlist">Add to wishlist</button>
+            </form> -->
+            <% } else if(user_id !== product.owner_id) { %>
+            <a href="/messages/<%=user_id %>/<%=product.owner_id %>/<%=product.product_id %>"><button id="message-seller" class="contact seller">Contact seller</button></a>
+            <span id="pdt_<%= product.product_id %>">
+              <form class="add-wishlist-form">
+                <button class="add-to-wishlist">Add to wishlist</button>
+              </form>
+            </span>
         </span>
         <% } else { %>
           <span class="see-messages">
@@ -102,12 +106,12 @@
       </div>
     </div>
   </div>
-  <div class="message-box">
+  <!-- <div class="message-box">
     <main id="message-container" class="container">
       <!-- MESAGE LIST GOES HERE -->
 
     </main>
-  </div>
+  </div> -->
   <!-- Start of Footer -->
   <footer class="footer">
     <%- include('./partials/_footer'); %>
