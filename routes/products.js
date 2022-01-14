@@ -25,8 +25,8 @@ module.exports = (db) => {
     let queryParams = [];
 
 
-        
-    if (req.query.minimum_price) {                             
+
+    if (req.query.minimum_price) {
 
       queryParams.push(req.query.minimum_price);
       queryString += `\nAND price >= $${queryParams.length}`;
@@ -90,6 +90,7 @@ module.exports = (db) => {
           products: data.rows
         }
         res.render('products', templateVars);
+        // res.send(templateVars);
       })
       .catch(err => {
         console.log(err);
@@ -120,7 +121,7 @@ module.exports = (db) => {
   // VIEW SINGLE PRODUCT
   router.get("/product/:id", (req, res) => {
     db.query(`
-    SELECT products.*, users.* FROM products
+    SELECT products.*, users.*, products.id as product_id FROM products
     JOIN users ON products.owner_id = users.id
     WHERE products.id = $1;`,[req.params.id])
       .then(data => {
@@ -131,6 +132,7 @@ module.exports = (db) => {
           product: data.rows[0]
         }
         res.render("single_product", templateVars);
+        // res.send(templateVars);
       })
       .catch(err => {
         res
@@ -164,7 +166,7 @@ module.exports = (db) => {
     FROM products
     JOIN wishlists ON wishlists.product_id = products.id
     JOIN users ON wishlists.user_id = users.id
-    WHERE users.id = $1;`, [req.session.userId])                    
+    WHERE users.id = $1;`, [req.session.userId])
       .then(data => {
         const templateVars = {
           user_id: req.session.userId,
@@ -180,29 +182,29 @@ module.exports = (db) => {
       });
   });
 
-  
+
 
   // ADD PRODUCT TO WISHLIST
   router.post("/wishlist/:product_id/add", (req, res) => {
     const inputVars = [req.session.userId, req.params.product_id];
-    
-    
+
+
     return db.query(`
     INSERT INTO wishlists (user_id, product_id)
     VALUES ($1, $2)`, inputVars)
-      .then(data => {    
+      .then(data => {
         // res.redirect('/');
-        // res.redirect(`/products/wishlist/${req.session.userId}`) 
+        // res.redirect(`/products/wishlist/${req.session.userId}`)
       })
       .catch(err => {
         res
           .status(500)
           .json({ error: err.message });
       });
-    
+
   });
 
-  
+
   // DELETE PRODUCT FROM WISHLIST
   router.post("/products/wishlist/:product_id/delete", (req, res) => {
     const inputVars = [req.params.user_id, req.params.product_id]
@@ -276,25 +278,34 @@ module.exports = (db) => {
 
   // [] get /products/product/:id/edit // edit product form
   // VIEW EDIT PRODUCTS PAGE
-  router.get("/products/product/:id/edit", (req, res) => {
+  router.get("/product/:id/edit", (req, res) => {
     const inputVars = [req.params.product_id];
-    db.query(`
-    SELECT * FROM products
-    WHERE products.id = $1`, inputVars)
+
+      db.query(`
+      SELECT products.*, categories.title as category FROM products
+      JOIN categories ON products.category_id = categories.id
+      WHERE products.id = $1;`,[req.params.id])
       .then(data => {
-        const products = data.rows[0];
-        res.json({ products });
+        console.log(data.rows[0]);
+        const templateVars = {
+          user_id: req.session.userId,
+          userName: req.session.userName,
+          product: data.rows[0]
+        }
+        res.render('edit_product.ejs', templateVars);
+        // res.send(templateVars);
       })
       .catch(err => {
         res
           .status(500)
           .json({ error: err.message });
       });
+
   });
 
   // [] post /products/product/:id/edit //edit a product submit
   // SUBMIT EDIT FORM TO EDIT PRODUCT PAGE
-  router.post("/products/product/:id/edit", (req, res) => {
+  router.post("/product/:id/edit", (req, res) => {
     const inputVars = [req.params.title, req.params.category_id, req.params.description, req.params.img_url, req.params.price, req.params.featured, req.params.sold, req.params.id ,req.params.user_id];
     db.query(`
     UPDATE products
@@ -313,11 +324,13 @@ module.exports = (db) => {
 
   // [] delete /products/product/:id/delete //delete a product
   // DELETE A PRODUCT
-  router.post("/products/product/:id/delete", (req, res) => {
-    const inputVars = [req.params.user_id, req.params.product_id]
+  router.post("/product/:product_id/delete", (req, res) => {
+    // const inputVars = [req.params.user_id, req.params.product_id]
+    const inputVars = [req.params.product_id]
     db.query(`
     DELETE FROM products
-    WHERE user_id = $1 AND product_id = $2`, inputVars)
+    WHERE products.id = $1`, inputVars)
+    // WHERE user_id = $1 AND product_id = $2`, inputVars)
       .then(data => {
         const products = data.rows;
         res.json({ products });

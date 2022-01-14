@@ -29,8 +29,9 @@
   <!-- Start of Header -->
   <header>
     <%- include('./partials/_navbar'); %>
+
   </header>
-  <div class="single-product">
+  <div class="single-product" >
     <div class="product-image-single">
       <img src="<%= product.img_url %>" alt="<%= product.title %>" />
     </div>
@@ -38,13 +39,22 @@
       <h2 class="product-title-single">
         <%= product.title %>
       </h2>
-      <span class="single-product-price">
+      <span class="single-product-price" >
         <h3 class="product-price-single">
           $<%= ((product.price) / 100).toFixed(2) %>
         </h3>
-        <span class="product-buttons">
+        <span class="product-buttons" id="adm-pdt_<%=product.id%>">
           <button class="add-to-wishlist">Add to wishlist</button>
           <button id="message-seller" class="contact seller">Contact seller</button>
+          <% if (userName === "admin") { %>
+            <form class="edit-product-form" method="get" action="/products/product/<%= product.product_id %>/edit">
+              <button class="edit-button" id="vl-edit">Edit</button>
+            </form>
+
+            <form class="delete-product-form" method="post" action="/products/product/<%= product.product_id %>/delete">
+              <button class="delete-button" id="vl-delete">Delete</button>
+            </form>
+          <% } %>
         </span>
       </span>
       <p class="product-desc-single">
