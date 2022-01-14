@@ -39,33 +39,33 @@ module.exports = (db) => {
           JOIN users ON wishlist_items.user_id = users.id
           WHERE users.id = $1;`, [req.session.userId])
           .then (data => {
-            
+
             const wishlistProducts = data.rows;
             let wishlistProductIds = [];
-  
+
             wishlistProducts.forEach(product => {
               wishlistProductIds.push(product.id);
-              
+
             })
-  
+
             function isOnUserWishlist (obj) {
               if (wishlistProductIds.includes(obj.id)) {
                 obj.wishlist = true
               }
             }
-  
+
             allproducts.map(isOnUserWishlist);
-  
+
             const templateVars = {
             user_id: req.session.userId,
             userName: req.session.userName,
             products: allproducts
             }
-            res.render('products', templateVars);  
-          })  
+            res.render('products', templateVars);
+          })
           .catch(err => {
             console.log(err);
-          });    
+          });
         })
         .catch(err => {
           console.log(err);
@@ -77,7 +77,7 @@ module.exports = (db) => {
       return db.query(queryString, queryParams)
       .then(data => {
         const allproducts = data.rows;
-        
+
         db.query(`
         SELECT products.*, wishlist_items.user_id, wishlist_items.product_id, users.id AS logged_in_user
         FROM products
@@ -85,14 +85,14 @@ module.exports = (db) => {
         JOIN users ON wishlist_items.user_id = users.id
         WHERE users.id = $1;`, [req.session.userId])
         .then (data => {
-          
+
           const wishlistProducts = data.rows;
           let wishlistProductIds = [];
 
           wishlistProducts.forEach(product => {
             wishlistProductIds.push(product.id);
           })
-          
+
 
           function isOnUserWishlist (obj) {
             if (wishlistProductIds.includes(obj.id)) {
@@ -101,7 +101,7 @@ module.exports = (db) => {
           }
 
           allproducts.map(isOnUserWishlist);
-          
+
 
           const templateVars = {
           user_id: req.session.userId,
@@ -109,8 +109,8 @@ module.exports = (db) => {
           products: allproducts
           }
           res.render('products', templateVars);
-        
-        })         
+
+        })
       })
       .catch(err => {
         console.log(err);
@@ -122,7 +122,7 @@ module.exports = (db) => {
       return db.query(queryString, queryParams)
       .then(data => {
         const allproducts = data.rows;
-        
+
         db.query(`
         SELECT products.*, wishlist_items.user_id, wishlist_items.product_id, users.id AS logged_in_user
         FROM products
@@ -130,14 +130,14 @@ module.exports = (db) => {
         JOIN users ON wishlist_items.user_id = users.id
         WHERE users.id = $1;`, [req.session.userId])
         .then (data => {
-          
+
           const wishlistProducts = data.rows;
           let wishlistProductIds = [];
 
           wishlistProducts.forEach(product => {
             wishlistProductIds.push(product.id);
           })
-          
+
 
           function isOnUserWishlist (obj) {
             if (wishlistProductIds.includes(obj.id)) {
@@ -146,7 +146,7 @@ module.exports = (db) => {
           }
 
           allproducts.map(isOnUserWishlist);
-          
+
 
           const templateVars = {
           user_id: req.session.userId,
@@ -154,8 +154,8 @@ module.exports = (db) => {
           products: allproducts
           }
           res.render('products', templateVars);
-        
-        })         
+
+        })
       })
       .catch(err => {
         console.log(err);
@@ -164,7 +164,7 @@ module.exports = (db) => {
       return db.query(queryString, queryParams)
       .then(data => {
         const allproducts = data.rows;
-        
+
         db.query(`
         SELECT products.*, wishlist_items.user_id, wishlist_items.product_id, users.id AS logged_in_user
         FROM products
@@ -172,14 +172,14 @@ module.exports = (db) => {
         JOIN users ON wishlist_items.user_id = users.id
         WHERE users.id = $1;`, [req.session.userId])
         .then (data => {
-          
+
           const wishlistProducts = data.rows;
           let wishlistProductIds = [];
 
           wishlistProducts.forEach(product => {
             wishlistProductIds.push(product.id);
           })
-          
+
           function isOnUserWishlist (obj) {
             if (wishlistProductIds.includes(obj.id)) {
               obj.wishlist = true
@@ -195,7 +195,7 @@ module.exports = (db) => {
           products: allproducts
           }
           res.render('products', templateVars);
-        })         
+        })
       })
       .catch(err => {
         console.log(err);
@@ -224,14 +224,15 @@ module.exports = (db) => {
 
   // VIEW SINGLE PRODUCT
   router.get("/product/:id", (req, res) => {
-    db.query(`
 
-    SELECT products.id as product_id, products.title, products.description, products.img_url, products.price, products.owner_id, users.* FROM products
+
+    db.query(`SELECT products.id as single_product_id, products.title, products.description, products.img_url, products.price, products.owner_id, users.*, messages.* FROM products
     JOIN users ON products.owner_id = users.id
-    WHERE products.id = $1
-    ;`,[req.params.id])
+    LEFT JOIN messages ON messages.product_id = products.id
+    WHERE products.id = $1;`,[req.params.id])
       .then(data => {
-        console.log(data.rows)
+        console.log(data.rows);
+
         const templateVars = {
           user_id: req.session.userId,
           userName: req.session.userName,
@@ -276,10 +277,10 @@ module.exports = (db) => {
 
     JOIN wishlist_items ON wishlist_items.product_id = products.id
     JOIN users ON wishlist_items.user_id = users.id
-    WHERE users.id = $1 AND products.sold = false;`, [req.session.userId])                    
+    WHERE users.id = $1 AND products.sold = false;`, [req.session.userId])
 
       .then(data => {
-        
+
         data.rows.forEach(product => {
           product.wishlist = true
         });
@@ -301,7 +302,7 @@ module.exports = (db) => {
   // ADD PRODUCT TO WISHLIST
   router.post("/wishlist/:product_id/add", (req, res) => {
     const inputVars = [req.session.userId, req.params.product_id];
-    
+
     return db.query(`
     INSERT INTO wishlist_items (user_id, product_id)
     VALUES ($1, $2)`, inputVars)
@@ -325,8 +326,10 @@ module.exports = (db) => {
     DELETE FROM wishlist_items
     WHERE user_id = $1 AND product_id = $2;`, inputVars)
       .then(data => {
-      
-        // res.redirect(`/products/wishlist/${req.session.userId}`)
+
+
+        res.redirect(`/products/wishlist/${req.session.userId}`)
+
       })
       .catch(err => {
         console.log('error -->', err);
