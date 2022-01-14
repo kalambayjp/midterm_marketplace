@@ -1,7 +1,6 @@
 const express = require('express');
-const { networkInterfaces } = require('os');
 const users = require('./users');
-const router = express.Router();
+const router  = express.Router();
 
 module.exports = (db) => {
 
@@ -69,6 +68,8 @@ module.exports = (db) => {
           title: data.rows[0].title,
           img_url: data.rows[0].img_url
         }
+        console.log(templateVars);
+        // res.json({ conversation });
         res.render("conversation", templateVars);
         return;
       })
@@ -79,22 +80,23 @@ module.exports = (db) => {
       });
   });
 
+  // Send message
+
   router.post("/:receiver_id/:product_id", (req, res) => {
     const message = req.body.message;
     const messageTime = new Date(Date.now());
     // const receiver_id = req.params.receiver_id;
-    const messageValues = [req.session.userId, req.params.receiver_id, req.params.product_id, message, messageTime];
+    const messageValues = [req.params.product_id, req.session.userId, req.params.receiver_id, message, messageTime];
 
     console.log('POST a message:');
-    console.log(messageValues);
-    console.log('req: ', req);
+    console.log(req.body.message);
 
-    db.query(`INSERT INTO messages (sender_id, receiver_id, product_id, message, time)
+    db.query(`INSERT INTO messages (product_id, sender_id, receiver_id,  message, time)
     VALUES ($1, $2, $3, $4, $5)
     RETURNING *;
     `, messageValues)
       .then(data => {
-        res.redirect(`../1/${req.params.product_id}`);
+        res.redirect(`../${req.params.user_id}/${req.params.product_id}`);
       })
       .catch(err => {
         res
@@ -137,3 +139,6 @@ module.exports = (db) => {
 //     ORDER BY time DESC;
 
 
+// INSERT INTO messages (product_id, sender_id, receiver_id,  message, time)
+//     VALUES (11, '7', '16', 'hi adam', '2022-01-14T23:14:14.636Z')
+//     RETURNING *;
