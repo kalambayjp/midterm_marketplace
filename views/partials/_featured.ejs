@@ -6,10 +6,10 @@
     <tbody>
       <tr class="product-row">
         <% for (let product of products) { %>
-          <% if (product.featured === true) %>
+          <% if (product.featured === true) { %>
           <td class="product-block" >
             <span class="product-thumbnail">
-              <img src="<%= product.img_url %>" alt="<%= product.title %>" style="width: 200px; height: 200px" />
+              <a href="/products/product/<%= product.id %>"><img src="<%= product.img_url %>" alt="<%= product.title %>" style="width: 200px; height: 200px" /></a>
             </span>
             <span class="product-details">
               <h3 class="product-title">

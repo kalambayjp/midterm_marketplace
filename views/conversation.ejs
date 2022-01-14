@@ -20,7 +20,7 @@
         <div id="alert">
           <!-- Error message goes here! -->
         </div>
-        <form method="POST" id="message-form" action="/messages/<%=user_id %>/<%=receiver_id%>/<%=product_id%>">
+        <form method="POST" id="message-form" action="/messages/<%=receiver_id %>/<%=product_id%>">
           <div class="message-type">
             <textarea name="message" id="message-text" placeholder="Type a message here"></textarea>
             <button type="submit">Send</button>
@@ -30,19 +30,23 @@
       </section>
       <div class="image-conversation">
         <div class="img-title">
-          <div class="product-image"><img src="<%= conversation[0].img_url %>" /></div>
+          <div class="product-image"><img src="<%= img_url %>" /></div>
           <h3>
-            <%= conversation[0].title %>
+            <%= title %>
           </h3>
         </div>
         <section class="messages" id="messages-container">
-          <% for(let mess in conversation) { %>
-                <li class="sender">
-                  <%= conversation[mess].message %>
-                </li>
-                <p>Sent by <%= conversation[mess].name %> @ <%= conversation[mess].time %>
-                </p>
+          <% if (conversation.length > 0) { %>
+            <% for(let mess in conversation) { %>
+              <li class="sender">
+                <%= conversation[mess].message %>
+              </li>
+              <p>Sent by <%= conversation[mess].name %> @ <%= conversation[mess].time %>
+              </p>
               <% } %>
+            <% } else { %>
+              "No message"
+            <% } %>
         </section>
       </div>
       <hr>

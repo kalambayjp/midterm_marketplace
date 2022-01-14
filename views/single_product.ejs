@@ -49,7 +49,7 @@
 
           <% if (userName === "admin") { %>
           <button class="add-to-wishlist">Add to wishlist</button>
-          <button id="message-seller" class="contact seller">Contact seller</button>
+          <a href="/messages/<%= userId %>/<%=product.id%>"><button id="message-seller" class="contact seller">Contact seller</button></a>
             <form class="edit-product-form" method="get" action="/products/product/<%= product.product_id %>/edit">
               <button class="edit-button" id="vl-edit">Edit</button>
             </form>
@@ -59,12 +59,12 @@
           <% } else if(user_id !== product.owner_id) { %>
 
           <button class="add-to-wishlist">Add to wishlist</button>
-          <a href="/messages/<%=user_id %>/<%=product.owner_id %>/<%=product.single_product_id %>"><button id="message-seller" class="contact seller">Contact seller</button></a>
+          <a href="/messages/<%=user_id %>/<%=product.single_product_id %>"><button id="message-seller" class="contact seller">Contact seller</button></a>
 
         </span>
         <% } else { %>
           <span class="see-messages">
-            <a href="/messages/<%=product.owner_id %>/<%= product.sender_id %>/<%= product.single_product_id %>"><button id="see-all-messages" class="link-to-messages">Messages</button></a>
+            <a href="/messages/<%=user_id %>/<%= product.single_product_id %>"><button id="see-all-messages" class="link-to-messages">Messages</button></a>
           </span>
         <% } %>
       </span>

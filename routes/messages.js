@@ -19,35 +19,58 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/:user_id/:receiver_id/:product_id", (req, res) => {
+  router.get("/:user_id/:product_id", (req, res) => {
 
-    db.query(`SELECT messages.*, users.name, users.id as sender_id, products.img_url, products.title, products.id as product_id
-    FROM messages
-    JOIN users ON sender_id = users.id
-    JOIN products ON messages.product_id = products.id
+
+
+    db.query(`SELECT messages.*, users.*, products.* FROM messages
+    JOIN users ON users.id = messages.sender_id
+    JOIN products ON products.id = messages.product_id
+    WHERE (messages.sender_id = $1 OR messages.receiver_id = $1) AND products.id = $2
     ORDER BY time DESC
-    ;`)
+    ;`, [req.session.userId, req.params.product_id])
       .then(data => {
+        console.log('before conditional  >>>', data.rows);
+        if (data.rows.length < 1) {
+          console.log("Hello");
+          db.query(`SELECT * from products WHERE id = $1;`, [req.params.product_id])
+          .then(data => {
+            const templateVars = {
+              conversation: [],
+              user_id: req.session.userId,
+              userName: req.session.userName,
+              product_id: data.rows[0].id,
+              receiver_id: data.rows[0].owner_id,
+              sender_id: req.session.userId,
+              title: data.rows[0].title,
+              img_url: data.rows[0].img_url
+            }
+            console.log(templateVars);
+            res.render("conversation", templateVars);
+            return;
 
-        if (!data.rows[0].receiver_id) {
-          receiver_id = data.rows[0].owner_id;
+          })
+          return;
         } else if (data.rows[0].sender_id === req.params.user_id) {
           receiver_id = data.rows[0].receiver_id;
         } else {
           receiver_id = data.rows[0].sender_id;
         }
 
-        console.log('inputs >> ', [req.session.userId, receiver_id, req.params.product_id])
+        console.log([req.params.product_id, req.session.userId, receiver_id])
 
         const templateVars = {
           conversation: data.rows,
           user_id: req.session.userId,
-          userName: data.rows[0].name,
+          userName: req.session.userName,
           product_id: data.rows[0].id,
-          receiver_id: receiver_id
+          receiver_id: receiver_id,
+          sender_id: req.session.userId,
+          title: data.rows[0].title,
+          img_url: data.rows[0].img_url
         }
         res.render("conversation", templateVars);
-
+        return;
       })
       .catch(err => {
         res
@@ -56,10 +79,10 @@ module.exports = (db) => {
       });
   });
 
-  router.post("/:user_id/:receiver_id/:product_id", (req, res) => {
+  router.post("/:receiver_id/:product_id", (req, res) => {
     const message = req.body.message;
     const messageTime = new Date(Date.now());
-    // const receiver_id = data.rows[0].receiver_id;
+    // const receiver_id = req.params.receiver_id;
     const messageValues = [req.session.userId, req.params.receiver_id, req.params.product_id, message, messageTime];
 
     console.log('POST a message:');
