@@ -80,17 +80,19 @@ module.exports = (db) => {
       });
   });
 
+  // Send message
+
   router.post("/:receiver_id/:product_id", (req, res) => {
     const message = req.body.message;
     const messageTime = new Date(Date.now());
     // const receiver_id = req.params.receiver_id;
-    const messageValues = [req.session.userId, req.params.receiver_id, req.params.product_id, message, messageTime];
+    const messageValues = [req.params.product_id, req.session.userId, req.params.receiver_id, message, messageTime];
 
     console.log('POST a message:');
-    console.log(messageValues);
+    console.log(req.body.message);
 
-    db.query(`INSERT INTO messages (sender_id, receiver_id, product_id, message)
-    VALUES ($1, $2, $3, $4)
+    db.query(`INSERT INTO messages (product_id, sender_id, receiver_id,  message, time)
+    VALUES ($1, $2, $3, $4, $5)
     RETURNING *;
     `, messageValues)
       .then(data => {
@@ -135,3 +137,8 @@ module.exports = (db) => {
 //     JOIN products ON messages.product_id = products.id
 //     WHERE messages.product_id = 3 AND (sender_id = 1 OR receiver_id = 1)
 //     ORDER BY time DESC;
+
+
+// INSERT INTO messages (product_id, sender_id, receiver_id,  message, time)
+//     VALUES (11, '7', '16', 'hi adam', '2022-01-14T23:14:14.636Z')
+//     RETURNING *;
