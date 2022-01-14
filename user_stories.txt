@@ -125,11 +125,11 @@ scenarios:
 
 incomplete tasks:
   jp: 
-    add to wishlist button
-    extract userId from cookie in jquery file
-    fix remove from wishlist action
-    mark product as sold
-    my wishlist link is not accessible from products page
+    [x]add to wishlist button
+    [x]extract userId from cookie in jquery file
+    [x]fix remove from wishlist action
+    [x]mark product as sold
+    [x]my wishlist link is not accessible from products page
 
   ratul:
     extract data from form in post request in jquery
@@ -137,7 +137,7 @@ incomplete tasks:
     add a all products heading
   
   vlad:
-    add admin coloum
+    add admin column
     edit product and delete product 
     alter queries on route to add admin account
 

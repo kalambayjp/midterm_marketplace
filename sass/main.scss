@@ -489,3 +489,15 @@ button {
   width: 30vw;
   min-height: 1.5em;
 }
+.sold-div {
+  display: flex;
+  justify-content: center;
+  background-color: green;
+}
+.sold-text {
+  text-align: center;
+  color: white;
+  font-size: 1.5em;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}

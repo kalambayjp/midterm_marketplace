@@ -1,15 +1,14 @@
 // Client facing scripts here
 $(() => {
-  $('#message-box').hide();
-  $(".message-box").hide();
-  console.log('Ready');
+
+  // $("#wishlist").on("click", renderWishList);
+  // $("#myListings").on("click", renderMyProducts);
+  
+  $(".add-wishlist-form").on("click", replaceAddToWishlist) 
+
   const $pageHeader = $('#page-header');
 
-  $("#wishlist").on("click", renderWishList);
-  $("#myListings").on("click", renderMyProducts);
-  $(".add-wishlist-form").on("click", replaceAddToWishlist);
   $("#message-form").on("submit", sendMessage);
-
 });
 
 const replaceAddToWishlist = function(e) {
@@ -17,23 +16,16 @@ const replaceAddToWishlist = function(e) {
   const $productId = $(this).closest('span').attr('id')
   const product_id = $productId.slice(4)
 
+  const $removeWishlistForm = $(`<form class="remove-wishlist-form" method="post" action="products/wishlist/${product_id}/delete"><button class="remove-from-wishlist">Remove from wishlist</button></form>`);
 
-  if ($(".login-as")) {
     $.post(`/products/wishlist/${product_id}/add`);
     console.log("Clicked!");
 
-    const $removeWishlistForm = $(`<form class="remove-wishlist-form" method="post" action="products/wishlist/<%= product.id %>/delete"><button class="remove-from-wishlist">Remove from wishlist</button></form>`);
-
     $(`#${$productId}`).children('form:first').remove()
     $(`#${$productId}`).append($removeWishlistForm)
-  } else {
-    console.log('please login/register')
-  }
-
 };
 
 const renderWishList = function(e) {
-
   e.preventDefault();
   console.log("Clicked!");
 
@@ -44,7 +36,6 @@ const renderWishList = function(e) {
       renderList($products);
       //  renderUsers(data.users);
     });
-
 };
 
 const renderMyProducts = function (e) {
@@ -58,7 +49,6 @@ const renderMyProducts = function (e) {
       renderList($products);
       //  renderUsers(data.users);
     });
-
 };
 
 const renderList = function (products) {
@@ -130,7 +120,6 @@ const sendMessage = (e) => {
   // .then((data) => {
   //   console.log(data);
   // })
-
 }
 
 // const showMessageList = (e) => {
