@@ -82,19 +82,14 @@ module.exports = (db) => {
   router.post("/:receiver_id/:product_id", (req, res) => {
     const message = req.body.message;
     const messageTime = new Date(Date.now());
-    // const receiver_id = req.params.receiver_id;
     const messageValues = [req.session.userId, req.params.receiver_id, req.params.product_id, message, messageTime];
-
-    console.log('POST a message:');
-    console.log(messageValues);
-    console.log('req: ', req);
 
     db.query(`INSERT INTO messages (sender_id, receiver_id, product_id, message, time)
     VALUES ($1, $2, $3, $4, $5)
     RETURNING *;
     `, messageValues)
       .then(data => {
-        res.redirect(`../1/${req.params.product_id}`);
+        res.redirect(`../${req.session.userId}/${req.params.product_id}`);
       })
       .catch(err => {
         res

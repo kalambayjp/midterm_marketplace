@@ -380,7 +380,7 @@ module.exports = (db) => {
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     RETURNING *;`, inputVars)
       .then(data => {
-        res.redirect(`../products/user/${req.session.userId}`);
+        res.redirect(`/`);
       })
       .catch(err => {
         res
