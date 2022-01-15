@@ -4,7 +4,7 @@ TECHMARKET
 A buy & sell platform where perspective buyers have the ability to message sellers through the app! Built using EJS, JS, CSS. jQuery, PostgreSQL. 
 
 ## Screenshots
-!["Our main products page"](https://github.com/kalambayjp/midterm_marketplace/screenshots/product_page.png)
+!["Our main products page"](https://github.com/kalambayjp/midterm_marketplace/blob/master/screenshots/product_page.png)
 !["Individual product page"](https://github.com/kalambayjp/midterm_marketplace/screenshots/single_product_page.png)
 !["In app messenger page"](https://github.com/kalambayjp/midterm_marketplace/screenshots/messenger_page.png)
 
