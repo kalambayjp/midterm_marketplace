@@ -7,17 +7,13 @@
 
 const express = require('express');
 const { on } = require('nodemon');
-const router  = express.Router();
+const router = express.Router();
 
 module.exports = (db) => {
-
+  // LISTS OF MULTIPLE PRODUCTS:
   // VIEW ALL PRODUCTS
   router.get("/", (req, res) => {
-
-    let queryString = `
-    SELECT *
-    FROM products
-    `;
+    let queryString = `SELECT * FROM products`;
     let queryParams = [];
 
     if (req.query.minimum_price) {
@@ -30,227 +26,186 @@ module.exports = (db) => {
         DESC;`;
 
         return db.query(queryString, queryParams)
-        .then(data => {
-          const allproducts = data.rows;
-          db.query(`
+          .then(data => {
+            const allproducts = data.rows;
+            db.query(`
           SELECT products.*, wishlist_items.user_id, wishlist_items.product_id, users.id AS logged_in_user
           FROM products
           JOIN wishlist_items ON wishlist_items.product_id = products.id
           JOIN users ON wishlist_items.user_id = users.id
           WHERE users.id = $1;`, [req.session.userId])
-          .then (data => {
+              .then(data => {
+                const wishlistProducts = data.rows;
+                let wishlistProductIds = [];
 
-            const wishlistProducts = data.rows;
-            let wishlistProductIds = [];
+                wishlistProducts.forEach(product => {
+                  wishlistProductIds.push(product.id);
+                })
 
-            wishlistProducts.forEach(product => {
-              wishlistProductIds.push(product.id);
+                function isOnUserWishlist(obj) {
+                  if (wishlistProductIds.includes(obj.id)) {
+                    obj.wishlist = true;
+                  }
+                }
 
-            })
+                allproducts.map(isOnUserWishlist);
 
-            function isOnUserWishlist (obj) {
-              if (wishlistProductIds.includes(obj.id)) {
-                obj.wishlist = true
-              }
-            }
-
-            allproducts.map(isOnUserWishlist);
-
-            const templateVars = {
-            user_id: req.session.userId,
-            userName: req.session.userName,
-            products: allproducts
-            }
-            res.render('products', templateVars);
+                const templateVars = {
+                  user_id: req.session.userId,
+                  userName: req.session.userName,
+                  products: allproducts
+                }
+                res.render('products', templateVars);
+              })
+              .catch(err => {
+                console.log(err);
+              });
           })
           .catch(err => {
             console.log(err);
           });
-        })
-        .catch(err => {
-          console.log(err);
-        });
       }
 
-      queryString += `\nORDER BY featured
+      queryString += `\n ORDER BY featured
       DESC;`;                                // ONLY MIN PRICE
 
       return db.query(queryString, queryParams)
-      .then(data => {
-        const allproducts = data.rows;
+        .then(data => {
+          const allproducts = data.rows;
 
-        db.query(`
+          db.query(`
         SELECT products.*, wishlist_items.user_id, wishlist_items.product_id, users.id AS logged_in_user
         FROM products
         JOIN wishlist_items ON wishlist_items.product_id = products.id
         JOIN users ON wishlist_items.user_id = users.id
         WHERE users.id = $1;`, [req.session.userId])
-        .then (data => {
+            .then(data => {
+              const wishlistProducts = data.rows;
+              let wishlistProductIds = [];
 
-          const wishlistProducts = data.rows;
-          let wishlistProductIds = [];
+              wishlistProducts.forEach(product => {
+                wishlistProductIds.push(product.id);
+              })
 
-          wishlistProducts.forEach(product => {
-            wishlistProductIds.push(product.id);
-          })
+              function isOnUserWishlist(obj) {
+                if (wishlistProductIds.includes(obj.id)) {
+                  obj.wishlist = true;
+                }
+              }
 
+              allproducts.map(isOnUserWishlist);
 
-          function isOnUserWishlist (obj) {
-            if (wishlistProductIds.includes(obj.id)) {
-              obj.wishlist = true
-            }
-          }
-
-          allproducts.map(isOnUserWishlist);
-
-
-          const templateVars = {
-          user_id: req.session.userId,
-          userName: req.session.userName,
-          products: allproducts
-          }
-          res.render('products', templateVars);
-
+              const templateVars = {
+                user_id: req.session.userId,
+                userName: req.session.userName,
+                products: allproducts
+              }
+              res.render('products', templateVars);
+            })
         })
-      })
-      .catch(err => {
-        console.log(err);
-      });
+        .catch(err => {
+          console.log(err);
+        });
     } else if (req.query.maximum_price) {                             // ONLY MAX PRICE
       queryParams.push(req.query.maximum_price);
       queryString += `\nWHERE price <= $${queryParams.length}\nORDER BY featured
       DESC;`;
 
       return db.query(queryString, queryParams)
-      .then(data => {
-        const allproducts = data.rows;
+        .then(data => {
+          const allproducts = data.rows;
 
-        db.query(`
+          db.query(`
         SELECT products.*, wishlist_items.user_id, wishlist_items.product_id, users.id AS logged_in_user
         FROM products
         JOIN wishlist_items ON wishlist_items.product_id = products.id
         JOIN users ON wishlist_items.user_id = users.id
         WHERE users.id = $1;`, [req.session.userId])
-        .then (data => {
+            .then(data => {
+              const wishlistProducts = data.rows;
+              let wishlistProductIds = [];
 
-          const wishlistProducts = data.rows;
-          let wishlistProductIds = [];
+              wishlistProducts.forEach(product => {
+                wishlistProductIds.push(product.id);
+              })
 
-          wishlistProducts.forEach(product => {
-            wishlistProductIds.push(product.id);
-          })
+              function isOnUserWishlist(obj) {
+                if (wishlistProductIds.includes(obj.id)) {
+                  obj.wishlist = true;
+                }
+              }
 
+              allproducts.map(isOnUserWishlist);
 
-          function isOnUserWishlist (obj) {
-            if (wishlistProductIds.includes(obj.id)) {
-              obj.wishlist = true
-            }
-          }
-
-          allproducts.map(isOnUserWishlist);
-
-
-          const templateVars = {
-          user_id: req.session.userId,
-          userName: req.session.userName,
-          products: allproducts
-          }
-          res.render('products', templateVars);
-
+              const templateVars = {
+                user_id: req.session.userId,
+                userName: req.session.userName,
+                products: allproducts
+              }
+              res.render('products', templateVars);
+            })
         })
-      })
-      .catch(err => {
-        console.log(err);
-      });
+        .catch(err => {
+          console.log(err);
+        });
     } else {                                                     // NO PRICE FILTERS
-      queryString += `ORDER BY featured DESC;`
+      queryString += `\nORDER BY featured DESC;`
       console.log('queryString', queryString);
       return db.query(queryString, queryParams)
-      .then(data => {
-        const allproducts = data.rows;
+        .then(data => {
+          const allproducts = data.rows;
 
-        db.query(`
+          db.query(`
         SELECT products.*, wishlist_items.user_id, wishlist_items.product_id, users.id AS logged_in_user
         FROM products
         JOIN wishlist_items ON wishlist_items.product_id = products.id
         JOIN users ON wishlist_items.user_id = users.id
         WHERE users.id = $1;`, [req.session.userId])
-        .then (data => {
+            .then(data => {
+              const wishlistProducts = data.rows;
+              let wishlistProductIds = [];
 
-          const wishlistProducts = data.rows;
-          let wishlistProductIds = [];
+              wishlistProducts.forEach(product => {
+                wishlistProductIds.push(product.id);
+              })
 
-          wishlistProducts.forEach(product => {
-            wishlistProductIds.push(product.id);
-          })
+              function isOnUserWishlist(obj) {
+                if (wishlistProductIds.includes(obj.id)) {
+                  obj.wishlist = true;
+                }
+              }
 
-          function isOnUserWishlist (obj) {
-            if (wishlistProductIds.includes(obj.id)) {
-              obj.wishlist = true
-            }
-          }
+              allproducts.map(isOnUserWishlist);
 
-          allproducts.map(isOnUserWishlist);
-
-          const templateVars = {
-          user_id: req.session.userId,
-          userName: req.session.userName,
-          products: allproducts
-          }
-          console.log(templateVars)
-          res.render('products', templateVars);
+              const templateVars = {
+                user_id: req.session.userId,
+                userName: req.session.userName,
+                products: allproducts
+              }
+              res.render('products', templateVars);
+            })
         })
-      })
-      .catch(err => {
-        console.log(err);
-      });
+        .catch(err => {
+          console.log(err);
+        });
     }
   });
 
   // VIEW PRODUCTS FILTERED BY PRICE
   router.post("/", (req, res) => {
     if (req.body.minimum_price) {
-
       let minPrice = parseInt(req.body.minimum_price * 100);
 
       if (req.body.maximum_price) {
         let maxPrice = parseInt(req.body.maximum_price * 100);
         res.redirect(`/products?minimum_price=${minPrice}&maximum_price=${maxPrice}`);
       }
-
       res.redirect(`/products?minimum_price=${minPrice}`);
 
     } else if (req.body.maximum_price) {
       let maxPrice = parseInt(req.body.maximum_price * 100);
       res.redirect(`/products?maximum_price=${maxPrice}`);
     };
-  });
-
-  // VIEW SINGLE PRODUCT
-  router.get("/product/:id", (req, res) => {
-
-
-    db.query(`SELECT products.id as single_product_id, products.title, products.description, products.img_url, products.price, products.owner_id, users.*, messages.* FROM products
-    JOIN users ON products.owner_id = users.id
-    LEFT JOIN messages ON messages.product_id = products.id
-    WHERE products.id = $1;`,[req.params.id])
-      .then(data => {
-        console.log(data.rows);
-
-        const templateVars = {
-          user_id: req.session.userId,
-          userName: req.session.userName,
-          product: data.rows[0]
-        }
-
-        res.render("single_product", templateVars);
-        // res.send(templateVars);
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
   });
 
   // VIEW ALL PRODUCTS OF A SINGLE USER
@@ -263,7 +218,6 @@ module.exports = (db) => {
     DESC
     ;`, [req.session.userId])
       .then(data => {
-
         const templateVars = {
           user_id: req.session.userId,
           userName: req.session.userName,
@@ -274,20 +228,17 @@ module.exports = (db) => {
       .catch(err => {
         console.log(err);
       });
-    });
+  });
 
   // VIEW USER'S WISHLIST
   router.get("/wishlist/:user_id", (req, res) => {
     db.query(`
     SELECT products.*, wishlist_items.product_id, users.id AS logged_in_user
     FROM products
-
     JOIN wishlist_items ON wishlist_items.product_id = products.id
     JOIN users ON wishlist_items.user_id = users.id
     WHERE users.id = $1 AND products.sold = false;`, [req.session.userId])
-
       .then(data => {
-
         data.rows.forEach(product => {
           product.wishlist = true
         });
@@ -296,7 +247,6 @@ module.exports = (db) => {
           userName: req.session.userName,
           products: data.rows
         }
-
         res.render("products", templateVars)
       })
       .catch(err => {
@@ -314,8 +264,8 @@ module.exports = (db) => {
     INSERT INTO wishlist_items (user_id, product_id)
     VALUES ($1, $2)`, inputVars)
       .then(data => {
-        // res.redirect('/');
-        // res.redirect(`/products/wishlist/${req.session.userId}`)
+        return;
+        // logic is done using jquery
       })
       .catch(err => {
         res
@@ -333,31 +283,27 @@ module.exports = (db) => {
     DELETE FROM wishlist_items
     WHERE user_id = $1 AND product_id = $2;`, inputVars)
       .then(data => {
-
-
-        res.redirect(`/products/wishlist/${req.session.userId}`)
-
+        return;
+        // logic is done using jquery
       })
       .catch(err => {
         console.log('error -->', err);
       });
   });
 
-  // POST NEW PRODUCT FOR SALE
-  // GET new product form
+  // SINGLE PRODUCT PAGES:
+  // GET NEW PRODUCT FORM
   router.get("/new", (req, res) => {
-      const templateVars = {
-        user_id: req.session.userId,
-        userName: req.session.userName
-      }
-      res.render("new_listing", templateVars);
+    const templateVars = {
+      user_id: req.session.userId,
+      userName: req.session.userName
+    }
+    res.render("new_listing", templateVars);
   });
 
-  // [] post /products/new //LISTING NEW PRODUCTS
+  // POST NEW PRODUCT FOR SALE
   router.post("/new", (req, res) => {
-
     const getCategoryID = (category) => {
-
       switch (category) {
         case 'Cell Phones':
           return 1;
@@ -380,8 +326,8 @@ module.exports = (db) => {
 
     const getTime = new Date(Date.now());
     const category_id = getCategoryID(req.body.category);
-
-    const inputVars = [ req.body.title, category_id, req.body.description, req.body.img_url, (req.body.price * 100), req.body.featured, req.session.userId, getTime];
+    const inputVars = [req.body.title, category_id, req.body.description, req.body.img_url, (req.body.price * 100), req.body.featured, req.session.userId, getTime];
+    
     db.query(`
     INSERT INTO products (title, category_id, description, img_url, price, featured, owner_id, listed_on)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
@@ -396,42 +342,55 @@ module.exports = (db) => {
       });
   });
 
-  // [] get /products/product/:id/edit // edit product form
-  // VIEW EDIT PRODUCTS PAGE
-  router.get("/product/:id/edit", (req, res) => {
-
-    const inputVars = [req.params.product_id];
-
-      db.query(`
-      SELECT products.*, categories.title as category FROM products
-      JOIN categories ON products.category_id = categories.id
-      WHERE products.id = $1;`,[req.params.id])
+  // VIEW SINGLE PRODUCT
+  router.get("/product/:id", (req, res) => {
+    db.query(`
+    SELECT products.id as single_product_id, products.title, products.description, products.img_url, products.price, products.owner_id, products.sold, users.*, messages.* FROM products
+    JOIN users ON products.owner_id = users.id
+    LEFT JOIN messages ON messages.product_id = products.id
+    WHERE products.id = $1;`, [req.params.id])
       .then(data => {
-        console.log(data.rows[0]);
         const templateVars = {
           user_id: req.session.userId,
           userName: req.session.userName,
           product: data.rows[0]
         }
-        res.render('edit_product.ejs', templateVars);
-        // res.send(templateVars);
+        res.render("single_product", templateVars);
       })
       .catch(err => {
         res
           .status(500)
           .json({ error: err.message });
       });
-
   });
 
-  // [] post /products/product/:id/edit //edit a product submit
+  // VIEW EDIT PRODUCTS PAGE
+  router.get("/product/:id/edit", (req, res) => {
+    const inputVars = [req.params.product_id];
+
+    db.query(`
+      SELECT products.*, categories.title as category FROM products
+      JOIN categories ON products.category_id = categories.id
+      WHERE products.id = $1;`, [req.params.id])
+      .then(data => {
+        const templateVars = {
+          user_id: req.session.userId,
+          userName: req.session.userName,
+          product: data.rows[0]
+        }
+        res.render('edit_product.ejs', templateVars);
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
   // SUBMIT EDIT FORM TO EDIT PRODUCT PAGE
   router.post("/product/:id/edit", (req, res) => {
-
     const productId = req.params.id;
-
     const getCategoryID = (category) => {
-
       switch (category) {
         case 'Cell Phones':
           return 1;
@@ -452,13 +411,8 @@ module.exports = (db) => {
       };
     };
 
-    // const getTime = new Date(Date.now());
     const category_id = getCategoryID(req.body.category);
-
-
     const inputVars = [req.body.title, category_id, req.body.description, req.body.img_url, (req.body.price * 100), req.body.featured, req.body.sold, productId];
-    console.log(inputVars);
-    console.log('false and true',req.body.featured,req.body.sold);
 
     db.query(`
     UPDATE products
@@ -475,19 +429,14 @@ module.exports = (db) => {
       });
   });
 
-  // [] delete /products/product/:id/delete //delete a product
   // DELETE A PRODUCT
   router.post("/product/:product_id/delete", (req, res) => {
-    // const inputVars = [req.params.user_id, req.params.product_id]
     const inputVars = [req.params.product_id]
     db.query(`
     DELETE FROM products
     WHERE products.id = $1`, inputVars)
-    // WHERE user_id = $1 AND product_id = $2`, inputVars)
       .then(data => {
-        const products = data.rows;
         res.redirect('/products/users/:user_id')
-        // res.json({ products });
       })
       .catch(err => {
         res
@@ -495,6 +444,6 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
-
+  
   return router;
 };
