@@ -9,5 +9,5 @@ VALUES ('Alice Parker', 'alice@wonderland.ca', 'password', '6043762846', 'Canada
 ('Adam Smith', 'adam_smith@gmail.com', 'password', '9008771144', 'Canada', 'Regina', 'SK', 'Albert St', 'S4S3A3' ),
 ('Sarah Henderson', 'hisarah@hotmail.com', 'password', '6008572534', 'Canada', 'Regina', 'SK', 'Grant Rd', 'S6S4J1' ),
 ('Rogers Steven', 'findsteven@gmail.com', 'password', '5005446843', 'Canada', 'Winnipeg', 'MB', 'Orchard Rd', 'M5Y4T9' ),
-('Rohit Sharma ', 'hellorohit@hotmail.com', 'password', '4212154456', 'Canada', 'Saskatoon', 'SK', '8th Street', 'S7P4T9' );
+('Rohit Sharma ', 'hellorohit@hotmail.com', 'password', '4212154456', 'Canada', 'Saskatoon', 'SK', '8th Street', 'S7P4T9' ),('admin', 'admin@admin.com', 'password', '5148529514', 'Canada', '100 mile house', 'BC', 'nowhere rd', 'f7g7h9' );
 

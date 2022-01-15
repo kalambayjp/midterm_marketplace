@@ -17,13 +17,12 @@ module.exports = (db) => {
     let queryString = `
     SELECT *
     FROM products
-
     `;
     let queryParams = [];
 
     if (req.query.minimum_price) {
       queryParams.push(req.query.minimum_price);
-      queryString += `\nAND price >= $${queryParams.length}`;
+      queryString += `\nWHERE price >= $${queryParams.length}`;
 
       if (req.query.maximum_price) {                                // IF MIN PRICE & MAX PRICE
         queryParams.push(req.query.maximum_price);
@@ -119,7 +118,7 @@ module.exports = (db) => {
       });
     } else if (req.query.maximum_price) {                             // ONLY MAX PRICE
       queryParams.push(req.query.maximum_price);
-      queryString += `\nAND price <= $${queryParams.length}\nORDER BY featured
+      queryString += `\nWHERE price <= $${queryParams.length}\nORDER BY featured
       DESC;`;
 
       return db.query(queryString, queryParams)
