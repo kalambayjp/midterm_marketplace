@@ -44,19 +44,23 @@
           $<%= ((product.price) / 100).toFixed(2) %>
         </h3>
 
-        <span class="product-buttons" id="adm-pdt_<%=product.id%>">
+        <span class="product-buttons" id="adm-pdt_<%=product.single_product_id%>">
 
           <% if (userName === "admin") { %>
-            <button id="message-seller" class="contact seller">Contact seller</button>
-            <form class="edit-product-form" method="get" action="/products/product/<%= product.product_id %>/edit">
+            <a href="/messages/<%=user_id %>/<%=product.single_product_id %>">
+              <button id="message-seller" class="contact seller">Contact seller</button>
+            </a>
+            <form class="edit-product-form" method="get" action="/products/product/<%= product.single_product_id %>/edit">
               <button class="edit-button" id="vl-edit">Edit</button>
             </form>
-            <form class="delete-product-form" method="post" action="/products/product/<%= product.product_id %>/delete">
+            <form class="delete-product-form" method="post" action="/products/product/<%= product.single_product_id %>/delete">
               <button class="delete-button" id="vl-delete">Delete</button>
             </form>
 
             <% } else if(user_id !== product.owner_id) { %>
-           <a href="/messages/<%=user_id %>/<%=product.single_product_id %>"><button id="message-seller" class="contact seller">Contact seller</button></a>
+            <a href="/messages/<%=user_id %>/<%=product.single_product_id %>">
+              <button id="message-seller" class="contact seller">Contact seller</button>
+            </a>
             <span id="pdt_<%= product.product_id %>">
               <form class="add-wishlist-form">
                 <button class="add-to-wishlist">Add to wishlist</button>

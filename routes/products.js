@@ -17,7 +17,7 @@ module.exports = (db) => {
     let queryString = `
     SELECT *
     FROM products
-    WHERE sold = false
+
     `;
     let queryParams = [];
 
@@ -27,7 +27,8 @@ module.exports = (db) => {
 
       if (req.query.maximum_price) {                                // IF MIN PRICE & MAX PRICE
         queryParams.push(req.query.maximum_price);
-        queryString += `\nAND price <= $${queryParams.length}\nLIMIT 8;`;
+        queryString += `\nAND price <= $${queryParams.length}\nORDER BY featured
+        DESC;`;
 
         return db.query(queryString, queryParams)
         .then(data => {
@@ -72,7 +73,8 @@ module.exports = (db) => {
         });
       }
 
-      queryString += `\nLIMIT 8;`;                                // ONLY MIN PRICE
+      queryString += `\nORDER BY featured
+      DESC;`;                                // ONLY MIN PRICE
 
       return db.query(queryString, queryParams)
       .then(data => {
@@ -117,7 +119,8 @@ module.exports = (db) => {
       });
     } else if (req.query.maximum_price) {                             // ONLY MAX PRICE
       queryParams.push(req.query.maximum_price);
-      queryString += `\nAND price <= $${queryParams.length}\nLIMIT 8;`;
+      queryString += `\nAND price <= $${queryParams.length}\nORDER BY featured
+      DESC;`;
 
       return db.query(queryString, queryParams)
       .then(data => {
@@ -161,6 +164,8 @@ module.exports = (db) => {
         console.log(err);
       });
     } else {                                                     // NO PRICE FILTERS
+      queryString += `ORDER BY featured DESC;`
+      console.log('queryString', queryString);
       return db.query(queryString, queryParams)
       .then(data => {
         const allproducts = data.rows;
@@ -254,7 +259,10 @@ module.exports = (db) => {
     db.query(`
     SELECT *
     FROM products
-    WHERE owner_id = $1;`, [req.session.userId])
+    WHERE owner_id = $1
+    ORDER BY featured
+    DESC
+    ;`, [req.session.userId])
       .then(data => {
 
         const templateVars = {
@@ -380,7 +388,7 @@ module.exports = (db) => {
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     RETURNING *;`, inputVars)
       .then(data => {
-        res.redirect(`../products/user/${req.session.userId}`);
+        res.redirect(`users/${req.session.userId}`);
       })
       .catch(err => {
         res
@@ -392,6 +400,7 @@ module.exports = (db) => {
   // [] get /products/product/:id/edit // edit product form
   // VIEW EDIT PRODUCTS PAGE
   router.get("/product/:id/edit", (req, res) => {
+
     const inputVars = [req.params.product_id];
 
       db.query(`
@@ -478,7 +487,8 @@ module.exports = (db) => {
     // WHERE user_id = $1 AND product_id = $2`, inputVars)
       .then(data => {
         const products = data.rows;
-        res.json({ products });
+        res.redirect('/products/users/:user_id')
+        // res.json({ products });
       })
       .catch(err => {
         res
