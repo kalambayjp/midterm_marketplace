@@ -11,8 +11,8 @@
   </head>
   <body>
     <header>
-
-
+      <%- include('./partials/_navbar') %>
+      <div class="tagline"><text>BUY, SELL, WIN.</text></div>
     </header>
       <main style="margin: 1em;">
         <h3>Create Account</h3>
@@ -29,6 +29,8 @@
           </div>
         </form>
       </main>
+      <footer class="footer">
+        <%- include('./partials/_footer'); %>
+      </footer>
 </body>
-
 </html>

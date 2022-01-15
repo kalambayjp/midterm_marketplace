@@ -1,4 +1,3 @@
-@import "variables";
 $layout-breakpoints-phone: 360px;
 $layout-breakpoints-tablet: 768px;
 $layout-breakpoints-desktop: 1366px;
@@ -33,6 +32,9 @@ p {
   position: absolute!important;
   top: 0;
   right: 0;
+}
+.stack-top {
+  z-index: 99;
 }
 .product-block {
   position: relative;
@@ -370,7 +372,14 @@ button {
   justify-content: space-between;
   align-items: flex-start;
 }
+.image-holder {
+  position: relative;
+  width: 40em !important;
+  height: 40em !important;
+}
+
 .product-image-single img {
+  position: relative;
   width: 40em !important;
   height: 40em !important;
   object-fit: cover;
