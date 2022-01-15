@@ -1,6 +1,11 @@
 @import "variables";
+$layout-breakpoints-phone: 360px;
+$layout-breakpoints-tablet: 768px;
+$layout-breakpoints-desktop: 1366px;
+$layout-breakpoints-LGdesktop: 1920px;
 
-$primary-color: #0e1429;
+$primary-color: #4881c2;
+$font-family: "Titillium Web", sans-serif;
 
 body {
   display: flex;
@@ -11,6 +16,119 @@ body {
   width: 100vw;
   background-color: #fff;
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  font-family: $font-family;
+}
+.featured-tag {
+  background-color: $primary-color;
+  color: #fff;
+  padding: .5em;
+  position: absolute!important;
+  top: 0;
+  right: 0;
+}
+.product-block {
+  position: relative;
+}
+
+
+@media (min-width: $layout-breakpoints-LGdesktop) {
+  h1 {
+    font-size: 2.5em;
+  }
+  h2 {
+    font-size: 2em;
+  }
+  h3 {
+    font-size: 1.75em;
+  }
+  h4 {
+    font-size: 1.5em;
+  }
+  h5 {
+    font-size: 1.25em;
+  }
+  h6 {
+    font-size: 1.125em;
+  }
+  p {
+    font-size: 1em;
+  }
+  .navbar-items {
+    width: 50vw;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
+
+@media (min-width: $layout-breakpoints-desktop) {
+  h1 {
+    font-size: 2.25em;
+  }
+  h2 {
+    font-size: 1.75em;
+  }
+  h3 {
+    font-size: 1.5em;
+  }
+  h4 {
+    font-size: 1.25em;
+  }
+  h5 {
+    font-size: 1.125em;
+  }
+  h6 {
+    font-size: 1em;
+  }
+  p {
+    font-size: .85em;
+  }
+  .container-fluid {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap !important;
+    width: 100em;
+    padding: 0 6em;
+    background-color: $primary-color;
+  }
+  .navbar-items {
+    width: 50vw;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
+
+
+h1,
+h2 {
+  font-weight: 700;
+}
+
+h3,
+h4 {
+  font-weight: 600;
+}
+
+h5,
+h6 {
+  font-weight: 500;
+}
+
+p {
+  font-weight: 300;
+}
+
 header {
   max-width: 100vw;
 }
@@ -44,7 +162,7 @@ button {
   justify-content: space-between;
   align-items: center;
   flex-wrap: nowrap !important;
-  width: 100vw;
+  width: 100em;
   padding: 0 6em;
   background-color: $primary-color;
 }
@@ -61,18 +179,12 @@ button {
   color: #c3c9e0;
 }
 
-.navbar-items {
-  width: 70vw;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
 .menu-logged-in {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
+  width: fit-content;
 }
 
 .login-as {
@@ -82,7 +194,7 @@ button {
 }
 
 .navbar-nav {
-  width: 100em;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -94,8 +206,8 @@ button {
 }
 
 .nav-item {
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 1.125em;
+  font-weight: 400;
   margin-left: 2em;
   list-style-type: none;
 }
@@ -103,10 +215,9 @@ button {
 .nav-link {
   text-decoration: none;
   color: #fff;
-}
-
-.nav-link:hover {
-  color: #a3a0a0;
+  &:hover {
+    color: #a3a0a0;
+  }
 }
 
 .d-flex {
@@ -128,7 +239,7 @@ button {
 #login-form {
   margin: 1em 1em 0 1em;
   input {
-    margin: 0 .5em;
+    margin: 0 0.5em;
     height: 1em;
     width: 12em;
     border: none;
@@ -151,13 +262,12 @@ button {
 .tagline {
   margin-top: 7em;
   text {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 48px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 3em;
     font-weight: 400;
     color: $primary-color;
   }
 }
-
 
 //Price filter form
 .filter-by-price {
@@ -176,13 +286,19 @@ button {
   align-items: flex-start;
   width: 90vw;
   margin-top: 2em;
+  a {
+    text-decoration: none;
+    &:hover {
+      color: rgb(206, 192, 240);
+    }
+  }
 }
 .featured-section .categories-title {
   padding: 0.25em;
   color: #fff;
-
   background-color: $primary-color;
   text-transform: uppercase;
+  text-decoration: none;
 }
 
 #featured {
@@ -255,12 +371,12 @@ button {
   align-items: flex-start;
 }
 .product-image-single img {
-  width: 40rem !important;
-  height: 40rem !important;
+  width: 40em !important;
+  height: 40em !important;
   object-fit: cover;
 }
 .product-details-single {
-  width: 40rem;
+  width: 40em;
 }
 
 .product-details-single {
@@ -276,7 +392,7 @@ button {
 }
 .product-desc-single {
   margin-top: 2em;
-  font-size: 20px;
+  font-size: 1.25em;
 }
 .product-owner-info {
   margin-top: 2em;
@@ -288,7 +404,7 @@ button {
   align-items: flex-start;
   background-color: rgb(233, 229, 229);
   border-radius: 0.5em;
-  border: 1px solid #ccc;
+  border: 0.0625em solid #ccc;
 }
 .product-owner-info-title {
   margin-bottom: 0;
@@ -365,7 +481,7 @@ button {
   padding: 0.25em;
   font-weight: 400;
   font-family: sans-serif;
-  font-size: 16px;
+  font-size: 1em;
   margin-bottom: 0.5em;
   border-radius: 0.5em;
   border: none;
@@ -383,20 +499,20 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  height: 400px;
+  height: 25em;
   overflow: auto;
   overscroll-behavior-y: contain;
   padding: 0 1em;
 }
 .product-image {
   margin-top: 1em;
-  width: 200px;
-  height: 200px;
+  width: 12.5em;
+  height: 12.5em;
   border-radius: 0.5em;
 }
 .product-image img {
-  width: 200px !important;
-  height: 200px !important;
+  width: 12.5em !important;
+  height: 12.5em !important;
   object-fit: cover;
   border-radius: 0.5em;
 }
@@ -420,7 +536,7 @@ button {
 
 #messages-container p {
   margin-bottom: 1em;
-  font-size: 10px;
+  font-size: 0.625em;
   font-weight: 400;
   color: rgb(156, 156, 156);
 }
@@ -441,13 +557,12 @@ button {
   text-transform: uppercase;
   background-color: $primary-color;
   color: #fff;
-  padding: .5em;
+  padding: 0.5em;
   margin-bottom: 1em;
-  border-radius: .5em;
+  border-radius: 0.5em;
   h3 {
     margin: 0;
   }
-
 }
 .new-product-form {
   width: 80%;
@@ -472,10 +587,10 @@ button {
   button {
     background-color: $primary-color;
     color: #fff;
-    border-radius: .25em;
+    border-radius: 0.25em;
     border: none;
-    box-shadow: .2em .2em .2em $primary-color;
-    padding: .25em;
+    box-shadow: 0.2em 0.2em 0.2em $primary-color;
+    padding: 0.25em;
     cursor: pointer;
   }
   button:hover {
@@ -499,6 +614,6 @@ button {
   text-align: center;
   color: white;
   font-size: 1.5em;
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }

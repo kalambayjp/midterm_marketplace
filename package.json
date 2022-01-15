@@ -20,6 +20,7 @@
     "ejs": "^2.6.2",
     "ejs-lint": "^1.2.1",
     "express": "^4.17.1",
+    "include-media": "^1.4.10",
     "morgan": "^1.9.1",
     "normalize.css": "^8.0.1",
     "pg": "^8.5.0",

@@ -11,6 +11,12 @@
   <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400;1,600&display=swap"
+    rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
   <link rel="stylesheet" href="/styles/main.css" type="text/css" />
   <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
@@ -36,7 +42,6 @@
       <button type="submit" value="Filter">Filter</button>
     </form>
   </div>
-
   <div class="featured-section">
     <a href="/products">
       <h3 class="categories-title">All Listings</h3>
@@ -45,9 +50,18 @@
       <tbody>
         <tr class="product-row">
           <% for (let product of products) { %>
-            <td class="product-block" >
+            <td class="product-block">
+              <% if (product.featured === true ) { %>
+                <div class="featured-tag stack-top">
+                  <h3><i class="fas fa-star"></i> Featured</h3>
+                </div>
+              <% } else { %>
+                <div class="empty-featured-tag">
+                </div>
+                <% } %>
               <span class="product-thumbnail">
-                <a href="/products/product/<%= product.id %>"><img src="<%= product.img_url %>" alt="<%= product.title %>" style="width: 200px; height: 200px" /></a>
+                <a href="/products/product/<%= product.id %>"><img src="<%= product.img_url %>"
+                    alt="<%= product.title %>" style="width: 200px; height: 200px" /></a>
               </span>
               <span class="product-details">
                 <h3 class="product-title">
@@ -57,30 +71,30 @@
                 <h4 class="product-price">Price: $<%= ((product.price) / 100).toFixed(2) %>
                 </h4>
                 <hr>
-                <% if (product.sold === true) { %>
+                <% if (product.sold===true) { %>
                   <div class="sold-div">
                     <p class="sold-text">SOLD!</p>
                   </div>
-                <% } else {%>
-                <span class="product-buttons" id="pdt_<%=product.id%>">
-                  <a href="/products/product/<%= product.id %>"><button class="view-details">View product
-                      details</button></a>
-                  <% if (product.wishlist === true) { %>
-                    <form class="remove-wishlist-form" >
-                      <button class="remove-from-wishlist">Remove from wishlist</button>
-                    </form>
-                  <% } else if (product.owner_id === user_id) { %>
-                      <div class="placeholder-div"></div>
-                  <% } else { %>
-                  <form class="add-wishlist-form">
-                    <button class="add-to-wishlist">Add to wishlist</button>
-                  </form>
-                  <% } %>
-                </span>
-                <% } %>
+                  <% } else {%>
+                    <span class="product-buttons" id="pdt_<%=product.id%>">
+                      <a href="/products/product/<%= product.id %>"><button class="view-details">View product
+                          details</button></a>
+                      <% if (product.wishlist===true) { %>
+                        <form class="remove-wishlist-form">
+                          <button class="remove-from-wishlist">Remove from wishlist</button>
+                        </form>
+                        <% } else if (product.owner_id===user_id) { %>
+                          <div class="placeholder-div"></div>
+                          <% } else { %>
+                            <form class="add-wishlist-form">
+                              <button class="add-to-wishlist">Add to wishlist</button>
+                            </form>
+                            <% } %>
+                    </span>
+                    <% } %>
               </span>
             </td>
-          <% } %>
+            <% } %>
         </tr>
       </tbody>
     </table>
